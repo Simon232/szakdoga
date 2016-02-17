@@ -28,15 +28,15 @@ var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 
 
 var x = 0;
-var y = -2;
+var y = -25;
 var z = 0;
 
 var moveX = 0;
 var moveZ = 3;
 
 camera.position.x = 0;
-camera.position.y = 3;
-camera.position.z = 5;
+camera.position.y = 6;
+camera.position.z = 15;
 
 cube.position.x = 0.0;
 cube.position.y = 1.0;
@@ -86,12 +86,12 @@ var buttonPressed = function () {
 
     if (keyboard.pressed("escape")) {
         x = 0;
-        y = -2;
+        y = -25;
         z = 0;
 
         camera.position.x = 0;
-        camera.position.y = 3;
-        camera.position.z = 5;
+        camera.position.y = 6;
+        camera.position.z = 15;
 
         cube.position.x = 0.0;
         cube.position.y = 1.0;
