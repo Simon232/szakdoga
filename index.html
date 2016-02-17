@@ -4,38 +4,40 @@
     <meta charset="utf-8">
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="js/three.min.js"></script>
+    <script src='js/threex.keyboardstate.js'></script>
 
     <title>Socket.IO proba chat</title>
 
     <link rel="stylesheet" type="text/css" href="/css/template.css">
     <script src="/js/message.js"></script>
-    <script src="js/three.min.js"></script>
-    <script src='js/threex.keyboardstate.js'></script>
-    <script src="/js/program.js"></script>
+
 
 </head>
 <body>
-<div class="center">
-
-    <script src = "js/program.js" class="center"></script>
-
+<div class="graphicContainer">
+    <div class="center">
+        <script src="/js/program.js" class="center"></script>
+    </div>
+    <div>
+        Egyelőre:<br>
+        W - előre<br>
+        S - hátra<br>
+        A - balra forgás<br>
+        D - jobbra forgás<br>
+        E - felnézés<br>
+        Q - lenézés<br>
+        ESC - alaphelyzet<br>
+    </div>
 </div>
-<div>
-    Egyelőre:<br>
-    W - előre<br>
-    S - hátra<br>
-    A - balra forgás<br>
-    D - jobbra forgás<br>
-    E - felnézés<br>
-    Q - lenézés<br>
-    ESC - alaphelyzet<br>
+<!--
+<div class="chat">
+    <ul id="messages"></ul>
+    <form action="">
+        <input id="m" autocomplete="off" class="sub-form"/>
+        <button class="sub-button">Send</button>
+    </form>
 </div>
-
-
-<ul id="messages"></ul>
-<form action="">
-    <input id="m" autocomplete="off" /><button>Send</button>
-</form>
-
+-->
 </body>
 </html>
