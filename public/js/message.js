@@ -1,4 +1,4 @@
-$( document ).ready(function() {
+$(document).ready(function () {
     var socket = io();
     $('form').submit(function () {
         socket.emit('chat message', $('#m').val());
@@ -9,5 +9,5 @@ $( document ).ready(function() {
         $('#messages').append($('<li>').text(msg));
     });
 
-    //document.querySelector('.chat').style.marginLeft = $(window).width() - 300 + "px";
+    document.querySelector('.chat').style.marginLeft = $(window).width() - 300 + "px";
 });

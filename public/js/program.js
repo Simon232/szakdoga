@@ -12,37 +12,6 @@ document.body.appendChild(renderer.domElement);
 
 var PI = 3.14;
 
-/*
- var line_geo = new THREE.BoxGeometry(1000, 0.1, 0.1);
- var line_geo2 = new THREE.BoxGeometry(0.1, 1000, 0.1);
- var line_geo3 = new THREE.BoxGeometry(0.1, 0.1, 1000);
-
- var basic_geometry = new THREE.BoxGeometry(5, 5, 0);
- var geometry = new THREE.BoxGeometry(1, 1, 1);
- var geometry2 = new THREE.BoxGeometry(2, 4, 0.4);
-
- var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
- var material2 = new THREE.MeshBasicMaterial({color: 0xff0000});
- var basic_material = new THREE.MeshBasicMaterial({color: 0x0000ff});
-
- var line_material = new THREE.MeshBasicMaterial({color: 0x00006633}); //zöld
- var line2_material = new THREE.MeshBasicMaterial({color: 0x00990000}); //piros
- var line3_material = new THREE.MeshBasicMaterial({color: 0x00003399}); //kék
-
- var cube = new THREE.Mesh(geometry, material);
- var cube2 = new THREE.Mesh(geometry2, material2);
- var floor = new THREE.Mesh(basic_geometry, basic_material);
- var x_line = new THREE.Mesh(line_geo, line_material);
- var y_line = new THREE.Mesh(line_geo2, line2_material);
- var z_line = new THREE.Mesh(line_geo3, line3_material);
- scene.add(floor);
- scene.add(cube);
- scene.add(cube2);
- scene.add(x_line); //zöld
- scene.add(y_line); //piros
- scene.add(z_line); //kék
- */
-
 var line_geo = new THREE.BoxGeometry(1000, 0.1, 0.1);
 var line_geo2 = new THREE.BoxGeometry(0.1, 1000, 0.1);
 var line_geo3 = new THREE.BoxGeometry(0.1, 0.1, 1000);
@@ -93,27 +62,26 @@ var buttonPressed = function () {
         moveX -= 0.1;
         cube.position.x -= 0.1;
     }
+    if (keyboard.pressed("d")) {
+        moveX += 0.1;
+        cube.position.x += 0.1;
+    }
+
+    if (keyboard.pressed("w" || "keyup")) {
+        moveZ -= 0.1;
+        cube.position.z -= 0.1;
+    }
     if (keyboard.pressed("s")) {
         moveZ += 0.1;
         cube.position.z += 0.1;
     }
 
 
-    if (keyboard.pressed("w")) {
-        moveZ -= 0.1;
-        cube.position.z -= 0.1;
-    }
-    if (keyboard.pressed("d")) {
-        moveX += 0.1;
-        cube.position.x += 0.1;
-    }
-
-
     if (keyboard.pressed("t")) {
-        cube.position.y -= 0.1;
+        cube.position.y += 0.1;
     }
     if (keyboard.pressed("g")) {
-        cube.position.y += 0.1;
+        cube.position.y -= 0.1;
     }
 
     if (keyboard.pressed("escape")) {
