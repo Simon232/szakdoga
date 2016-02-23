@@ -15,9 +15,9 @@ var PI = 3.14;
 var line_geo = new THREE.BoxGeometry(1000, 0.1, 0.1);
 var line_geo2 = new THREE.BoxGeometry(0.1, 1000, 0.1);
 var line_geo3 = new THREE.BoxGeometry(0.1, 0.1, 1000);
-var line_material = new THREE.MeshBasicMaterial({color: 0x00006633}); //zöld
+var line_material = new THREE.MeshBasicMaterial({color: 0x00006633}); //zï¿½ld
 var line2_material = new THREE.MeshBasicMaterial({color: 0x00990000}); //piros
-var line3_material = new THREE.MeshBasicMaterial({color: 0x00003399}); //kék
+var line3_material = new THREE.MeshBasicMaterial({color: 0x00003399}); //kï¿½k
 var x_line = new THREE.Mesh(line_geo, line_material);
 var y_line = new THREE.Mesh(line_geo2, line2_material);
 var z_line = new THREE.Mesh(line_geo3, line3_material);
@@ -25,6 +25,9 @@ var z_line = new THREE.Mesh(line_geo3, line3_material);
 var cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
 var cubeMaterial = new THREE.MeshBasicMaterial({color: 0x00FFFF33});
 var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+
+var cubes = {};
+
 
 
 var x = 0;
@@ -105,13 +108,22 @@ var buttonPressed = function () {
     camera.position.x = moveX;
     camera.position.z = moveZ;
 
+    if (socket !== undefined) {
+        //console.log(socket)
+        cubes[socket.id] = cube;
+        socket.emit('move', {
+            sid: socket.id,
+            pos: cube.position
+        });
+    }
+
 };
 
 
 scene.add(cube);
-scene.add(x_line); //zöld
+scene.add(x_line); //zï¿½ld
 scene.add(y_line); //piros
-scene.add(z_line); //kék
+scene.add(z_line); //kï¿½k
 
 var render = function () {
     requestAnimationFrame(render);
