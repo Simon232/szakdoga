@@ -71,86 +71,135 @@ var obj = {
     }
 };
 
+var map = {
+    37: false, // left
+    38: false, // up
+    39: false, // right
+    40: false, // down
+    87: false, // W
+    83: false, // S
+    65: false, // A
+    68: false, // D
+    27: false  // ESC
+};
 jQuery(document).keydown(function (e) {
     var prevent = true;
     // Update the state of the attached control to "true"
-    switch (e.keyCode) {
-        case 37:
-            obj.socketCube.x -= 0.1;
-            //pressed arrow left
-            changeScene();
-            break;
-        case 38:
-            //pressed arrow up
-            obj.socketCube.z += 0.1;
-            changeScene();
-            break;
-        case 39:
-            //pressed arrow right
-            obj.socketCube.x += 0.1;
-            changeScene();
-            break;
-        case 40:
-            //pressed arrow down
-            obj.socketCube.z -= 0.1;
-            changeScene();
-            break;
-        case 87:
-            //pressed 'W'
-            obj.camera.z -= 0.1;
-            obj.cube.z -= 0.1;
-            obj.socketCube.z -= 0.1;
-            changeScene();
-            break;
-        case 83:
-            //pressed 'S'
-            obj.camera.z += 0.1;
-            obj.cube.z += 0.1;
-            obj.socketCube.z += 0.1;
-            changeScene();
-            break;
-        case 65:
-            //pressed 'A'
-            obj.camera.x -= 0.1;
-            obj.cube.x -= 0.1;
-            obj.socketCube.x -= 0.1;
-            changeScene();
-            break;
-        case 68:
-            //pressed 'D'
-            obj.camera.x += 0.1;
-            obj.cube.x += 0.1;
-            obj.socketCube.x += 0.1;
-            changeScene();
-            break;
-        case 27:
-            //pressed 'esc'
-            //x = 0;
-            //y = -25;
-            //z = 0;
 
+    if(e.keyCode in map){
+        map[e.keyCode] = true;
+        if(map[37] && map[38]){ // left + up
+            obj.socketCube.x -= 0.1;
+            obj.socketCube.z -= 0.1;
+            changeScene();
+        }
+        else if(map[38] && map[39]){ // up + right
+            obj.socketCube.z -= 0.1;
+            obj.socketCube.x += 0.1;
+            changeScene();
+        }
+        else if(map[37] && map[40]){ // left + down
+            obj.socketCube.x -= 0.1;
+            obj.socketCube.z += 0.1;
+            changeScene();
+        }
+        else if(map[39] && map[40]){ // left + right
+            obj.socketCube.x += 0.1;
+            obj.socketCube.z += 0.1;
+            changeScene();
+        }
+        else if(map[87] && map[65]){ // W + A
+            obj.camera.z -= 0.1;
+            obj.socketCube.z -= 0.1;
+
+            obj.camera.x -= 0.1;
+            obj.socketCube.x -= 0.1;
+            changeScene();
+        }
+        else if(map[87] && map[68]){ // W + D
+            obj.camera.z -= 0.1;
+            obj.socketCube.z -= 0.1;
+
+            obj.camera.x += 0.1;
+            obj.socketCube.x += 0.1;
+            changeScene();
+        }
+        else if(map[83] && map[65]){ // S + A
+            obj.camera.z += 0.1;
+            obj.socketCube.z += 0.1;
+
+            obj.camera.x -= 0.1;
+            obj.socketCube.x -= 0.1;
+            changeScene();
+        }
+        else if(map[83] && map[68]){ // S + D
+            obj.camera.z += 0.1;
+            obj.socketCube.z += 0.1;
+
+            obj.camera.x += 0.1;
+            obj.socketCube.x += 0.1;
+            changeScene();
+        }
+        else if(map[38]){
+            obj.socketCube.z -= 0.1;
+            changeScene();
+        }
+        else if(map[37]){
+            obj.socketCube.x -= 0.1;
+            changeScene();
+        }
+        else if(map[39]){
+            obj.socketCube.x += 0.1;
+            changeScene();
+        }
+        else if(map[40]){
+            obj.socketCube.z += 0.1;
+            changeScene();
+        }
+        else if(map[87]){
+            obj.camera.z -= 0.1;
+            obj.socketCube.z -= 0.1;
+            changeScene();
+        }
+        else if(map[83]){
+            obj.camera.z += 0.1;
+            obj.socketCube.z += 0.1;
+            changeScene();
+        }
+        else if(map[65]){
+            obj.camera.x -= 0.1;
+            obj.socketCube.x -= 0.1;
+            changeScene();
+        }
+        else if(map[68]){
+            obj.camera.x += 0.1;
+            obj.socketCube.x += 0.1;
+            changeScene();
+        }
+        else if(map[27]){
             obj.camera.x = 0;
             obj.camera.y = 6;
             obj.camera.z = 5;
 
-            obj.cube.x = 0.0;
-            obj.cube.y = 1.0;
-            obj.cube.z = 1.0;
 
             obj.socketCube.x = 0.0;
             obj.socketCube.y = 1.0;
             obj.socketCube.z = 1.0;
-            //camera.lookAt(new THREE.Vector3(x, y, z));
             changeScene();
-            break;
-        default:
+        }else{
             prevent = false;
+        }
+
     }
-    // Avoid the browser to react unexpectedly
+
     if (prevent) {
         e.preventDefault();
     } else {
         return;
+    }
+}).keyup(function(e){
+    if (e.keyCode in map) {
+        map[e.keyCode] = false;
     }
 });
 
