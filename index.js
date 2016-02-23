@@ -4,6 +4,8 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
 
+
+
 app.use(express.static('public'));
 
 
@@ -13,7 +15,7 @@ app.get('/', function (req, res) {
 
 io.on('connection', function (socket) {
     
-    io.emit('new', socket.id)
+    io.emit('new', socket.id);
     
     socket.broadcast.emit('hi');
     console.log('a user connected ', socket.id);
@@ -21,15 +23,15 @@ io.on('connection', function (socket) {
         io.emit('chat message', msg);
     });
     socket.on('disconnect', function () {
-        //console.log('user disconnect');
+        console.log('user disconnect');
     });
     
-    
+    /*
     socket.on('move', function(msg) {
        //console.log(msg); 
        io.emit('move', msg);
     });
-    
+    */
     
 });
 
