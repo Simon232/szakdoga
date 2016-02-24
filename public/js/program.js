@@ -58,8 +58,7 @@ socket.on('new', function (msg) {
 });
 
 socket.on('disconnect', function (msg) {
-    //cubes.pop(msg);
-    console.log('feliratkoztam!!!');
+    scene.remove(cubes[msg]);
 });
 
 socket.on('update', function (msg) {
