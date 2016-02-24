@@ -5,7 +5,6 @@ var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
 
 
-
 app.use(express.static('public'));
 
 
@@ -13,12 +12,14 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
+io.on('hi', function(obj){
+    console.log('aaaaaaa' + obj);
+});
+
 io.on('connection', function (socket) {
 
     console.log('a user connected ', socket.id);
-    io.emit('new', socket.id);
-
-    socket.broadcast.emit('hi');
+    io.emit('new', socket.id  );
 
     socket.on('chat message', function (msg) {
         io.emit('chat message', msg);
@@ -28,21 +29,19 @@ io.on('connection', function (socket) {
         io.emit('move', msg);
     });
 
-    socket.on('disconnect', function () {
-        console.log('user disconnect');
+    socket.on('update', function(msg){
+        console.log(msg);
+        socket.broadcast.emit('update', msg);
     });
 
+    socket.on('here-i-am', function(msg){
+        socket.broadcast.emit('here-i-am', msg);
+    });
 
-
-    //io.emit('move', msg);
-
-    /*
-    socket.on('move', function(msg) {
-       //console.log(msg);
-        console.log("wtf " + cubes[msg.sid].position + " " + msg);
-       //io.emit('move', msg);
-
-    });*/
+    socket.on('disconnect', function () {
+        io.emit('disconnect', socket.id);
+        console.log('user disconnect' + socket.id);
+    });
 
 });
 

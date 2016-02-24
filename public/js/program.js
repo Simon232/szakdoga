@@ -1,6 +1,6 @@
 var keyboard = new THREEx.KeyboardState();
 var socket = io();
-var cubes = {};
+
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -27,19 +27,72 @@ var z_line = new THREE.Mesh(line_geo3, line3_material);
 //var cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
 //var cubeMaterial = new THREE.MeshBasicMaterial({color: 0x00FFFF33});
 //var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-socket.on('new', function (msg) {
-    var socketCubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-    var socketCubeMaterial = new THREE.MeshBasicMaterial({color:  0x00FFFF33});
 
-    cubes[msg] =  new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
+var cubes = {};
+
+
+socket.on('new', function (msg) {
+
+    var socketCubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+    var socketCubeMaterial = new THREE.MeshBasicMaterial({color: 0x00FFFF33});
+
+    cubes[msg] = new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
     cubes[msg].position.x = 0.0;
     cubes[msg].position.y = 1.0;
     cubes[msg].position.z = 1.0;
+
     scene.add(cubes[msg]);
+
+
+    if (socket.id != undefined) {
+        try {
+
+            socket.emit('update', msg);
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    //scene.add(cubes[msg]);
 
 });
 
+socket.on('disconnect', function (msg) {
+    //cubes.pop(msg);
+    console.log('feliratkoztam!!!');
+});
 
+socket.on('update', function (msg) {
+
+    var sid = '/#' + socket.id;
+    if (socket.id != undefined && sid != msg && cubes[msg] != undefined) {
+        socket.emit('here-i-am', {
+            sid: sid,
+            x: cubes[sid].position.x,
+            y: cubes[sid].position.y,
+            z: cubes[sid].position.z
+        });
+       /*
+        var socketCubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+        var socketCubeMaterial = new THREE.MeshBasicMaterial({color: 0x00FFFF33});
+        cubes[msg] = new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
+        scene.add(cubes[msg]);
+        */
+
+    }
+
+});
+
+socket.on('here-i-am', function(msg){
+    var socketCubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+    var socketCubeMaterial = new THREE.MeshBasicMaterial({color: 0x00FFFF33});
+    cubes[msg.sid] = new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
+    cubes[msg.sid].position.x = msg.x;
+    cubes[msg.sid].position.y = msg.y;
+    cubes[msg.sid].position.z = msg.z;
+
+    scene.add(cubes[msg.sid]);
+});
 
 var x = 0;
 var y = 0;
@@ -96,29 +149,29 @@ jQuery(document).keydown(function (e) {
     var prevent = true;
     // Update the state of the attached control to "true"
 
-    if(e.keyCode in map){
+    if (e.keyCode in map) {
         map[e.keyCode] = true;
-        if(map[37] && map[38]){ // left + up
+        if (map[37] && map[38]) { // left + up
             obj.socketCube.x -= 0.1;
             obj.socketCube.z -= 0.1;
             changeScene();
         }
-        else if(map[38] && map[39]){ // up + right
+        else if (map[38] && map[39]) { // up + right
             obj.socketCube.z -= 0.1;
             obj.socketCube.x += 0.1;
             changeScene();
         }
-        else if(map[37] && map[40]){ // left + down
+        else if (map[37] && map[40]) { // left + down
             obj.socketCube.x -= 0.1;
             obj.socketCube.z += 0.1;
             changeScene();
         }
-        else if(map[39] && map[40]){ // left + right
+        else if (map[39] && map[40]) { // left + right
             obj.socketCube.x += 0.1;
             obj.socketCube.z += 0.1;
             changeScene();
         }
-        else if(map[87] && map[65]){ // W + A
+        else if (map[87] && map[65]) { // W + A
             obj.camera.z -= 0.1;
             obj.socketCube.z -= 0.1;
 
@@ -126,7 +179,7 @@ jQuery(document).keydown(function (e) {
             obj.socketCube.x -= 0.1;
             changeScene();
         }
-        else if(map[87] && map[68]){ // W + D
+        else if (map[87] && map[68]) { // W + D
             obj.camera.z -= 0.1;
             obj.socketCube.z -= 0.1;
 
@@ -134,7 +187,7 @@ jQuery(document).keydown(function (e) {
             obj.socketCube.x += 0.1;
             changeScene();
         }
-        else if(map[83] && map[65]){ // S + A
+        else if (map[83] && map[65]) { // S + A
             obj.camera.z += 0.1;
             obj.socketCube.z += 0.1;
 
@@ -142,7 +195,7 @@ jQuery(document).keydown(function (e) {
             obj.socketCube.x -= 0.1;
             changeScene();
         }
-        else if(map[83] && map[68]){ // S + D
+        else if (map[83] && map[68]) { // S + D
             obj.camera.z += 0.1;
             obj.socketCube.z += 0.1;
 
@@ -150,43 +203,43 @@ jQuery(document).keydown(function (e) {
             obj.socketCube.x += 0.1;
             changeScene();
         }
-        else if(map[38]){
+        else if (map[38]) {
             obj.socketCube.z -= 0.1;
             changeScene();
         }
-        else if(map[37]){
+        else if (map[37]) {
             obj.socketCube.x -= 0.1;
             changeScene();
         }
-        else if(map[39]){
+        else if (map[39]) {
             obj.socketCube.x += 0.1;
             changeScene();
         }
-        else if(map[40]){
+        else if (map[40]) {
             obj.socketCube.z += 0.1;
             changeScene();
         }
-        else if(map[87]){
+        else if (map[87]) {
             obj.camera.z -= 0.1;
             obj.socketCube.z -= 0.1;
             changeScene();
         }
-        else if(map[83]){
+        else if (map[83]) {
             obj.camera.z += 0.1;
             obj.socketCube.z += 0.1;
             changeScene();
         }
-        else if(map[65]){
+        else if (map[65]) {
             obj.camera.x -= 0.1;
             obj.socketCube.x -= 0.1;
             changeScene();
         }
-        else if(map[68]){
+        else if (map[68]) {
             obj.camera.x += 0.1;
             obj.socketCube.x += 0.1;
             changeScene();
         }
-        else if(map[27]){
+        else if (map[27]) {
             obj.camera.x = 0;
             obj.camera.y = 6;
             obj.camera.z = 5;
@@ -196,7 +249,7 @@ jQuery(document).keydown(function (e) {
             obj.socketCube.y = 1.0;
             obj.socketCube.z = 1.0;
             changeScene();
-        }else{
+        } else {
             prevent = false;
         }
 
@@ -207,13 +260,11 @@ jQuery(document).keydown(function (e) {
     } else {
         return;
     }
-}).keyup(function(e){
+}).keyup(function (e) {
     if (e.keyCode in map) {
         map[e.keyCode] = false;
     }
 });
-
-
 
 
 var changeScene = function () {
@@ -225,7 +276,7 @@ var changeScene = function () {
     //cube.position.y = obj.cube.y;
     //cube.position.z = obj.cube.z;
 
-    if(socket.id !== undefined && socket.id !== null) {
+    if (socket.id !== undefined && socket.id !== null) {
         //cubes['/#' + socket.id].position.x = obj.socketCube.x;
         //cubes['/#' + socket.id].position.y = obj.socketCube.y;
         //cubes['/#' + socket.id].position.z = obj.socketCube.z;
@@ -234,23 +285,27 @@ var changeScene = function () {
             sid: '/#' + socket.id,
             pos: obj.socketCube
         });
+
+        //socket.broadcast.emit('hi', socket.id);
     }
 
-    socket.on('move', function(obj){
+    socket.on('move', function (obj) {
         cubes[obj.sid].position.x = obj.pos.x;
         cubes[obj.sid].position.y = obj.pos.y;
         cubes[obj.sid].position.z = obj.pos.z;
     });
+
+
 };
 /*
-socket.on('disconnect', function () {
-    console.log('user disconnect');
-});*/
+ socket.on('disconnect', function () {
+ console.log('user disconnect');
+ });*/
 /*
-socket.on('move', function(obj){
-    cubes[obj.sid].position = obj.pos;
-    console.log("wtf " + cubes[obj.sid].position);
-});*/
+ socket.on('move', function(obj){
+ cubes[obj.sid].position = obj.pos;
+ console.log("wtf " + cubes[obj.sid].position);
+ });*/
 
 
 //scene.add(cube);
