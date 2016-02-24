@@ -27,7 +27,17 @@ var z_line = new THREE.Mesh(line_geo3, line3_material);
 //var cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
 //var cubeMaterial = new THREE.MeshBasicMaterial({color: 0x00FFFF33});
 //var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+socket.on('new', function (msg) {
+    var socketCubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+    var socketCubeMaterial = new THREE.MeshBasicMaterial({color:  0x00FFFF33});
 
+    cubes[msg] =  new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
+    cubes[msg].position.x = 0.0;
+    cubes[msg].position.y = 1.0;
+    cubes[msg].position.z = 1.0;
+    scene.add(cubes[msg]);
+
+});
 
 
 
@@ -216,11 +226,33 @@ var changeScene = function () {
     //cube.position.z = obj.cube.z;
 
     if(socket.id !== undefined && socket.id !== null) {
-        cubes['/#' + socket.id].position.x = obj.socketCube.x;
-        cubes['/#' + socket.id].position.y = obj.socketCube.y;
-        cubes['/#' + socket.id].position.z = obj.socketCube.z;
+        //cubes['/#' + socket.id].position.x = obj.socketCube.x;
+        //cubes['/#' + socket.id].position.y = obj.socketCube.y;
+        //cubes['/#' + socket.id].position.z = obj.socketCube.z;
+
+        socket.emit('move', {
+            sid: '/#' + socket.id,
+            pos: obj.socketCube
+        });
     }
+
+    socket.on('move', function(obj){
+        cubes[obj.sid].position.x = obj.pos.x;
+        cubes[obj.sid].position.y = obj.pos.y;
+        cubes[obj.sid].position.z = obj.pos.z;
+    });
 };
+/*
+socket.on('disconnect', function () {
+    console.log('user disconnect');
+});*/
+/*
+socket.on('move', function(obj){
+    cubes[obj.sid].position = obj.pos;
+    console.log("wtf " + cubes[obj.sid].position);
+});*/
+
+
 //scene.add(cube);
 scene.add(x_line); //z�ld
 scene.add(y_line); //piros
@@ -228,7 +260,6 @@ scene.add(z_line); //k�k
 
 var render = function () {
     requestAnimationFrame(render);
-    changeScene();
 
     renderer.render(scene, camera);
 };
