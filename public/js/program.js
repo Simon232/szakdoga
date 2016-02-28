@@ -4,6 +4,11 @@ var socket = io();
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+var light = new THREE.DirectionalLight( 0xffffff );
+light.position.set( 0.5, 1, 1 ).normalize();
+scene.add(light);
+
+
 
 
 var renderer = new THREE.WebGLRenderer();
@@ -17,12 +22,31 @@ var PI = 3.14;
 var line_geo = new THREE.BoxGeometry(1000, 0.1, 0.1);
 var line_geo2 = new THREE.BoxGeometry(0.1, 1000, 0.1);
 var line_geo3 = new THREE.BoxGeometry(0.1, 0.1, 1000);
-var line_material = new THREE.MeshBasicMaterial({color: 0x00006633}); //z�ld
+var line_material = new THREE.MeshBasicMaterial({color: 0x00006633}); //zold
 var line2_material = new THREE.MeshBasicMaterial({color: 0x00990000}); //piros
-var line3_material = new THREE.MeshBasicMaterial({color: 0x00003399}); //k�k
+var line3_material = new THREE.MeshBasicMaterial({color: 0x00003399}); //kek
 var x_line = new THREE.Mesh(line_geo, line_material);
 var y_line = new THREE.Mesh(line_geo2, line2_material);
 var z_line = new THREE.Mesh(line_geo3, line3_material);
+
+// load a texture, set wrap mode to repeat
+var texture = new THREE.TextureLoader().load( "pics/sand.jpg" );
+texture.wrapS = THREE.RepeatWrapping;
+texture.wrapT = THREE.RepeatWrapping;
+texture.repeat.set( 4, 4 );
+
+var cube_geo = new THREE.BoxGeometry(1, 1, 1);
+//var cube_material = new THREE.MeshPhongMaterial( { ambient: 0x050505, color: 0x0033ff, specular: 0x555555, shininess: 30 } );
+var cube_material = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('pics/crate.jpg') } );;
+var cube = new THREE.Mesh(cube_geo, cube_material);
+
+cube.position.x = 0;
+cube.position.y = 1;
+cube.position.z = 0;
+//scene.add(cube);
+
+
+
 
 var cubes = {};
 
@@ -37,13 +61,13 @@ socket.on('new', function (msg) {
         var R = Math.floor(Math.random() * 256);
         var G = Math.floor(Math.random() * 256);
         var B = Math.floor(Math.random() * 256);
-        //var color = '#' + rgbToHex(R, G, B);
 
         thisSocket = msg;
         thisColor = "rgb(" + R + "," + G + "," + B + ")";
 
         var socketCubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-        var socketCubeMaterial = new THREE.MeshBasicMaterial({color: "rgb(" + R + "," + G + "," + B + ")"});
+        //var socketCubeMaterial = new THREE.MeshBasicMaterial({color: thisColor});
+        var socketCubeMaterial = new THREE.MeshPhongMaterial( { ambient: 0x050505, color: thisColor, specular: 0x555555, shininess: 30 } );
 
         cubes[msg] = new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
         cubes[msg].position.x = 0.0;
@@ -69,20 +93,7 @@ socket.on('new', function (msg) {
         }
     }
 });
-/*
-var rgbToHex = function (R, G, B) {
-    return toHex(R) + toHex(G) + toHex(B)
-};
-var toHex = function (n) {
-    n = parseInt(n, 10);
-    if (isNaN(n)) {
-        return "00";
-    }
-    n = Math.max(0, Math.min(n, 255));
-    return "0123456789ABCDEF".charAt((n - n % 16) / 16)
-        + "0123456789ABCDEF".charAt(n % 16);
-};
-*/
+
 
 socket.on('disconnect', function (msg) {
     console.log("user disconnected: ", msg);
@@ -98,7 +109,8 @@ socket.on('update', function (msg) {
 
 
         var socketCubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-        var socketCubeMaterial = new THREE.MeshBasicMaterial({color: msg.color});
+        //var socketCubeMaterial = new THREE.MeshBasicMaterial({color: msg.color});
+        var socketCubeMaterial = new THREE.MeshPhongMaterial( { ambient: 0x050505, color: msg.color, specular: 0x555555, shininess: 30 } );
         cubes[msg.sid] = new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
         cubes[msg.sid].position.x = msg.x;
         cubes[msg.sid].position.y = msg.y;
@@ -146,7 +158,9 @@ var map = {
     83: false, // S
     65: false, // A
     68: false, // D
-    27: false  // ESC
+    27: false, // ESC
+    81: false, // Q
+    69: false  // E
 };
 jQuery(document).keydown(function (e) {
     var prevent = true;
@@ -242,6 +256,14 @@ jQuery(document).keydown(function (e) {
             obj.socketCube.x += 0.1;
             changeScene();
         }
+        else if(map[81]){
+            cubes[thisSocket].rotateY(0.1);
+            changeScene();
+        }
+        else if(map[69]){
+            cubes[thisSocket].rotateY(-0.1);
+            changeScene();
+        }
         else if (map[27]) {
             obj.camera.x = 0;
             obj.camera.y = 6;
@@ -293,7 +315,6 @@ var changeScene = function () {
 
 };
 
-//scene.add(cube);
 scene.add(x_line); //zold
 scene.add(y_line); //piros
 scene.add(z_line); //kek
