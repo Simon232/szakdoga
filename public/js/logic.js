@@ -8,6 +8,6 @@ socket.on('chat message', function (msg) {
     $('#messages').append($('<li>').text(msg));
 });
 
-document.querySelector('.chat').style.marginLeft = $(window).width() - 300 + "px";
+//document.querySelector('.chat').style.marginLeft = $(window).width() - 300 + "px";
 
 

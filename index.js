@@ -30,12 +30,8 @@ io.on('connection', function (socket) {
     });
 
     socket.on('update', function(msg){
-        console.log(msg);
+        //console.log(msg);
         socket.broadcast.emit('update', msg);
-    });
-
-    socket.on('here-i-am', function(msg){
-        socket.broadcast.emit('here-i-am', msg);
     });
 
     socket.on('disconnect', function () {
