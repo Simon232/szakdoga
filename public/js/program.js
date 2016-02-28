@@ -27,14 +27,23 @@ var z_line = new THREE.Mesh(line_geo3, line3_material);
 var cubes = {};
 
 var thisSocket = undefined;
+var thisColor = undefined;
 
 
 socket.on('new', function (msg) {
 
-    if(thisSocket == undefined){
+    if (thisSocket == undefined) {
+
+        var R = Math.floor(Math.random() * 256);
+        var G = Math.floor(Math.random() * 256);
+        var B = Math.floor(Math.random() * 256);
+        var color = '#' + rgbToHex(R, G, B);
+
         thisSocket = msg;
+        thisColor = color;
+
         var socketCubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-        var socketCubeMaterial = new THREE.MeshBasicMaterial({color: 0x00FFFF33});
+        var socketCubeMaterial = new THREE.MeshBasicMaterial({color: color});
 
         cubes[msg] = new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
         cubes[msg].position.x = 0.0;
@@ -51,7 +60,8 @@ socket.on('new', function (msg) {
                 sid: thisSocket,
                 x: cubes[thisSocket].position.x,
                 y: cubes[thisSocket].position.y,
-                z: cubes[thisSocket].position.z
+                z: cubes[thisSocket].position.z,
+                color: thisColor
             });
 
         } catch (e) {
@@ -60,23 +70,43 @@ socket.on('new', function (msg) {
     }
 });
 
+var rgbToHex = function (R, G, B) {
+    return toHex(R) + toHex(G) + toHex(B)
+};
+var toHex = function (n) {
+    n = parseInt(n, 10);
+    if (isNaN(n)) {
+        return "00";
+    }
+    n = Math.max(0, Math.min(n, 255));
+    return "0123456789ABCDEF".charAt((n - n % 16) / 16)
+        + "0123456789ABCDEF".charAt(n % 16);
+};
+
+
 socket.on('disconnect', function (msg) {
+    console.log("user disconnected: ", msg);
     scene.remove(cubes[msg]);
 });
 
 socket.on('update', function (msg) {
 
-    console.log("aaaaa Ezt kaptam: ",msg);
+    console.log("aaaaa Ezt kaptam: ", msg);
 
-    var socketCubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-    var socketCubeMaterial = new THREE.MeshBasicMaterial({color: 0x00FFFF33});
-    cubes[msg.sid] = new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
-    cubes[msg.sid].position.x = msg.x;
-    cubes[msg.sid].position.y = msg.y;
-    cubes[msg.sid].position.z = msg.z;
+    if (cubes[msg.sid] == undefined) {
+        var color = msg.color;
 
-    scene.add(cubes[msg.sid]);
+        var socketCubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+        var socketCubeMaterial = new THREE.MeshBasicMaterial({color: color});
+        cubes[msg.sid] = new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
+        cubes[msg.sid].position.x = msg.x;
+        cubes[msg.sid].position.y = msg.y;
+        cubes[msg.sid].position.z = msg.z;
+
+        scene.add(cubes[msg.sid]);
+    }
 });
+
 
 var x = 0;
 var y = 0;

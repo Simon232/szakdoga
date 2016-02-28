@@ -12,10 +12,6 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
-io.on('hi', function(obj){
-    console.log('aaaaaaa' + obj);
-});
-
 io.on('connection', function (socket) {
 
     console.log('a user connected ', socket.id);
@@ -35,14 +31,14 @@ io.on('connection', function (socket) {
     });
 
     socket.on('disconnect', function () {
-        io.emit('disconnect', socket.id);
         console.log('user disconnect' + socket.id);
+        io.emit('disconnect', socket.id);
     });
 
 });
 
 http.listen(port, function () {
-    console.log('listening on *:3000');
+    console.log('listening on port:', port);
 });
 
 
