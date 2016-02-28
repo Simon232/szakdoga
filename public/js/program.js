@@ -33,17 +33,16 @@ var z_line = new THREE.Mesh(line_geo3, line3_material);
 var texture = new THREE.TextureLoader().load( "pics/sand.jpg" );
 texture.wrapS = THREE.RepeatWrapping;
 texture.wrapT = THREE.RepeatWrapping;
-texture.repeat.set( 4, 4 );
+texture.repeat.set( 256, 256 );
 
-var cube_geo = new THREE.BoxGeometry(1, 1, 1);
+var cube_geo = new THREE.BoxGeometry(1000, 0.0001, 1000);
 //var cube_material = new THREE.MeshPhongMaterial( { ambient: 0x050505, color: 0x0033ff, specular: 0x555555, shininess: 30 } );
-var cube_material = new THREE.MeshPhongMaterial( { map: new THREE.TextureLoader('pics/sand.jpg') } );;
+var cube_material = new THREE.MeshPhongMaterial( { map: texture } );
 var cube = new THREE.Mesh(cube_geo, cube_material);
-
 cube.position.x = 0;
-cube.position.y = 1;
+cube.position.y = 0;
 cube.position.z = 0;
-//scene.add(cube);
+scene.add(cube);
 
 
 
@@ -146,6 +145,7 @@ var obj = {
         x: 0.0,
         y: 1.0,
         z: 1.0,
+        rotY : false
     }
 };
 
@@ -259,19 +259,21 @@ jQuery(document).keydown(function (e) {
         else if(map[81]){
             //cubes[thisSocket].rotateY(0.1);
             //obj.socketCube.rotY += 0.1;
-            socket.emit('rotation', {
+            obj.socketCube.rotY = true;
+            /*socket.emit('rotation', {
                 sid: thisSocket,
-                rotY: 0.001}
-            );
+                rotY: obj.socketCube.rotY}
+            );*/
             changeScene();
         }
         else if(map[69]){
             //cubes[thisSocket].rotateY(-0.1);
             //obj.socketCube.rotY -= 0.1;
-            socket.emit('rotation', {
+            obj.socketCube.rotY = true;
+            /*socket.emit('rotation', {
                     sid: thisSocket,
-                    rotY: -0.001}
-            );
+                    rotY: obj.socketCube.rotY}
+            );*/
             changeScene();
         }
         else if (map[27]) {
@@ -283,6 +285,8 @@ jQuery(document).keydown(function (e) {
             obj.socketCube.x = 0.0;
             obj.socketCube.y = 1.0;
             obj.socketCube.z = 1.0;
+            obj.rotY = false;
+            cubes[thisSocket].rotation.y = 0.0;
             changeScene();
         } else {
             prevent = false;
@@ -298,6 +302,7 @@ jQuery(document).keydown(function (e) {
 }).keyup(function (e) {
     if (e.keyCode in map) {
         map[e.keyCode] = false;
+        obj.socketCube.rotY = false;
     }
 });
 
@@ -321,10 +326,23 @@ var changeScene = function () {
         cubes[obj.sid].position.x = obj.pos.x;
         cubes[obj.sid].position.y = obj.pos.y;
         cubes[obj.sid].position.z = obj.pos.z;
+        if(obj.rotY) {
+            cubes[obj.sid].rotation.y += 0.001;
+        }/*else{
+            cubes[obj.sid].rotation.y -= 0.000;
+        }*/
     });
 
     socket.on('rotation', function (msg){
-        cubes[msg.sid].rotateY(msg.rotY);
+        //console.log('cos ', msg.rotY);
+        /*if(msg.rotY) {
+            cubes[msg.sid].rotation.y += 0.001;
+        }
+        /*setTimeout(function(){
+            cubes[msg.sid].rotation.y = 0.000;
+        },1000);*/
+
+        //cubes[msg.sid].rotateY(-0.0000001);
     });
 
 
@@ -336,7 +354,6 @@ scene.add(z_line); //kek
 
 var render = function () {
     requestAnimationFrame(render);
-
     renderer.render(scene, camera);
 };
 
