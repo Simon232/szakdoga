@@ -40,7 +40,7 @@ socket.on('new', function (msg) {
         //var color = '#' + rgbToHex(R, G, B);
 
         thisSocket = msg;
-        thisColor = color;
+        thisColor = "rgb(" + R + "," + G + "," + B + ")";
 
         var socketCubeGeometry = new THREE.BoxGeometry(1, 1, 1);
         var socketCubeMaterial = new THREE.MeshBasicMaterial({color: "rgb(" + R + "," + G + "," + B + ")"});
@@ -89,11 +89,13 @@ socket.on('disconnect', function (msg) {
     scene.remove(cubes[msg]);
 });
 
+
 socket.on('update', function (msg) {
 
     console.log("aaaaa Ezt kaptam: ", msg);
 
     if (cubes[msg.sid] == undefined) {
+
 
         var socketCubeGeometry = new THREE.BoxGeometry(1, 1, 1);
         var socketCubeMaterial = new THREE.MeshBasicMaterial({color: msg.color});
