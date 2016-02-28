@@ -37,13 +37,13 @@ socket.on('new', function (msg) {
         var R = Math.floor(Math.random() * 256);
         var G = Math.floor(Math.random() * 256);
         var B = Math.floor(Math.random() * 256);
-        var color = '#' + rgbToHex(R, G, B);
+        //var color = '#' + rgbToHex(R, G, B);
 
         thisSocket = msg;
         thisColor = color;
 
         var socketCubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-        var socketCubeMaterial = new THREE.MeshBasicMaterial({color: color});
+        var socketCubeMaterial = new THREE.MeshBasicMaterial({color: "rgb(" + R + "," + G + "," + B + ")"});
 
         cubes[msg] = new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
         cubes[msg].position.x = 0.0;
@@ -69,7 +69,7 @@ socket.on('new', function (msg) {
         }
     }
 });
-
+/*
 var rgbToHex = function (R, G, B) {
     return toHex(R) + toHex(G) + toHex(B)
 };
@@ -82,7 +82,7 @@ var toHex = function (n) {
     return "0123456789ABCDEF".charAt((n - n % 16) / 16)
         + "0123456789ABCDEF".charAt(n % 16);
 };
-
+*/
 
 socket.on('disconnect', function (msg) {
     console.log("user disconnected: ", msg);
@@ -94,10 +94,9 @@ socket.on('update', function (msg) {
     console.log("aaaaa Ezt kaptam: ", msg);
 
     if (cubes[msg.sid] == undefined) {
-        var color = msg.color;
 
         var socketCubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-        var socketCubeMaterial = new THREE.MeshBasicMaterial({color: color});
+        var socketCubeMaterial = new THREE.MeshBasicMaterial({color: msg.color});
         cubes[msg.sid] = new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
         cubes[msg.sid].position.x = msg.x;
         cubes[msg.sid].position.y = msg.y;
