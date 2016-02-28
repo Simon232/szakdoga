@@ -30,10 +30,16 @@ io.on('connection', function (socket) {
         socket.broadcast.emit('update', msg);
     });
 
+    socket.on('rotation', function(msg){
+        io.emit('rotation', msg);
+    });
+
     socket.on('disconnect', function () {
         console.log('user disconnect' + socket.id);
         io.emit('disconnect', socket.id);
     });
+
+
 
 });
 

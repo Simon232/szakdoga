@@ -37,7 +37,7 @@ texture.repeat.set( 4, 4 );
 
 var cube_geo = new THREE.BoxGeometry(1, 1, 1);
 //var cube_material = new THREE.MeshPhongMaterial( { ambient: 0x050505, color: 0x0033ff, specular: 0x555555, shininess: 30 } );
-var cube_material = new THREE.MeshPhongMaterial( { map: THREE.ImageUtils.loadTexture('pics/crate.jpg') } );;
+var cube_material = new THREE.MeshPhongMaterial( { map: new THREE.TextureLoader('pics/sand.jpg') } );;
 var cube = new THREE.Mesh(cube_geo, cube_material);
 
 cube.position.x = 0;
@@ -145,7 +145,7 @@ var obj = {
     socketCube: {
         x: 0.0,
         y: 1.0,
-        z: 1.0
+        z: 1.0,
     }
 };
 
@@ -257,11 +257,21 @@ jQuery(document).keydown(function (e) {
             changeScene();
         }
         else if(map[81]){
-            cubes[thisSocket].rotateY(0.1);
+            //cubes[thisSocket].rotateY(0.1);
+            //obj.socketCube.rotY += 0.1;
+            socket.emit('rotation', {
+                sid: thisSocket,
+                rotY: 0.001}
+            );
             changeScene();
         }
         else if(map[69]){
-            cubes[thisSocket].rotateY(-0.1);
+            //cubes[thisSocket].rotateY(-0.1);
+            //obj.socketCube.rotY -= 0.1;
+            socket.emit('rotation', {
+                    sid: thisSocket,
+                    rotY: -0.001}
+            );
             changeScene();
         }
         else if (map[27]) {
@@ -301,7 +311,8 @@ var changeScene = function () {
 
         socket.emit('move', {
             sid: '/#' + socket.id,
-            pos: obj.socketCube
+            pos: obj.socketCube,
+            rotY: obj.socketCube.rotY
         });
 
     }
@@ -310,6 +321,10 @@ var changeScene = function () {
         cubes[obj.sid].position.x = obj.pos.x;
         cubes[obj.sid].position.y = obj.pos.y;
         cubes[obj.sid].position.z = obj.pos.z;
+    });
+
+    socket.on('rotation', function (msg){
+        cubes[msg.sid].rotateY(msg.rotY);
     });
 
 
