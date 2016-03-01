@@ -84,6 +84,7 @@ socket.on('new', function (msg) {
                 x: cubes[thisSocket].position.x,
                 y: cubes[thisSocket].position.y,
                 z: cubes[thisSocket].position.z,
+                rotationY: cubes[thisSocket].rotation.y,
                 color: thisColor
             });
 
@@ -114,6 +115,7 @@ socket.on('update', function (msg) {
         cubes[msg.sid].position.x = msg.x;
         cubes[msg.sid].position.y = msg.y;
         cubes[msg.sid].position.z = msg.z;
+        cubes[msg.sid].rotation.y = msg.rotationY;
 
         scene.add(cubes[msg.sid]);
     }
