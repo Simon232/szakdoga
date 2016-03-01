@@ -220,6 +220,94 @@ jQuery(document).keydown(function (e) {
             obj.socketCube.x += 0.1;
             changeScene();
         }
+        else if (map[87] && map[69]) { // W + E
+            obj.camera.z -= 0.1;
+            obj.socketCube.z -= 0.1;
+            
+            cubes[thisSocket].rotation.y -= 0.1;
+            socket.emit('rotation', {
+                    sid: thisSocket,
+                    rotY: -0.1}
+            );
+            changeScene();
+        }
+        else if (map[68] && map[69]) { // D + E
+            obj.camera.x += 0.1;
+            obj.socketCube.x += 0.1;
+            
+            cubes[thisSocket].rotation.y -= 0.1;
+            socket.emit('rotation', {
+                    sid: thisSocket,
+                    rotY: -0.1}
+            );
+            changeScene();
+        }
+        else if (map[83] && map[69]) { // S + E
+            obj.camera.z += 0.1;
+            obj.socketCube.z += 0.1;
+            
+            cubes[thisSocket].rotation.y -= 0.1;
+            socket.emit('rotation', {
+                    sid: thisSocket,
+                    rotY: -0.1}
+            );
+            changeScene();
+        }
+        else if (map[65] && map[69]) { // A + E
+            obj.camera.x -= 0.1;
+            obj.socketCube.x -= 0.1;
+            
+            cubes[thisSocket].rotation.y -= 0.1;
+            socket.emit('rotation', {
+                    sid: thisSocket,
+                    rotY: -0.1}
+            );
+            changeScene();
+        }  
+        else if (map[87] && map[81]) { // W + Q
+            obj.camera.z -= 0.1;
+            obj.socketCube.z -= 0.1;
+            
+            cubes[thisSocket].rotation.y += 0.1;
+            socket.emit('rotation', {
+                    sid: thisSocket,
+                    rotY: 0.1}
+            );
+            changeScene();
+        }
+        else if (map[68] && map[81]) { // D + Q
+            obj.camera.x += 0.1;
+            obj.socketCube.x += 0.1;
+            
+            cubes[thisSocket].rotation.y += 0.1;
+            socket.emit('rotation', {
+                    sid: thisSocket,
+                    rotY: 0.1}
+            );
+            changeScene();
+        }
+        else if (map[83] && map[81]) { // S + Q
+            obj.camera.z += 0.1;
+            obj.socketCube.z += 0.1;
+            
+            cubes[thisSocket].rotation.y += 0.1;
+            socket.emit('rotation', {
+                    sid: thisSocket,
+                    rotY: 0.1}
+            );
+            changeScene();
+        }
+        else if (map[65] && map[81]) { // A + Q
+            obj.camera.x -= 0.1;
+            obj.socketCube.x -= 0.1;
+            
+            cubes[thisSocket].rotation.y += 0.1;
+            socket.emit('rotation', {
+                    sid: thisSocket,
+                    rotY: 0.1}
+            );
+            changeScene();
+        }            
         else if (map[38]) {
             obj.socketCube.z -= 0.1;
             changeScene();
@@ -259,7 +347,7 @@ jQuery(document).keydown(function (e) {
         else if(map[81]){
             //cubes[thisSocket].rotateY(0.1);
             //obj.socketCube.rotY += 0.1;
-            obj.socketCube.rotY = 0.1;
+            //obj.socketCube.rotY = 0.1;
             cubes[thisSocket].rotation.y += 0.1;
             socket.emit('rotation', {
                 sid: thisSocket,
@@ -270,7 +358,7 @@ jQuery(document).keydown(function (e) {
         else if(map[69]){
             //cubes[thisSocket].rotateY(-0.1);
             //obj.socketCube.rotY -= 0.1;
-            obj.socketCube.rotY = -0.1;
+            //obj.socketCube.rotY = -0.1;
             cubes[thisSocket].rotation.y -= 0.1;
             socket.emit('rotation', {
                     sid: thisSocket,
@@ -328,15 +416,7 @@ var changeScene = function () {
         cubes[obj.sid].position.x = obj.pos.x;
         cubes[obj.sid].position.y = obj.pos.y;
         cubes[obj.sid].position.z = obj.pos.z;
-        /*if(obj.rotY) {
-            cubes[obj.sid].rotation.y += 0.001;
-        }/*else{
-            cubes[obj.sid].rotation.y -= 0.000;
-        }*/
     });
-
-
-
 
 };
 
