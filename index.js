@@ -31,8 +31,6 @@ io.on('connection', function (socket) {
     });
 
     socket.on('rotation', function(msg){
-        //console.log('rotátálás bazdmeg', msg);
-        //io.emit('rotation', msg);
         socket.broadcast.emit('rotation', msg);
     });
 

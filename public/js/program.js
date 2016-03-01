@@ -340,22 +340,9 @@ var changeScene = function () {
 
 };
 
-    socket.on('rotation', function (msg){
-        ///console.log("dafuq", msg);
-        
-        cubes[msg.sid].rotation.y += msg.rotY;
-        
-        
-        //console.log('cos ', msg.rotY);
-        /*if(msg.rotY) {
-            cubes[msg.sid].rotation.y += 0.001;
-        }
-        /*setTimeout(function(){
-            cubes[msg.sid].rotation.y = 0.000;
-        },1000);*/
-
-        //cubes[msg.sid].rotateY(-0.0000001);
-    });
+socket.on('rotation', function (msg){e
+    cubes[msg.sid].rotation.y += msg.rotY;
+});
 
 scene.add(x_line); //zold
 scene.add(y_line); //piros
