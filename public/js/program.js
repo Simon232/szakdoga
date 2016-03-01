@@ -340,7 +340,7 @@ var changeScene = function () {
 
 };
 
-socket.on('rotation', function (msg){e
+socket.on('rotation', function (msg){
     cubes[msg.sid].rotation.y += msg.rotY;
 });
 
