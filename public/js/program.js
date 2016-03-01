@@ -145,7 +145,7 @@ var obj = {
         x: 0.0,
         y: 1.0,
         z: 1.0,
-        rotY : false
+        rotY : 0.0
     }
 };
 
@@ -259,21 +259,23 @@ jQuery(document).keydown(function (e) {
         else if(map[81]){
             //cubes[thisSocket].rotateY(0.1);
             //obj.socketCube.rotY += 0.1;
-            obj.socketCube.rotY = true;
-            /*socket.emit('rotation', {
+            obj.socketCube.rotY = 0.1;
+            cubes[thisSocket].rotation.y += 0.1;
+            socket.emit('rotation', {
                 sid: thisSocket,
-                rotY: obj.socketCube.rotY}
-            );*/
+                rotY: 0.1}
+            );
             changeScene();
         }
         else if(map[69]){
             //cubes[thisSocket].rotateY(-0.1);
             //obj.socketCube.rotY -= 0.1;
-            obj.socketCube.rotY = true;
-            /*socket.emit('rotation', {
+            obj.socketCube.rotY = -0.1;
+            cubes[thisSocket].rotation.y -= 0.1;
+            socket.emit('rotation', {
                     sid: thisSocket,
-                    rotY: obj.socketCube.rotY}
-            );*/
+                    rotY: -0.1}
+            );
             changeScene();
         }
         else if (map[27]) {
@@ -285,7 +287,7 @@ jQuery(document).keydown(function (e) {
             obj.socketCube.x = 0.0;
             obj.socketCube.y = 1.0;
             obj.socketCube.z = 1.0;
-            obj.rotY = false;
+            obj.rotY = 0.0;
             cubes[thisSocket].rotation.y = 0.0;
             changeScene();
         } else {
@@ -302,7 +304,7 @@ jQuery(document).keydown(function (e) {
 }).keyup(function (e) {
     if (e.keyCode in map) {
         map[e.keyCode] = false;
-        obj.socketCube.rotY = false;
+        obj.socketCube.rotY = 0.0;
     }
 });
 
@@ -326,14 +328,24 @@ var changeScene = function () {
         cubes[obj.sid].position.x = obj.pos.x;
         cubes[obj.sid].position.y = obj.pos.y;
         cubes[obj.sid].position.z = obj.pos.z;
-        if(obj.rotY) {
+        /*if(obj.rotY) {
             cubes[obj.sid].rotation.y += 0.001;
         }/*else{
             cubes[obj.sid].rotation.y -= 0.000;
         }*/
     });
 
+
+
+
+};
+
     socket.on('rotation', function (msg){
+        ///console.log("dafuq", msg);
+        
+        cubes[msg.sid].rotation.y += msg.rotY;
+        
+        
         //console.log('cos ', msg.rotY);
         /*if(msg.rotY) {
             cubes[msg.sid].rotation.y += 0.001;
@@ -344,9 +356,6 @@ var changeScene = function () {
 
         //cubes[msg.sid].rotateY(-0.0000001);
     });
-
-
-};
 
 scene.add(x_line); //zold
 scene.add(y_line); //piros
