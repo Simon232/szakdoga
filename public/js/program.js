@@ -44,6 +44,7 @@ var pause = false;
 
 var thisSocket = undefined;
 var thisColor = undefined;
+var thisRoom = undefined;
 
 var x = 0;
 var y = 0;

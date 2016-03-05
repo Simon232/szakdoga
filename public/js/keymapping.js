@@ -10,7 +10,7 @@ var map = {
     27: false, // ESC
     81: false, // Q
     69: false, // E
-    80: false  //P
+    80: false  // P
 };
 jQuery(document).keydown(function (e) {
     var prevent = true;
