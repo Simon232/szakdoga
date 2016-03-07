@@ -102,7 +102,7 @@ var addRoom = function (private) {
             conflict = true;
         }
     }
-    var createId = roomManager.length;
+    var createId = -1;
     if (conflict) {
         while (conflict) {
             ++createId;
