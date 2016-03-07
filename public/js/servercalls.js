@@ -1,12 +1,12 @@
 socket.on('new', function (msg) {
 
-    socket.room = msg.room;
     if (thisSocket == undefined) { //sajat kocka
 
         var R = Math.floor(Math.random() * 256);
         var G = Math.floor(Math.random() * 256);
         var B = Math.floor(Math.random() * 256);
 
+        socket.room = msg.room;
         thisRoom = msg.room;
         thisSocket = msg.sid;
         thisColor = "rgb(" + R + "," + G + "," + B + ")";
