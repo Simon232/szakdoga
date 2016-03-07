@@ -88,6 +88,9 @@ io.on('connection', function (socket) {
         io.emit('chat message', msg);
     });
 
+    socket.on('reset',function(msg){
+       io.emit('reset', msg);
+    });
 });
 
 var addPlayerToRoom = function(room, player){

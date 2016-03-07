@@ -294,12 +294,18 @@ jQuery(document).keydown(function (e) {
                 obj.camera.y = 6;
                 obj.camera.z = 5;
 
-
                 obj.socketCube.x = 0.0;
                 obj.socketCube.y = 1.0;
                 obj.socketCube.z = 1.0;
                 obj.rotY = 0.0;
-                //cubes[thisSocket].rotation.y = 0.0;
+                cubes[thisSocket].rotation.y = 0.0;
+
+                socket.emit('reset', {
+                    sid: thisSocket,
+                    rotY: 0.0,
+                    room: thisRoom
+                });
+
                 changeScene();
             }
         }

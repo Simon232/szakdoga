@@ -14,8 +14,6 @@ renderer.setSize(window.innerWidth - (window.innerWidth/100), window.innerHeight
 document.body.appendChild(renderer.domElement);
 
 socket.on('new', function (msg) {
-
-    console.log("beléptem!!!");
     if (thisSocket == undefined) { //sajat kocka
 
         var R = Math.floor(Math.random() * 256);
@@ -41,13 +39,11 @@ socket.on('new', function (msg) {
         cubes[thisSocket].position.y = 1.0;
         cubes[thisSocket].position.z = 1.0;
 
-
         scene.add(cubes[thisSocket]);
-
     }
 
-    if (socket.id != undefined) { // elkï¿½ldï¿½m a kockï¿½mat az ï¿½jnak
-        console.log("aaaa Ez vagyok ï¿½n: ", thisSocket);
+    if (socket.id != undefined) { // elkuldom a kockamat a masiknak
+        console.log("aaaa Ez vagyok en: ", thisSocket);
         try {
 
             socket.emit('update', {
@@ -72,6 +68,12 @@ socket.on('move', function (obj) {
         cubes[obj.sid].position.x = obj.pos.x;
         cubes[obj.sid].position.y = obj.pos.y;
         cubes[obj.sid].position.z = obj.pos.z;
+    }
+});
+
+socket.on('reset', function(msg){ //forgas defaultra allitashoz kell
+    if(msg.room == thisRoom){
+        cubes[msg.sid].rotation.y = 0.0;
     }
 });
 
@@ -186,17 +188,12 @@ var changeScene = function () {
             rotY: obj.socketCube.rotY,
             room: thisRoom
         });
-
     }
-
 };
 
 scene.add(x_line); //zold
 scene.add(y_line); //piros
 scene.add(z_line); //kek
-
-
-
 
 var render = function () {
     requestAnimationFrame(render);
