@@ -94,7 +94,8 @@ jQuery(document).keydown(function (e) {
                 cubes[thisSocket].rotation.y -= 0.1;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: -0.1
+                        rotY: -0.1,
+                        room: thisRoom
                     }
                 );
                 changeScene();
@@ -108,7 +109,8 @@ jQuery(document).keydown(function (e) {
                 cubes[thisSocket].rotation.y -= 0.1;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: -0.1
+                        rotY: -0.1,
+                        room: thisRoom
                     }
                 );
                 changeScene();
@@ -122,7 +124,8 @@ jQuery(document).keydown(function (e) {
                 cubes[thisSocket].rotation.y -= 0.1;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: -0.1
+                        rotY: -0.1,
+                        room: thisRoom
                     }
                 );
                 changeScene();
@@ -136,7 +139,8 @@ jQuery(document).keydown(function (e) {
                 cubes[thisSocket].rotation.y -= 0.1;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: -0.1
+                        rotY: -0.1,
+                        room: thisRoom
                     }
                 );
                 changeScene();
@@ -150,7 +154,8 @@ jQuery(document).keydown(function (e) {
                 cubes[thisSocket].rotation.y += 0.1;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: 0.1
+                        rotY: 0.1,
+                        room: thisRoom
                     }
                 );
                 changeScene();
@@ -164,7 +169,8 @@ jQuery(document).keydown(function (e) {
                 cubes[thisSocket].rotation.y += 0.1;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: 0.1
+                        rotY: 0.1,
+                        room: thisRoom
                     }
                 );
                 changeScene();
@@ -178,7 +184,8 @@ jQuery(document).keydown(function (e) {
                 cubes[thisSocket].rotation.y += 0.1;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: 0.1
+                        rotY: 0.1,
+                        room: thisRoom
                     }
                 );
                 changeScene();
@@ -192,7 +199,8 @@ jQuery(document).keydown(function (e) {
                 cubes[thisSocket].rotation.y += 0.1;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: 0.1
+                        rotY: 0.1,
+                        room: thisRoom
                     }
                 );
                 changeScene();
@@ -258,7 +266,8 @@ jQuery(document).keydown(function (e) {
                 cubes[thisSocket].rotation.y += 0.1;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: 0.1
+                        rotY: 0.1,
+                        room: thisRoom
                     }
                 );
                 changeScene();
@@ -272,7 +281,8 @@ jQuery(document).keydown(function (e) {
                 cubes[thisSocket].rotation.y -= 0.1;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: -0.1
+                        rotY: -0.1,
+                        room: thisRoom
                     }
                 );
                 changeScene();

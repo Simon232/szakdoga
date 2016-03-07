@@ -1,12 +1,12 @@
 socket.on('new', function (msg) {
 
-    socket.room = msg.room;
     if (thisSocket == undefined) { //sajat kocka
 
         var R = Math.floor(Math.random() * 256);
         var G = Math.floor(Math.random() * 256);
         var B = Math.floor(Math.random() * 256);
 
+        socket.room = msg.room;
         thisRoom = msg.room;
         thisSocket = msg.sid;
         thisColor = "rgb(" + R + "," + G + "," + B + ")";
@@ -30,8 +30,8 @@ socket.on('new', function (msg) {
 
     }
 
-    if (socket.id != undefined) { // elküldöm a kockámat az újnak
-        console.log("aaaa Ez vagyok én: ", thisSocket);
+    if (socket.id != undefined) { // elkï¿½ldï¿½m a kockï¿½mat az ï¿½jnak
+        console.log("aaaa Ez vagyok ï¿½n: ", thisSocket);
         try {
 
             socket.emit('update', {
@@ -52,13 +52,17 @@ socket.on('new', function (msg) {
 
 
 socket.on('move', function (obj) {
-    cubes[obj.sid].position.x = obj.pos.x;
-    cubes[obj.sid].position.y = obj.pos.y;
-    cubes[obj.sid].position.z = obj.pos.z;
+    if(obj.room == thisRoom){
+        cubes[obj.sid].position.x = obj.pos.x;
+        cubes[obj.sid].position.y = obj.pos.y;
+        cubes[obj.sid].position.z = obj.pos.z;
+    }
 });
 
 socket.on('rotation', function (msg) {
-    cubes[msg.sid].rotation.y += msg.rotY;
+    if(msg.room == thisRoom){
+        cubes[msg.sid].rotation.y += msg.rotY;
+    }
 });
 
 socket.on('disconnect', function (msg) {

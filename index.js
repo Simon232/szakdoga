@@ -13,11 +13,12 @@ app.get('/', function (req, res) {
 
 var joinedUsers = 0;
 var roomManager = [];
+var chosenRoom = "";
 
 io.on('connection', function (socket) {
 /*
-* socket.on - amit a kliens küld
-* io.emit - amit a kliensnek küldünk
+* socket.on - amit a kliens kï¿½ld
+* io.emit - amit a kliensnek kï¿½ldï¿½nk
 * */
 
     // *** connection section ***
@@ -30,7 +31,17 @@ io.on('connection', function (socket) {
     }
     addPlayerToRoom(('room#'+ (joinedUsers - roomManager.length )), socket.id);
 
-    io.emit('new', {sid: socket.id, room: 'room#' + (joinedUsers - roomManager.length ) });
+    
+    for(var i = 0; i < roomManager.length; i++){
+        if(roomManager[i].player1 == socket.id || roomManager[i].player2 == socket.id){
+            chosenRoom = roomManager[i].name;
+        }
+    }
+    if(chosenRoom == ""){
+        chosenRoom = 'room#'+ (joinedUsers - roomManager.length );        
+    }
+    console.log("miagec "+ chosenRoom);
+    io.emit('new', {sid: socket.id, room: chosenRoom });
 
 
     socket.on('disconnect', function () {
@@ -50,7 +61,7 @@ io.on('connection', function (socket) {
             }
         }
         --joinedUsers;
-        console.log("debug után: ", roomManager.length);
+        console.log("debug utï¿½n: ", roomManager.length);
         io.emit('disconnect', socket.id);
     });
 
@@ -76,11 +87,25 @@ io.on('connection', function (socket) {
 
 var addPlayerToRoom = function(room, player){
     console.log("wat " + room + " " +player);
+    
+    
     var id = 0;
     for(var i = 0; i < roomManager.length; i++){
         if(roomManager[i].name == room){
             id = i;
         }
+    }
+    
+    if(roomManager[id].player1 != '' && roomManager[id].player2 != '')
+    {
+        console.log("nemÃ¼res");
+        for(var i = 0; i < roomManager.length; i++){
+            if(roomManager[i].player1 == '' || roomManager[i].player2 == ''){
+                id = i;   
+                break;
+            }
+        }
+        console.log("kiwi vagyok", id);
     }
     if(roomManager[id].player1 == ''){
         roomManager[id].player1 = player;
@@ -88,6 +113,7 @@ var addPlayerToRoom = function(room, player){
     else if(roomManager[id].player2 == ''){
         roomManager[id].player2 = player;
     }
+    console.log("A csÃ¡vÃ³t ide tettem: " + id + " pl1: " + roomManager[id].player1 + " pl2: " + roomManager[id].player2);
     console.log("ROOM: player 1: "+roomManager[id].player1 + " player2: " + roomManager[id].player2);
 };
 
