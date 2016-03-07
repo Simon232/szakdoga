@@ -34,11 +34,16 @@ io.on('connection', function (socket) {
     
     for(var i = 0; i < roomManager.length; i++){
         if(roomManager[i].player1 == socket.id || roomManager[i].player2 == socket.id){
+            console.log("itt v�tam", roomManager[i].name);
             chosenRoom = roomManager[i].name;
         }
     }
     if(chosenRoom == ""){
-        chosenRoom = 'room#'+ (joinedUsers - roomManager.length );        
+        if(joinedUsers - roomManager-length > -1) {
+            chosenRoom = 'room#' + (joinedUsers - roomManager.length );
+        }else{
+            chosenRoom = 'room#0';
+        }
     }
     console.log("miagec "+ chosenRoom);
     io.emit('new', {sid: socket.id, room: chosenRoom });
@@ -92,13 +97,14 @@ var addPlayerToRoom = function(room, player){
     var id = 0;
     for(var i = 0; i < roomManager.length; i++){
         if(roomManager[i].name == room){
+            console.log("AAAAA");
             id = i;
         }
     }
     
     if(roomManager[id].player1 != '' && roomManager[id].player2 != '')
     {
-        console.log("nemüres");
+        console.log("nemures");
         for(var i = 0; i < roomManager.length; i++){
             if(roomManager[i].player1 == '' || roomManager[i].player2 == ''){
                 id = i;   
@@ -114,34 +120,42 @@ var addPlayerToRoom = function(room, player){
         roomManager[id].player2 = player;
     }
     console.log("A csávót ide tettem: " + id + " pl1: " + roomManager[id].player1 + " pl2: " + roomManager[id].player2);
-    console.log("ROOM: player 1: "+roomManager[id].player1 + " player2: " + roomManager[id].player2);
+    console.log("ROOM CHECK: name: " + roomManager[id].name + " player 1: "+roomManager[id].player1 + " player2: " + roomManager[id].player2);
 };
 
 var addRoom = function (private) {
-    var conflict = false;
+    var createId = 0;
+    for(var i = 0; i < roomManager.length; i++){
+        if(roomManager[i].name.charAt(5) == createId){
+            ++createId;
+            i = 0;
+        }
+    }
+    /*var conflict = false;
     var ids = [];
     for (var i = 0; i < roomManager.length; ++i) {
-        ids.push(roomManager[i].id);
+        console.log("almafa",roomManager[i].name.charAt(5));
+        ids.push(roomManager[i].name.charAt(5));
     }
     for (var i = 0; i < ids.length; ++i) {
         if (roomManager.length == ids[i]) {
             conflict = true;
         }
     }
-    var createId = -1;
+    var createId = 0;
     if (conflict) {
         while (conflict) {
-            ++createId;
+
             conflict = false;
             for (var i = 0; i < ids.length; ++i) {
                 if (createId == ids[i]) {
                     conflict = true;
                 }
             }
+            ++createId;
         }
-
     }
-
+*/
     return {
         id: createId,
         name: 'room#' + createId,
