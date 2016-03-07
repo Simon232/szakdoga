@@ -299,7 +299,7 @@ jQuery(document).keydown(function (e) {
                 obj.socketCube.y = 1.0;
                 obj.socketCube.z = 1.0;
                 obj.rotY = 0.0;
-                cubes[thisSocket].rotation.y = 0.0;
+                //cubes[thisSocket].rotation.y = 0.0;
                 changeScene();
             }
         }
