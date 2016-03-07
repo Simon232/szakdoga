@@ -3,6 +3,17 @@
  */
 // W
 
+//programs
+
+//var light = new THREE.DirectionalLight(0xffffff);
+//light.position.set(0.5, 1, 1).normalize();
+//scene.add(light);
+
+
+
+/*renderer.setSize(window.innerWidth / 2 + (window.innerWidth / 4),
+ window.innerHeight / 2 + (window.innerHeight / 4));*/
+
 /*
  var buttonPressed = function () {
  //console.log("cubes length: "+ cubes[socket.id].position.x + " my id: " + socket.id);
