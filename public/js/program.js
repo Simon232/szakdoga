@@ -3,15 +3,23 @@ var socket = io();
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-var light = new THREE.DirectionalLight(0xffffff);
-light.position.set(0.5, 1, 1).normalize();
-scene.add(light);
+
+//var light = new THREE.DirectionalLight(0xffffff);
+//light.position.set(0.5, 1, 1).normalize();
+//scene.add(light);
+var light = new THREE.DirectionalLight( 0xffffff, 1);
+light.position.x = 2;
+light.position.y = 10;
+light.position.z = 5;
+scene.add( light );
 
 var renderer = new THREE.WebGLRenderer();
 /*renderer.setSize(window.innerWidth / 2 + (window.innerWidth / 4),
     window.innerHeight / 2 + (window.innerHeight / 4));*/
 renderer.setSize(window.innerWidth - (window.innerWidth/100), window.innerHeight - (window.innerHeight/50));
 document.body.appendChild(renderer.domElement);
+
+
 
 socket.on('new', function (msg) {
     if (thisSocket == undefined) { //sajat kocka
@@ -130,7 +138,7 @@ var y_line = new THREE.Mesh(line_geo2, line2_material);
 var z_line = new THREE.Mesh(line_geo3, line3_material);
 
 // load a texture, set wrap mode to repeat
-var texture = new THREE.TextureLoader().load("pics/sand.jpg");
+var texture = new THREE.TextureLoader().load("pics/sand3.jpg");
 texture.wrapS = THREE.RepeatWrapping;
 texture.wrapT = THREE.RepeatWrapping;
 texture.repeat.set(256, 256);
@@ -195,8 +203,11 @@ scene.add(x_line); //zold
 scene.add(y_line); //piros
 scene.add(z_line); //kek
 
+
+
 var render = function () {
     requestAnimationFrame(render);
+
     renderer.render(scene, camera);
 };
 
