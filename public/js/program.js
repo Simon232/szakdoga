@@ -80,7 +80,8 @@ var changeScene = function () {
         socket.emit('move', {
             sid: '/#' + socket.id,
             pos: obj.socketCube,
-            rotY: obj.socketCube.rotY
+            rotY: obj.socketCube.rotY,
+            room: thisRoom
         });
 
     }
