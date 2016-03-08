@@ -10,7 +10,9 @@ var map = {
     27: false, // ESC
     81: false, // Q
     69: false, // E
-    80: false  // P
+    80: false, // P
+    82: false, // R
+    70: false  // F
 };
 jQuery(document).keydown(function (e) {
     var prevent = true;
@@ -22,6 +24,8 @@ jQuery(document).keydown(function (e) {
             if (!pause) {
                 obj.socketCube.x -= 0.1;
                 obj.socketCube.z -= 0.1;
+                obj.camera.lookX -= 0.1;
+                obj.camera.lookZ -= 0.1;
                 changeScene();
             }
         }
@@ -29,6 +33,9 @@ jQuery(document).keydown(function (e) {
             if (!pause) {
                 obj.socketCube.z -= 0.1;
                 obj.socketCube.x += 0.1;
+
+                obj.camera.lookX += 0.1;
+                obj.camera.lookZ -= 0.1;
                 changeScene();
             }
         }
@@ -36,6 +43,8 @@ jQuery(document).keydown(function (e) {
             if (!pause) {
                 obj.socketCube.x -= 0.1;
                 obj.socketCube.z += 0.1;
+                obj.camera.lookX -= 0.1;
+                obj.camera.lookZ += 0.1;
                 changeScene();
             }
         }
@@ -43,6 +52,8 @@ jQuery(document).keydown(function (e) {
             if (!pause) {
                 obj.socketCube.x += 0.1;
                 obj.socketCube.z += 0.1;
+                obj.camera.lookX += 0.1;
+                obj.camera.lookZ += 0.1;
                 changeScene();
             }
         }
@@ -53,6 +64,9 @@ jQuery(document).keydown(function (e) {
 
                 obj.camera.x -= 0.1;
                 obj.socketCube.x -= 0.1;
+
+                obj.camera.lookX -= 0.1;
+                obj.camera.lookZ -= 0.1;
                 changeScene();
             }
         }
@@ -63,6 +77,9 @@ jQuery(document).keydown(function (e) {
 
                 obj.camera.x += 0.1;
                 obj.socketCube.x += 0.1;
+
+                obj.camera.lookX += 0.1;
+                obj.camera.lookZ -= 0.1;
                 changeScene();
             }
         }
@@ -73,6 +90,9 @@ jQuery(document).keydown(function (e) {
 
                 obj.camera.x -= 0.1;
                 obj.socketCube.x -= 0.1;
+
+                obj.camera.lookX -= 0.1;
+                obj.camera.lookZ += 0.1;
                 changeScene();
             }
         }
@@ -83,6 +103,9 @@ jQuery(document).keydown(function (e) {
 
                 obj.camera.x += 0.1;
                 obj.socketCube.x += 0.1;
+
+                obj.camera.lookX += 0.1;
+                obj.camera.lookZ += 0.1;
                 changeScene();
             }
         }
@@ -90,6 +113,8 @@ jQuery(document).keydown(function (e) {
             if (!pause) {
                 obj.camera.z -= 0.1;
                 obj.socketCube.z -= 0.1;
+
+                obj.camera.lookZ -= 0.1;
 
                 cubes[thisSocket].rotation.y -= 0.1;
                 socket.emit('rotation', {
@@ -106,6 +131,9 @@ jQuery(document).keydown(function (e) {
                 obj.camera.x += 0.1;
                 obj.socketCube.x += 0.1;
 
+
+                obj.camera.lookX += 0.1;
+
                 cubes[thisSocket].rotation.y -= 0.1;
                 socket.emit('rotation', {
                         sid: thisSocket,
@@ -120,6 +148,8 @@ jQuery(document).keydown(function (e) {
             if (!pause) {
                 obj.camera.z += 0.1;
                 obj.socketCube.z += 0.1;
+
+                obj.camera.lookZ += 0.1;
 
                 cubes[thisSocket].rotation.y -= 0.1;
                 socket.emit('rotation', {
@@ -136,6 +166,8 @@ jQuery(document).keydown(function (e) {
                 obj.camera.x -= 0.1;
                 obj.socketCube.x -= 0.1;
 
+                obj.camera.lookX -= 0.1;
+
                 cubes[thisSocket].rotation.y -= 0.1;
                 socket.emit('rotation', {
                         sid: thisSocket,
@@ -150,6 +182,8 @@ jQuery(document).keydown(function (e) {
             if (!pause) {
                 obj.camera.z -= 0.1;
                 obj.socketCube.z -= 0.1;
+
+                obj.camera.lookZ -= 0.1;
 
                 cubes[thisSocket].rotation.y += 0.1;
                 socket.emit('rotation', {
@@ -166,6 +200,8 @@ jQuery(document).keydown(function (e) {
                 obj.camera.x += 0.1;
                 obj.socketCube.x += 0.1;
 
+                obj.camera.lookX += 0.1;
+
                 cubes[thisSocket].rotation.y += 0.1;
                 socket.emit('rotation', {
                         sid: thisSocket,
@@ -180,6 +216,8 @@ jQuery(document).keydown(function (e) {
             if (!pause) {
                 obj.camera.z += 0.1;
                 obj.socketCube.z += 0.1;
+
+                obj.camera.lookZ += 0.1;
 
                 cubes[thisSocket].rotation.y += 0.1;
                 socket.emit('rotation', {
@@ -196,6 +234,8 @@ jQuery(document).keydown(function (e) {
                 obj.camera.x -= 0.1;
                 obj.socketCube.x -= 0.1;
 
+                obj.camera.lookX -= 0.1;
+
                 cubes[thisSocket].rotation.y += 0.1;
                 socket.emit('rotation', {
                         sid: thisSocket,
@@ -206,27 +246,45 @@ jQuery(document).keydown(function (e) {
                 changeScene();
             }
         }
+        else if(map[82]){
+            obj.camera.lookY += 0.1;
+            changeScene();
+        }
+        else if(map[70]){
+            obj.camera.lookY -= 0.1;
+            changeScene();
+        }
         else if (map[38]) {
             if (!pause) {
                 obj.socketCube.z -= 0.1;
+                obj.camera.lookZ -= 0.1;
                 changeScene();
             }
         }
         else if (map[37]) {
             if (!pause) {
                 obj.socketCube.x -= 0.1;
+
+                obj.camera.lookX -= 0.1;
+
                 changeScene();
             }
         }
         else if (map[39]) {
             if (!pause) {
                 obj.socketCube.x += 0.1;
+
+                obj.camera.lookX += 0.1;
+
                 changeScene();
             }
         }
         else if (map[40]) {
             if (!pause) {
                 obj.socketCube.z += 0.1;
+
+
+                obj.camera.lookZ += 0.1;
                 changeScene();
             }
         }
@@ -234,6 +292,9 @@ jQuery(document).keydown(function (e) {
             if (!pause) {
                 obj.camera.z -= 0.1;
                 obj.socketCube.z -= 0.1;
+
+
+                obj.camera.lookZ -= 0.1;
                 changeScene();
             }
         }
@@ -241,6 +302,8 @@ jQuery(document).keydown(function (e) {
             if (!pause) {
                 obj.camera.z += 0.1;
                 obj.socketCube.z += 0.1;
+
+                obj.camera.lookZ += 0.1;
                 changeScene();
             }
         }
@@ -248,6 +311,9 @@ jQuery(document).keydown(function (e) {
             if (!pause) {
                 obj.camera.x -= 0.1;
                 obj.socketCube.x -= 0.1;
+
+                obj.camera.lookX -= 0.1;
+
                 changeScene();
             }
         }
@@ -255,6 +321,9 @@ jQuery(document).keydown(function (e) {
             if (!pause) {
                 obj.camera.x += 0.1;
                 obj.socketCube.x += 0.1;
+
+                obj.camera.lookX += 0.1;
+
                 changeScene();
             }
         }
@@ -291,8 +360,11 @@ jQuery(document).keydown(function (e) {
         else if (map[27]) {
             if (!pause) {
                 obj.camera.x = 0;
-                obj.camera.y = 6;
-                obj.camera.z = 5;
+                obj.camera.y = 4;
+                obj.camera.z = 6;
+                obj.camera.lookX = 0;
+                obj.camera.lookY = 0;
+                obj.camera.lookZ = 0;
 
                 obj.socketCube.x = 0.0;
                 obj.socketCube.y = 1.0;

@@ -5,6 +5,7 @@
 
 //programs
 
+//var keyboard = new THREEx.KeyboardState();
 //var light = new THREE.DirectionalLight(0xffffff);
 //light.position.set(0.5, 1, 1).normalize();
 //scene.add(light);
