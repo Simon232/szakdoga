@@ -136,7 +136,7 @@ socket.on('new', function (msg) {
 
         cubes[thisSocket] = new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
         cubes[thisSocket].position.x = 0.0;
-        cubes[thisSocket].position.y = 1.0;
+        cubes[thisSocket].position.y = 0.5;
         cubes[thisSocket].position.z = 1.0;
 
         scene.add(cubes[thisSocket]);
@@ -240,7 +240,7 @@ var obj = {
     },
     socketCube: {
         x: 0.0,
-        y: 1.0,
+        y: 0.5,
         z: 1.0,
         rotY: 0.0
     }
