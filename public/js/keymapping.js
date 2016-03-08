@@ -28,6 +28,7 @@ jQuery(document).keydown(function (e) {
                 obj.camera.lookZ -= 0.1;
                 changeScene();
             }
+            return;
         }
         else if (map[38] && map[39]) { // up + right
             if (!pause) {
@@ -38,6 +39,7 @@ jQuery(document).keydown(function (e) {
                 obj.camera.lookZ -= 0.1;
                 changeScene();
             }
+            return;
         }
         else if (map[37] && map[40]) { // left + down
             if (!pause) {
@@ -47,6 +49,7 @@ jQuery(document).keydown(function (e) {
                 obj.camera.lookZ += 0.1;
                 changeScene();
             }
+            return;
         }
         else if (map[39] && map[40]) { // left + right
             if (!pause) {
@@ -56,6 +59,7 @@ jQuery(document).keydown(function (e) {
                 obj.camera.lookZ += 0.1;
                 changeScene();
             }
+            return;
         }
         else if (map[87] && map[65]) { // W + A
             if (!pause) {
@@ -69,6 +73,7 @@ jQuery(document).keydown(function (e) {
                 obj.camera.lookZ -= 0.1;
                 changeScene();
             }
+            return;
         }
         else if (map[87] && map[68]) { // W + D
             if (!pause) {
@@ -82,6 +87,7 @@ jQuery(document).keydown(function (e) {
                 obj.camera.lookZ -= 0.1;
                 changeScene();
             }
+            return;
         }
         else if (map[83] && map[65]) { // S + A
             if (!pause) {
@@ -95,6 +101,7 @@ jQuery(document).keydown(function (e) {
                 obj.camera.lookZ += 0.1;
                 changeScene();
             }
+            return;
         }
         else if (map[83] && map[68]) { // S + D
             if (!pause) {
@@ -108,6 +115,7 @@ jQuery(document).keydown(function (e) {
                 obj.camera.lookZ += 0.1;
                 changeScene();
             }
+            return;
         }
         else if (map[87] && map[69]) { // W + E
             if (!pause) {
@@ -125,6 +133,7 @@ jQuery(document).keydown(function (e) {
                 );
                 changeScene();
             }
+            return;
         }
         else if (map[68] && map[69]) { // D + E
             if (!pause) {
@@ -143,6 +152,7 @@ jQuery(document).keydown(function (e) {
                 );
                 changeScene();
             }
+            return;
         }
         else if (map[83] && map[69]) { // S + E
             if (!pause) {
@@ -160,6 +170,7 @@ jQuery(document).keydown(function (e) {
                 );
                 changeScene();
             }
+            return;
         }
         else if (map[65] && map[69]) { // A + E
             if (!pause) {
@@ -177,6 +188,7 @@ jQuery(document).keydown(function (e) {
                 );
                 changeScene();
             }
+            return;
         }
         else if (map[87] && map[81]) { // W + Q
             if (!pause) {
@@ -194,6 +206,7 @@ jQuery(document).keydown(function (e) {
                 );
                 changeScene();
             }
+            return;
         }
         else if (map[68] && map[81]) { // D + Q
             if (!pause) {
@@ -211,6 +224,7 @@ jQuery(document).keydown(function (e) {
                 );
                 changeScene();
             }
+            return;
         }
         else if (map[83] && map[81]) { // S + Q
             if (!pause) {
@@ -228,6 +242,7 @@ jQuery(document).keydown(function (e) {
                 );
                 changeScene();
             }
+            return;
         }
         else if (map[65] && map[81]) { // A + Q
             if (!pause) {
@@ -245,14 +260,17 @@ jQuery(document).keydown(function (e) {
                 );
                 changeScene();
             }
+            return;
         }
         else if(map[82]){
             obj.camera.lookY += 0.1;
             changeScene();
+            return;
         }
         else if(map[70]){
             obj.camera.lookY -= 0.1;
             changeScene();
+            return;
         }
         else if (map[38]) {
             if (!pause) {
@@ -260,6 +278,7 @@ jQuery(document).keydown(function (e) {
                 obj.camera.lookZ -= 0.1;
                 changeScene();
             }
+            return;
         }
         else if (map[37]) {
             if (!pause) {
@@ -269,6 +288,7 @@ jQuery(document).keydown(function (e) {
 
                 changeScene();
             }
+            return;
         }
         else if (map[39]) {
             if (!pause) {
@@ -278,6 +298,7 @@ jQuery(document).keydown(function (e) {
 
                 changeScene();
             }
+            return;
         }
         else if (map[40]) {
             if (!pause) {
@@ -287,6 +308,7 @@ jQuery(document).keydown(function (e) {
                 obj.camera.lookZ += 0.1;
                 changeScene();
             }
+            return;
         }
         else if (map[87]) {
             if (!pause) {
@@ -297,6 +319,7 @@ jQuery(document).keydown(function (e) {
                 obj.camera.lookZ -= 0.1;
                 changeScene();
             }
+            return;
         }
         else if (map[83]) {
             if (!pause) {
@@ -306,6 +329,7 @@ jQuery(document).keydown(function (e) {
                 obj.camera.lookZ += 0.1;
                 changeScene();
             }
+            return;
         }
         else if (map[65]) {
             if (!pause) {
@@ -316,6 +340,7 @@ jQuery(document).keydown(function (e) {
 
                 changeScene();
             }
+            return;
         }
         else if (map[68]) {
             if (!pause) {
@@ -326,6 +351,7 @@ jQuery(document).keydown(function (e) {
 
                 changeScene();
             }
+            return;
         }
         else if (map[81]) {
             if (!pause) {
@@ -341,6 +367,7 @@ jQuery(document).keydown(function (e) {
                 );
                 changeScene();
             }
+            return;
         }
         else if (map[69]) {
             if (!pause) {
@@ -356,6 +383,7 @@ jQuery(document).keydown(function (e) {
                 );
                 changeScene();
             }
+            return;
         }
         else if (map[27]) {
             if (!pause) {
@@ -380,9 +408,11 @@ jQuery(document).keydown(function (e) {
 
                 changeScene();
             }
+            return;
         }
         else if (map[80]) {
             pause = !pause;
+            return;
         } else {
             prevent = false;
         }
