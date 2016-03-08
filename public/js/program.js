@@ -14,7 +14,7 @@ var init = function () {
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
 
     skylight = new THREE.DirectionalLight(0x99FFFF, 1)
-    light = new THREE.DirectionalLight(0xFFCC99	, 1);
+    light = new THREE.DirectionalLight(0xFFCC99, 1);
     light.position.x = -5;
     light.position.y = 5;
     light.position.z = 5;
@@ -65,7 +65,7 @@ var init = function () {
     var texture = new THREE.TextureLoader().load("pics/sand3.jpg");
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(gameWidth / 4, gameWidth /4);
+    texture.repeat.set(gameWidth / 4, gameWidth / 4);
 
     var ground_geo = new THREE.BoxGeometry(gameWidth, 0.0001, gameWidth);
     //var cube_material = new THREE.MeshPhongMaterial( { ambient: 0x050505, color: 0x0033ff, specular: 0x555555, shininess: 30 } );
@@ -163,12 +163,37 @@ socket.on('new', function (msg) {
     }
 });
 
+function decimalAdjust(type, value, exp) {
+    // If the exp is undefined or zero...
+    if (typeof exp === 'undefined' || +exp === 0) {
+        return Math[type](value);
+    }
+    value = +value;
+    exp = +exp;
+    // If the value is not a number or the exp is not an integer...
+    if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+        return NaN;
+    }
+    // Shift
+    value = value.toString().split('e');
+    value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+    // Shift back
+    value = value.toString().split('e');
+    return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+}
+
+Math.round10 = function (value, exp) {
+    return decimalAdjust('round', value, exp);
+};
+
 
 socket.on('move', function (obj) {
     if (obj.room == thisRoom) {
         cubes[obj.sid].position.x = obj.pos.x;
-        cubes[obj.sid].position.y = obj.pos.y;
+        //cubes[obj.sid].position.y = obj.pos.y;
         cubes[obj.sid].position.z = obj.pos.z;
+
+        //console.log("aaaaaa " + (cubes[obj.sid].position.z + '').length + " : " + cubes[obj.sid].position.z);
     }
 });
 
@@ -198,12 +223,12 @@ socket.on('update', function (msg) {
             var socketCubeGeometry = new THREE.BoxGeometry(1, 1, 1);
             //var socketCubeMaterial = new THREE.MeshBasicMaterial({color: msg.color});
             /*var socketCubeMaterial = new THREE.MeshPhongMaterial({
-                ambient: 0x050505,
-                color: msg.color,
-                specular: 0x555555,
-                shininess: 30
-            });*/
-            var otherTexture =  new THREE.TextureLoader().load(msg.texture);
+             ambient: 0x050505,
+             color: msg.color,
+             specular: 0x555555,
+             shininess: 30
+             });*/
+            var otherTexture = new THREE.TextureLoader().load(msg.texture);
             var socketCubeMaterial = new THREE.MeshPhongMaterial({map: otherTexture});
             cubes[msg.sid] = new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
             cubes[msg.sid].position.x = msg.x;
@@ -222,7 +247,6 @@ socket.on('chat message', function (msg) {
 
 var cubes = {};
 var pause = false;
-
 
 
 var x = 0;

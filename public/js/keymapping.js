@@ -1,3 +1,5 @@
+var movingSpeed = 0.1;
+
 var map = {
     37: false, // left
     38: false, // up
@@ -22,112 +24,112 @@ jQuery(document).keydown(function (e) {
         map[e.keyCode] = true;
         if (map[37] && map[38]) { // left + up
             if (!pause) {
-                obj.socketCube.x -= 0.1;
-                obj.socketCube.z -= 0.1;
-                obj.camera.lookX -= 0.1;
-                obj.camera.lookZ -= 0.1;
+                obj.socketCube.x -= movingSpeed;
+                obj.socketCube.z -= movingSpeed;
+                obj.camera.lookX -= movingSpeed;
+                obj.camera.lookZ -= movingSpeed;
                 changeScene();
             }
             return;
         }
         else if (map[38] && map[39]) { // up + right
             if (!pause) {
-                obj.socketCube.z -= 0.1;
-                obj.socketCube.x += 0.1;
+                obj.socketCube.z -= movingSpeed;
+                obj.socketCube.x += movingSpeed;
 
-                obj.camera.lookX += 0.1;
-                obj.camera.lookZ -= 0.1;
+                obj.camera.lookX += movingSpeed;
+                obj.camera.lookZ -= movingSpeed;
                 changeScene();
             }
             return;
         }
         else if (map[37] && map[40]) { // left + down
             if (!pause) {
-                obj.socketCube.x -= 0.1;
-                obj.socketCube.z += 0.1;
-                obj.camera.lookX -= 0.1;
-                obj.camera.lookZ += 0.1;
+                obj.socketCube.x -= movingSpeed;
+                obj.socketCube.z += movingSpeed;
+                obj.camera.lookX -= movingSpeed;
+                obj.camera.lookZ += movingSpeed;
                 changeScene();
             }
             return;
         }
         else if (map[39] && map[40]) { // left + right
             if (!pause) {
-                obj.socketCube.x += 0.1;
-                obj.socketCube.z += 0.1;
-                obj.camera.lookX += 0.1;
-                obj.camera.lookZ += 0.1;
+                obj.socketCube.x += movingSpeed;
+                obj.socketCube.z += movingSpeed;
+                obj.camera.lookX += movingSpeed;
+                obj.camera.lookZ += movingSpeed;
                 changeScene();
             }
             return;
         }
         else if (map[87] && map[65]) { // W + A
             if (!pause) {
-                obj.camera.z -= 0.1;
-                obj.socketCube.z -= 0.1;
+                obj.camera.z -= movingSpeed;
+                obj.socketCube.z -= movingSpeed;
 
-                obj.camera.x -= 0.1;
-                obj.socketCube.x -= 0.1;
+                obj.camera.x -= movingSpeed;
+                obj.socketCube.x -= movingSpeed;
 
-                obj.camera.lookX -= 0.1;
-                obj.camera.lookZ -= 0.1;
+                obj.camera.lookX -= movingSpeed;
+                obj.camera.lookZ -= movingSpeed;
                 changeScene();
             }
             return;
         }
         else if (map[87] && map[68]) { // W + D
             if (!pause) {
-                obj.camera.z -= 0.1;
-                obj.socketCube.z -= 0.1;
+                obj.camera.z -= movingSpeed;
+                obj.socketCube.z -= movingSpeed;
 
-                obj.camera.x += 0.1;
-                obj.socketCube.x += 0.1;
+                obj.camera.x += movingSpeed;
+                obj.socketCube.x += movingSpeed;
 
-                obj.camera.lookX += 0.1;
-                obj.camera.lookZ -= 0.1;
+                obj.camera.lookX += movingSpeed;
+                obj.camera.lookZ -= movingSpeed;
                 changeScene();
             }
             return;
         }
         else if (map[83] && map[65]) { // S + A
             if (!pause) {
-                obj.camera.z += 0.1;
-                obj.socketCube.z += 0.1;
+                obj.camera.z += movingSpeed;
+                obj.socketCube.z += movingSpeed;
 
-                obj.camera.x -= 0.1;
-                obj.socketCube.x -= 0.1;
+                obj.camera.x -= movingSpeed;
+                obj.socketCube.x -= movingSpeed;
 
-                obj.camera.lookX -= 0.1;
-                obj.camera.lookZ += 0.1;
+                obj.camera.lookX -= movingSpeed;
+                obj.camera.lookZ += movingSpeed;
                 changeScene();
             }
             return;
         }
         else if (map[83] && map[68]) { // S + D
             if (!pause) {
-                obj.camera.z += 0.1;
-                obj.socketCube.z += 0.1;
+                obj.camera.z += movingSpeed;
+                obj.socketCube.z += movingSpeed;
 
-                obj.camera.x += 0.1;
-                obj.socketCube.x += 0.1;
+                obj.camera.x += movingSpeed;
+                obj.socketCube.x += movingSpeed;
 
-                obj.camera.lookX += 0.1;
-                obj.camera.lookZ += 0.1;
+                obj.camera.lookX += movingSpeed;
+                obj.camera.lookZ += movingSpeed;
                 changeScene();
             }
             return;
         }
         else if (map[87] && map[69]) { // W + E
             if (!pause) {
-                obj.camera.z -= 0.1;
-                obj.socketCube.z -= 0.1;
+                obj.camera.z -= movingSpeed;
+                obj.socketCube.z -= movingSpeed;
 
-                obj.camera.lookZ -= 0.1;
+                obj.camera.lookZ -= movingSpeed;
 
-                cubes[thisSocket].rotation.y -= 0.1;
+                cubes[thisSocket].rotation.y -= movingSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: -0.1,
+                        rotY: -movingSpeed,
                         room: thisRoom
                     }
                 );
@@ -137,16 +139,16 @@ jQuery(document).keydown(function (e) {
         }
         else if (map[68] && map[69]) { // D + E
             if (!pause) {
-                obj.camera.x += 0.1;
-                obj.socketCube.x += 0.1;
+                obj.camera.x += movingSpeed;
+                obj.socketCube.x += movingSpeed;
 
 
-                obj.camera.lookX += 0.1;
+                obj.camera.lookX += movingSpeed;
 
-                cubes[thisSocket].rotation.y -= 0.1;
+                cubes[thisSocket].rotation.y -= movingSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: -0.1,
+                        rotY: -movingSpeed,
                         room: thisRoom
                     }
                 );
@@ -156,15 +158,15 @@ jQuery(document).keydown(function (e) {
         }
         else if (map[83] && map[69]) { // S + E
             if (!pause) {
-                obj.camera.z += 0.1;
-                obj.socketCube.z += 0.1;
+                obj.camera.z += movingSpeed;
+                obj.socketCube.z += movingSpeed;
 
-                obj.camera.lookZ += 0.1;
+                obj.camera.lookZ += movingSpeed;
 
-                cubes[thisSocket].rotation.y -= 0.1;
+                cubes[thisSocket].rotation.y -= movingSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: -0.1,
+                        rotY: -movingSpeed,
                         room: thisRoom
                     }
                 );
@@ -174,15 +176,15 @@ jQuery(document).keydown(function (e) {
         }
         else if (map[65] && map[69]) { // A + E
             if (!pause) {
-                obj.camera.x -= 0.1;
-                obj.socketCube.x -= 0.1;
+                obj.camera.x -= movingSpeed;
+                obj.socketCube.x -= movingSpeed;
 
-                obj.camera.lookX -= 0.1;
+                obj.camera.lookX -= movingSpeed;
 
-                cubes[thisSocket].rotation.y -= 0.1;
+                cubes[thisSocket].rotation.y -= movingSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: -0.1,
+                        rotY: -movingSpeed,
                         room: thisRoom
                     }
                 );
@@ -192,15 +194,15 @@ jQuery(document).keydown(function (e) {
         }
         else if (map[87] && map[81]) { // W + Q
             if (!pause) {
-                obj.camera.z -= 0.1;
-                obj.socketCube.z -= 0.1;
+                obj.camera.z -= movingSpeed;
+                obj.socketCube.z -= movingSpeed;
 
-                obj.camera.lookZ -= 0.1;
+                obj.camera.lookZ -= movingSpeed;
 
-                cubes[thisSocket].rotation.y += 0.1;
+                cubes[thisSocket].rotation.y += movingSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: 0.1,
+                        rotY: movingSpeed,
                         room: thisRoom
                     }
                 );
@@ -210,15 +212,15 @@ jQuery(document).keydown(function (e) {
         }
         else if (map[68] && map[81]) { // D + Q
             if (!pause) {
-                obj.camera.x += 0.1;
-                obj.socketCube.x += 0.1;
+                obj.camera.x += movingSpeed;
+                obj.socketCube.x += movingSpeed;
 
-                obj.camera.lookX += 0.1;
+                obj.camera.lookX += movingSpeed;
 
-                cubes[thisSocket].rotation.y += 0.1;
+                cubes[thisSocket].rotation.y += movingSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: 0.1,
+                        rotY: movingSpeed,
                         room: thisRoom
                     }
                 );
@@ -228,15 +230,15 @@ jQuery(document).keydown(function (e) {
         }
         else if (map[83] && map[81]) { // S + Q
             if (!pause) {
-                obj.camera.z += 0.1;
-                obj.socketCube.z += 0.1;
+                obj.camera.z += movingSpeed;
+                obj.socketCube.z += movingSpeed;
 
-                obj.camera.lookZ += 0.1;
+                obj.camera.lookZ += movingSpeed;
 
-                cubes[thisSocket].rotation.y += 0.1;
+                cubes[thisSocket].rotation.y += movingSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: 0.1,
+                        rotY: movingSpeed,
                         room: thisRoom
                     }
                 );
@@ -246,15 +248,15 @@ jQuery(document).keydown(function (e) {
         }
         else if (map[65] && map[81]) { // A + Q
             if (!pause) {
-                obj.camera.x -= 0.1;
-                obj.socketCube.x -= 0.1;
+                obj.camera.x -= movingSpeed;
+                obj.socketCube.x -= movingSpeed;
 
-                obj.camera.lookX -= 0.1;
+                obj.camera.lookX -= movingSpeed;
 
-                cubes[thisSocket].rotation.y += 0.1;
+                cubes[thisSocket].rotation.y += movingSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: 0.1,
+                        rotY: movingSpeed,
                         room: thisRoom
                     }
                 );
@@ -263,28 +265,28 @@ jQuery(document).keydown(function (e) {
             return;
         }
         else if(map[82]){
-            obj.camera.lookY += 0.1;
+            obj.camera.lookY += movingSpeed;
             changeScene();
             return;
         }
         else if(map[70]){
-            obj.camera.lookY -= 0.1;
+            obj.camera.lookY -= movingSpeed;
             changeScene();
             return;
         }
         else if (map[38]) {
             if (!pause) {
-                obj.socketCube.z -= 0.1;
-                obj.camera.lookZ -= 0.1;
+                obj.socketCube.z -= movingSpeed;
+                obj.camera.lookZ -= movingSpeed;
                 changeScene();
             }
             return;
         }
         else if (map[37]) {
             if (!pause) {
-                obj.socketCube.x -= 0.1;
+                obj.socketCube.x -= movingSpeed;
 
-                obj.camera.lookX -= 0.1;
+                obj.camera.lookX -= movingSpeed;
 
                 changeScene();
             }
@@ -292,9 +294,9 @@ jQuery(document).keydown(function (e) {
         }
         else if (map[39]) {
             if (!pause) {
-                obj.socketCube.x += 0.1;
+                obj.socketCube.x += movingSpeed;
 
-                obj.camera.lookX += 0.1;
+                obj.camera.lookX += movingSpeed;
 
                 changeScene();
             }
@@ -302,41 +304,41 @@ jQuery(document).keydown(function (e) {
         }
         else if (map[40]) {
             if (!pause) {
-                obj.socketCube.z += 0.1;
+                obj.socketCube.z += movingSpeed;
 
 
-                obj.camera.lookZ += 0.1;
+                obj.camera.lookZ += movingSpeed;
                 changeScene();
             }
             return;
         }
         else if (map[87]) {
             if (!pause) {
-                obj.camera.z -= 0.1;
-                obj.socketCube.z -= 0.1;
+                obj.camera.z -= movingSpeed;
+                obj.socketCube.z -= movingSpeed;
 
 
-                obj.camera.lookZ -= 0.1;
+                obj.camera.lookZ -= movingSpeed;
                 changeScene();
             }
             return;
         }
         else if (map[83]) {
             if (!pause) {
-                obj.camera.z += 0.1;
-                obj.socketCube.z += 0.1;
+                obj.camera.z += movingSpeed;
+                obj.socketCube.z += movingSpeed;
 
-                obj.camera.lookZ += 0.1;
+                obj.camera.lookZ += movingSpeed;
                 changeScene();
             }
             return;
         }
         else if (map[65]) {
             if (!pause) {
-                obj.camera.x -= 0.1;
-                obj.socketCube.x -= 0.1;
+                obj.camera.x -= movingSpeed;
+                obj.socketCube.x -= movingSpeed;
 
-                obj.camera.lookX -= 0.1;
+                obj.camera.lookX -= movingSpeed;
 
                 changeScene();
             }
@@ -344,10 +346,10 @@ jQuery(document).keydown(function (e) {
         }
         else if (map[68]) {
             if (!pause) {
-                obj.camera.x += 0.1;
-                obj.socketCube.x += 0.1;
+                obj.camera.x += movingSpeed;
+                obj.socketCube.x += movingSpeed;
 
-                obj.camera.lookX += 0.1;
+                obj.camera.lookX += movingSpeed;
 
                 changeScene();
             }
@@ -355,13 +357,13 @@ jQuery(document).keydown(function (e) {
         }
         else if (map[81]) {
             if (!pause) {
-                //cubes[thisSocket].rotateY(0.1);
-                //obj.socketCube.rotY += 0.1;
-                //obj.socketCube.rotY = 0.1;
-                cubes[thisSocket].rotation.y += 0.1;
+                //cubes[thisSocket].rotateY(movingSpeed);
+                //obj.socketCube.rotY += movingSpeed;
+                //obj.socketCube.rotY = movingSpeed;
+                cubes[thisSocket].rotation.y += movingSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: 0.1,
+                        rotY: movingSpeed,
                         room: thisRoom
                     }
                 );
@@ -371,13 +373,13 @@ jQuery(document).keydown(function (e) {
         }
         else if (map[69]) {
             if (!pause) {
-                //cubes[thisSocket].rotateY(-0.1);
-                //obj.socketCube.rotY -= 0.1;
-                //obj.socketCube.rotY = -0.1;
-                cubes[thisSocket].rotation.y -= 0.1;
+                //cubes[thisSocket].rotateY(-movingSpeed);
+                //obj.socketCube.rotY -= movingSpeed;
+                //obj.socketCube.rotY = -movingSpeed;
+                cubes[thisSocket].rotation.y -= movingSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: -0.1,
+                        rotY: -movingSpeed,
                         room: thisRoom
                     }
                 );

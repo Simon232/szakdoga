@@ -1,6 +1,62 @@
 /**
  * Created by Andris on 2016. 02. 23..
  */
+/*
+ /*
+ if( (cubes[obj.sid].position.x + '').length > 17){
+ var varX = (cubes[obj.sid].position.x + '');
+ var result = '';
+ for(var i = 0; i < (cubes[obj.sid].position.x + '').length; i++){
+ if(i > 17){
+ result += '0';
+ }else{
+ result += varX[i];
+ }
+ }
+ cubes[obj.sid].position.x = result;
+ }
+ if( (cubes[obj.sid].position.x + '').length < 17){
+ var varX = (cubes[obj.sid].position.x + '');
+ var result = '';
+ for(var i = 0; i < 17; i++){
+ if(i == 16){
+ result += '1';
+ }else if (i >= (cubes[obj.sid].position.x + '').length && i < 17){
+ result += 0;
+ }else{
+ result += varX[i];
+ }
+ }
+ cubes[obj.sid].position.x = result;
+ }
+ if( (cubes[obj.sid].position.z + '').length > 17){
+ var vaZX = (cubes[obj.sid].position.z + '');
+ var result = '';
+ for(var i = 0; i < (cubes[obj.sid].position.z + '').length; i++){
+ if(i > 17){
+ result += '0';
+ }else{
+ result += varZ[i];
+ }
+ }
+ cubes[obj.sid].position.z = result;
+ }
+ if( (cubes[obj.sid].position.z + '').length < 17){
+ var varZ = (cubes[obj.sid].position.z + '');
+ var result = '';
+ for(var i = 0; i < 17; i++){
+ if(i == 16){
+ result += '0';
+ }else if (i >= (cubes[obj.sid].position.z + '').length && i < 17){
+ result += 0;
+ }else{
+ result += varZ[i];
+ }
+ }
+ cubes[obj.sid].position.z = result;
+ }*/
+
+
 // W
 
 //programs
