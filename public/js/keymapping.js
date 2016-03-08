@@ -1,4 +1,5 @@
 var movingSpeed = 0.1;
+var rotationSpeed = 0.1;
 
 var map = {
     37: false, // left
@@ -126,10 +127,10 @@ jQuery(document).keydown(function (e) {
 
                 obj.camera.lookZ -= movingSpeed;
 
-                cubes[thisSocket].rotation.y -= movingSpeed;
+                cubes[thisSocket].rotation.y -= rotationSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: -movingSpeed,
+                        rotY: -rotationSpeed,
                         room: thisRoom
                     }
                 );
@@ -145,10 +146,10 @@ jQuery(document).keydown(function (e) {
 
                 obj.camera.lookX += movingSpeed;
 
-                cubes[thisSocket].rotation.y -= movingSpeed;
+                cubes[thisSocket].rotation.y -= rotationSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: -movingSpeed,
+                        rotY: -rotationSpeed,
                         room: thisRoom
                     }
                 );
@@ -163,10 +164,10 @@ jQuery(document).keydown(function (e) {
 
                 obj.camera.lookZ += movingSpeed;
 
-                cubes[thisSocket].rotation.y -= movingSpeed;
+                cubes[thisSocket].rotation.y -= rotationSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: -movingSpeed,
+                        rotY: -rotationSpeed,
                         room: thisRoom
                     }
                 );
@@ -181,10 +182,10 @@ jQuery(document).keydown(function (e) {
 
                 obj.camera.lookX -= movingSpeed;
 
-                cubes[thisSocket].rotation.y -= movingSpeed;
+                cubes[thisSocket].rotation.y -= rotationSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: -movingSpeed,
+                        rotY: -rotationSpeed,
                         room: thisRoom
                     }
                 );
@@ -199,10 +200,10 @@ jQuery(document).keydown(function (e) {
 
                 obj.camera.lookZ -= movingSpeed;
 
-                cubes[thisSocket].rotation.y += movingSpeed;
+                cubes[thisSocket].rotation.y += rotationSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: movingSpeed,
+                        rotY: rotationSpeed,
                         room: thisRoom
                     }
                 );
@@ -217,10 +218,10 @@ jQuery(document).keydown(function (e) {
 
                 obj.camera.lookX += movingSpeed;
 
-                cubes[thisSocket].rotation.y += movingSpeed;
+                cubes[thisSocket].rotation.y += rotationSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: movingSpeed,
+                        rotY: rotationSpeed,
                         room: thisRoom
                     }
                 );
@@ -235,10 +236,10 @@ jQuery(document).keydown(function (e) {
 
                 obj.camera.lookZ += movingSpeed;
 
-                cubes[thisSocket].rotation.y += movingSpeed;
+                cubes[thisSocket].rotation.y += rotationSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: movingSpeed,
+                        rotY: rotationSpeed,
                         room: thisRoom
                     }
                 );
@@ -253,10 +254,10 @@ jQuery(document).keydown(function (e) {
 
                 obj.camera.lookX -= movingSpeed;
 
-                cubes[thisSocket].rotation.y += movingSpeed;
+                cubes[thisSocket].rotation.y += rotationSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: movingSpeed,
+                        rotY: rotationSpeed,
                         room: thisRoom
                     }
                 );
@@ -360,10 +361,10 @@ jQuery(document).keydown(function (e) {
                 //cubes[thisSocket].rotateY(movingSpeed);
                 //obj.socketCube.rotY += movingSpeed;
                 //obj.socketCube.rotY = movingSpeed;
-                cubes[thisSocket].rotation.y += movingSpeed;
+                cubes[thisSocket].rotation.y += rotationSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: movingSpeed,
+                        rotY: rotationSpeed,
                         room: thisRoom
                     }
                 );
@@ -376,10 +377,10 @@ jQuery(document).keydown(function (e) {
                 //cubes[thisSocket].rotateY(-movingSpeed);
                 //obj.socketCube.rotY -= movingSpeed;
                 //obj.socketCube.rotY = -movingSpeed;
-                cubes[thisSocket].rotation.y -= movingSpeed;
+                cubes[thisSocket].rotation.y -= rotationSpeed;
                 socket.emit('rotation', {
                         sid: thisSocket,
-                        rotY: -movingSpeed,
+                        rotY: -rotationSpeed,
                         room: thisRoom
                     }
                 );
