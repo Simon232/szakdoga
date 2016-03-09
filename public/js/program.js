@@ -6,7 +6,7 @@ var thisRoom = undefined;
 var thisTexture = undefined;
 
 
-var gameWidth = 250;
+var gameWidth = 100;
 
 var init = function () {
     scene = new THREE.Scene();

@@ -4,4 +4,7 @@
 ( ) private room
 ( ) game-logic
 ( ) front-end
-( )
+( ) Detector
+( ) Dinamic light
+( ) JUMP
+(X) gameWidth max movable
