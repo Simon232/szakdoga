@@ -254,7 +254,10 @@ var changeScene = function () {
     camera.lookAt(new THREE.Vector3(obj.camera.lookX, obj.camera.lookY, obj.camera.lookZ));
 
     if (socket.id !== undefined && socket.id !== null) {
-
+        cubes[thisSocket].position.x = obj.socketCube.x;
+        //cubes[obj.sid].position.y = obj.pos.y;
+        cubes[thisSocket].position.z = obj.socketCube.z;
+        
         socket.emit('move', {
             sid: '/#' + socket.id,
             pos: obj.socketCube,

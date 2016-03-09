@@ -34,7 +34,7 @@ io.on('connection', function (socket) {
     
     for(var i = 0; i < roomManager.length; i++){
         if(roomManager[i].player1 == socket.id || roomManager[i].player2 == socket.id){
-            console.log("itt vótam", roomManager[i].name);
+            console.log("itt vï¿½tam", roomManager[i].name);
             chosenRoom = roomManager[i].name;
         }
     }
@@ -72,7 +72,7 @@ io.on('connection', function (socket) {
 
     // *** movements section ***
     socket.on('move', function (msg) {
-        io.emit('move', msg);
+        socket.broadcast.emit('move', msg);
     });
 
     socket.on('update', function (msg) {
