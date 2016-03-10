@@ -8,3 +8,5 @@
 ( ) Dinamic light
 ( ) JUMP
 (X) gameWidth max movable
+( ) collision 
+( ) collectible coins, resizing cubes
