@@ -76,67 +76,72 @@ jQuery(document).keydown(function (e) {
             return;
         }
         else if (map[87] && map[65]) { // W + A
-            if (!pause
-            && (obj.socketCube.x - movingSpeed) > -gameWidth/2 
-            && (obj.socketCube.z - movingSpeed) > -gameWidth/2) {
-                
-                obj.camera.z -= movingSpeed;
-                obj.socketCube.z -= movingSpeed;
+            if (!pause) {
+               
+               if((obj.socketCube.z - movingSpeed) > -gameWidth/2) {
+                    obj.camera.z -= movingSpeed;
+                    obj.socketCube.z -= movingSpeed;
+                    obj.camera.lookZ -= movingSpeed;
+               }
 
-                obj.camera.x -= movingSpeed;
-                obj.socketCube.x -= movingSpeed;
-
-                obj.camera.lookX -= movingSpeed;
-                obj.camera.lookZ -= movingSpeed;
+                if((obj.socketCube.x - movingSpeed) > -gameWidth/2){
+                    obj.camera.x -= movingSpeed;
+                    obj.socketCube.x -= movingSpeed;
+                    obj.camera.lookX -= movingSpeed;
+                }
                 changeScene();
             }
             return;
         }
         else if (map[87] && map[68]) { // W + D
-            if (!pause
-            && (obj.socketCube.x + movingSpeed) < gameWidth/2 
-            && (obj.socketCube.z - movingSpeed) > -gameWidth/2){
-                obj.camera.z -= movingSpeed;
-                obj.socketCube.z -= movingSpeed;
+            if (!pause){
+                if((obj.socketCube.z - movingSpeed) > -gameWidth/2){
+                    obj.camera.z -= movingSpeed;
+                    obj.socketCube.z -= movingSpeed;
+                    obj.camera.lookZ -= movingSpeed;
+                }
 
-                obj.camera.x += movingSpeed;
-                obj.socketCube.x += movingSpeed;
-
-                obj.camera.lookX += movingSpeed;
-                obj.camera.lookZ -= movingSpeed;
+                if((obj.socketCube.x + movingSpeed) < gameWidth/2){
+                    obj.camera.x += movingSpeed;
+                    obj.socketCube.x += movingSpeed;
+                    obj.camera.lookX += movingSpeed;
+                }
+                
                 changeScene();
             }
             return;
         }
         else if (map[83] && map[65]) { // S + A
-            if (!pause
-            && (obj.socketCube.x - movingSpeed) > -gameWidth/2 
-            && (obj.socketCube.z + movingSpeed) < gameWidth/2){
+            if (!pause){
                 
-                obj.camera.z += movingSpeed;
-                obj.socketCube.z += movingSpeed;
+                if((obj.socketCube.z + movingSpeed) < gameWidth/2){
+                    obj.camera.z += movingSpeed;
+                    obj.socketCube.z += movingSpeed;
+                    obj.camera.lookZ += movingSpeed;
+                }
 
-                obj.camera.x -= movingSpeed;
-                obj.socketCube.x -= movingSpeed;
-
-                obj.camera.lookX -= movingSpeed;
-                obj.camera.lookZ += movingSpeed;
+                if((obj.socketCube.x - movingSpeed) > -gameWidth/2 ){
+                    obj.camera.x -= movingSpeed;
+                    obj.socketCube.x -= movingSpeed;
+                    obj.camera.lookX -= movingSpeed;
+                }
                 changeScene();
             }
             return;
         }
         else if (map[83] && map[68]) { // S + D
-            if (!pause
-            && (obj.socketCube.x + movingSpeed) < gameWidth/2 
-            && (obj.socketCube.z + movingSpeed) < gameWidth/2) {
-                obj.camera.z += movingSpeed;
-                obj.socketCube.z += movingSpeed;
+            if (!pause) {
+                if((obj.socketCube.z + movingSpeed) < gameWidth/2){
+                    obj.camera.z += movingSpeed;
+                    obj.socketCube.z += movingSpeed;
+                    obj.camera.lookZ += movingSpeed;
+                }
 
-                obj.camera.x += movingSpeed;
-                obj.socketCube.x += movingSpeed;
-
-                obj.camera.lookX += movingSpeed;
-                obj.camera.lookZ += movingSpeed;
+                if((obj.socketCube.x + movingSpeed) < gameWidth/2 ){
+                    obj.camera.x += movingSpeed;
+                    obj.socketCube.x += movingSpeed;
+                    obj.camera.lookX += movingSpeed;
+                }
                 changeScene();
             }
             return;
