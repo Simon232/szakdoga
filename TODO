@@ -10,3 +10,4 @@
 (X) gameWidth max movable
 ( ) collision 
 ( ) collectible coins, resizing cubes
+(X) random position
