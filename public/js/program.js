@@ -5,8 +5,36 @@ var thisColor = undefined;
 var thisRoom = undefined;
 var thisTexture = undefined;
 
-
 var gameWidth = 100;
+
+var getRandomPosition = function(){
+    var pos = 0;
+    while(pos <= 1 && pos >= -1){
+        pos = Math.floor(Math.random() * 2) % 2 == 0 ? Math.random() * (gameWidth / 2) : -1* Math.random() * (gameWidth/2);
+    }
+    return pos;
+};
+
+var cubes = {};
+var pause = false;
+
+var x = getRandomPosition();
+var y = 0.5;
+var z = getRandomPosition();
+
+var obj = {
+    socketCube: {
+        x: this.x,
+        y: 0.5,
+        z: this.z,
+        rotY: 0.0
+    },
+    camera: {
+        x: this.x,
+        y: 4,
+        z: this.z + 6
+    }
+};
 
 var init = function () {
     scene = new THREE.Scene();
@@ -76,11 +104,7 @@ var init = function () {
     ground.position.z = 0;
     scene.add(ground);
 
-    camera.position.x = 0;
-    camera.position.y = 4;
-    camera.position.z = 6;
 
-    camera.lookAt(new THREE.Vector3(x, y, z));
 
     scene.add(x_line); //zold
     scene.add(y_line); //piros
@@ -135,9 +159,9 @@ socket.on('new', function (msg) {
         var socketCubeMaterial = new THREE.MeshPhongMaterial({map: textureBox});
 
         cubes[thisSocket] = new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
-        cubes[thisSocket].position.x = 0.0;
-        cubes[thisSocket].position.y = 0.5;
-        cubes[thisSocket].position.z = 1.0;
+        cubes[thisSocket].position.x = obj.socketCube.x;
+        cubes[thisSocket].position.y = obj.socketCube.y;
+        cubes[thisSocket].position.z = obj.socketCube.z;
 
         scene.add(cubes[thisSocket]);
     }
@@ -161,6 +185,13 @@ socket.on('new', function (msg) {
             console.log(e);
         }
     }
+
+    camera.position.x = cubes[thisSocket].position.x;
+    camera.position.y = 4;
+    camera.position.z = cubes[thisSocket].position.z + 6;
+
+    camera.lookAt(new THREE.Vector3( cubes[thisSocket].position.x,  cubes[thisSocket].position.y,  cubes[thisSocket].position.z));
+
 });
 
 
@@ -222,36 +253,10 @@ socket.on('chat message', function (msg) {
     $('#messages').append($('<li>').text(msg));
 });
 
-var cubes = {};
-var pause = false;
 
-
-var x = 0;
-var y = 0;
-var z = 0;
-
-var obj = {
-    camera: {
-        x: 0,
-        y: 4,
-        z: 6,
-        lookX: 0,
-        lookY: 0,
-        lookZ: 0
-    },
-    socketCube: {
-        x: 0.0,
-        y: 0.5,
-        z: 1.0,
-        rotY: 0.0
-    }
-};
-
+// *** functions ***
 var changeScene = function () {
-    camera.position.x = obj.camera.x;
-    camera.position.y = obj.camera.y;
-    camera.position.z = obj.camera.z;
-    camera.lookAt(new THREE.Vector3(obj.camera.lookX, obj.camera.lookY, obj.camera.lookZ));
+
 
     if (socket.id !== undefined && socket.id !== null) {
         cubes[thisSocket].position.x = obj.socketCube.x;
@@ -264,8 +269,24 @@ var changeScene = function () {
             rotY: obj.socketCube.rotY,
             room: thisRoom
         });
+
+        camera.position.x = obj.camera.x;
+        camera.position.y = obj.camera.y;
+        camera.position.z = obj.camera.z;
+        camera.lookAt(new THREE.Vector3( cubes[thisSocket].position.x, cubes[thisSocket].position.y,  cubes[thisSocket].position.z));
     }
 };
+
+var isCollision = function(otherCube){
+    if(cubes[thisSocket].position.x > cubes[otherCube].position.x){
+        return false;
+    }
+
+
+    return true;
+};
+
+
 
 var animate = function () {
     requestAnimationFrame(animate);
