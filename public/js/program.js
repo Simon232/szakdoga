@@ -36,6 +36,9 @@ var obj = {
     }
 };
 
+
+
+
 var init = function () {
     scene = new THREE.Scene();
 
@@ -89,6 +92,30 @@ var init = function () {
     var y_line = new THREE.Mesh(line_geo2, line2_material);
     var z_line = new THREE.Mesh(line_geo3, line3_material);
 
+
+    var pyramidTexture = new THREE.TextureLoader().load("pics/pyramid.jpg");
+    pyramidTexture.wrapS = THREE.RepeatWrapping;
+    pyramidTexture.wrapT = THREE.RepeatWrapping;
+    pyramidTexture.repeat.set(4, 4);
+    var pyramidMaterial = new THREE.MeshBasicMaterial({map: pyramidTexture});
+    //define a geometry
+    var pyramidGeometry = new THREE.Geometry();
+    //verticles
+    pyramidGeometry.vertices.push( new THREE.Vector3( 10, 0, -5));
+    pyramidGeometry.vertices.push( new THREE.Vector3( 14, 0, -5));
+    pyramidGeometry.vertices.push( new THREE.Vector3( 14, 0, -9));
+    pyramidGeometry.vertices.push( new THREE.Vector3( 10, 0, -9));
+    pyramidGeometry.vertices.push( new THREE.Vector3( 12, 2, -7));
+
+    //face
+    pyramidGeometry.faces.push( new THREE.Face3(0,1,2));
+    pyramidGeometry.faces.push( new THREE.Face3(0,2,3));
+    pyramidGeometry.faces.push( new THREE.Face3(0,1,4));
+    pyramidGeometry.faces.push( new THREE.Face3(1,2,4));
+    pyramidGeometry.faces.push( new THREE.Face3(2,3,4));
+    pyramidGeometry.faces.push( new THREE.Face3(3,0,4));
+    var PyramidMesh = new THREE.Mesh(pyramidGeometry, pyramidMaterial);
+
     // load a texture, set wrap mode to repeat
     var texture = new THREE.TextureLoader().load("pics/sand3.jpg");
     texture.wrapS = THREE.RepeatWrapping;
@@ -109,6 +136,7 @@ var init = function () {
     scene.add(x_line); //zold
     scene.add(y_line); //piros
     scene.add(z_line); //kek
+    scene.add(PyramidMesh);
 };
 
 // *** server calls ***

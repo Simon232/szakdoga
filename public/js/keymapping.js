@@ -48,10 +48,10 @@ jQuery(document).keydown(function (e) {
 
                 changeScene();
             }
-            return;
+            //return;
         }
 
-        else if (map[83] && map[68]) { // S + D
+        if (map[83] && map[68]) { // S + D
             if (!pause
                 && (obj.socketCube.z + movingSpeed) < gameWidth / 2 - cubeHalf) {
 
@@ -71,10 +71,10 @@ jQuery(document).keydown(function (e) {
                 obj.socketCube.x += Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
                 changeScene();
             }
-            return;
+            //return;
         }
 
-        else if (map[87] && map[65]) { // W + A
+        if (map[87] && map[65]) { // W + A
             if (!pause
                 && (obj.socketCube.z - movingSpeed) > -gameWidth / 2 + cubeHalf) {
                 cubes[thisSocket].rotation.y += rotationSpeed;
@@ -93,10 +93,10 @@ jQuery(document).keydown(function (e) {
                 obj.socketCube.x -= Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
                 changeScene();
             }
-            return;
+            //return;
         }
 
-        else if (map[83] && map[65]) { // S + A
+        if (map[83] && map[65]) { // S + A
             if (!pause
                 && (obj.socketCube.z + movingSpeed) < gameWidth / 2 - cubeHalf) {
                 cubes[thisSocket].rotation.y -= rotationSpeed;
@@ -116,20 +116,20 @@ jQuery(document).keydown(function (e) {
 
                 changeScene();
             }
-            return;
+            //return;
         }
 
-        else if (map[82]) { // R
+        if (map[82]) { // R
             obj.camera.lookY += movingSpeed;
             changeScene();
-            return;
+            //return;
         }
-        else if (map[70]) { // F
+        if (map[70]) { // F
             obj.camera.lookY -= movingSpeed;
             changeScene();
-            return;
+            //return;
         }
-        else if (map[87]) { // W
+        if (map[87]) { // W
             if (!pause &&
                 (obj.socketCube.z - movingSpeed) > (-1 * gameWidth) / 2 + cubeHalf) {
 
@@ -144,9 +144,9 @@ jQuery(document).keydown(function (e) {
             } else {
                 console.log(gameWidth);
             }
-            return;
+            //return;
         }
-        else if (map[83]) { // S
+        if (map[83]) { // S
             if (!pause
                 && (obj.socketCube.z + movingSpeed) < gameWidth / 2 - cubeHalf) {
 
@@ -159,9 +159,9 @@ jQuery(document).keydown(function (e) {
 
                 changeScene();
             }
-            return;
+            //return;
         }
-        else if (map[65]) { // A
+        if (map[65]) { // A
             if (!pause
                 && (obj.socketCube.x - movingSpeed) > -gameWidth / 2 + cubeHalf) {
                 obj.camera.z += Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
@@ -173,9 +173,9 @@ jQuery(document).keydown(function (e) {
 
                 changeScene();
             }
-            return;
+            //return;
         }
-        else if (map[68]) { // D
+        if (map[68]) { // D
             if (!pause
                 && (obj.socketCube.x + movingSpeed) < gameWidth / 2 - cubeHalf) {
                 obj.camera.z -= Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
@@ -187,10 +187,10 @@ jQuery(document).keydown(function (e) {
 
                 changeScene();
             }
-            return;
+            //return;
         }
 
-        else if (map[27]) { // ESC
+        if (map[27]) { // ESC
             if (!pause) {
                 obj.camera.x = 0;
                 obj.camera.y = 4;
@@ -214,11 +214,11 @@ jQuery(document).keydown(function (e) {
 
                 changeScene();
             }
-            return;
+            //return;
         }
-        else if (map[80]) {
+        if (map[80]) {
             pause = !pause;
-            return;
+            //return;
         } else {
             prevent = false;
         }
