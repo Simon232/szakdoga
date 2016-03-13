@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab917d04-1d80-4abe-90df-9ea5364f55dc" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/keyTEMP.js" afterPath="$PROJECT_DIR$/public/js/keyTEMP.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/keymapping.js" afterPath="$PROJECT_DIR$/public/js/keymapping.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/program.js" afterPath="$PROJECT_DIR$/public/js/program.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -81,11 +82,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="program.js" pinned="false" current-in-tab="true">
+          <file leaf-file-name="program.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/js/program.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.28858024">
-                  <caret line="98" column="33" selection-start-line="98" selection-start-column="33" selection-end-line="98" selection-end-column="33" />
+                <state vertical-scroll-proportion="-12.137931">
+                  <caret line="32" column="18" selection-start-line="32" selection-start-column="18" selection-end-line="32" selection-end-column="18" />
                   <folding />
                 </state>
               </provider>
@@ -104,18 +105,18 @@
           <file leaf-file-name="keymapping.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/js/keymapping.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-6.2702703">
-                  <caret line="220" column="21" selection-start-line="220" selection-start-column="21" selection-end-line="220" selection-end-column="21" />
+                <state vertical-scroll-proportion="-4.8378377">
+                  <caret line="128" column="0" selection-start-line="128" selection-start-column="0" selection-end-line="128" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="keyTEMP.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="keyTEMP.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/public/js/keyTEMP.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="294" column="4" selection-start-line="294" selection-start-column="4" selection-end-line="294" selection-end-column="4" />
+                <state vertical-scroll-proportion="0.050221566">
+                  <caret line="2" column="5" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="5" />
                   <folding>
                     <element signature="n#!!doc" expanded="true" />
                   </folding>
@@ -175,9 +176,9 @@
         <option value="$PROJECT_DIR$/public/js/detector.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/TODO" />
-        <option value="$PROJECT_DIR$/public/js/keyTEMP.js" />
-        <option value="$PROJECT_DIR$/public/js/keymapping.js" />
         <option value="$PROJECT_DIR$/public/js/program.js" />
+        <option value="$PROJECT_DIR$/public/js/keymapping.js" />
+        <option value="$PROJECT_DIR$/public/js/keyTEMP.js" />
       </list>
     </option>
   </component>
@@ -792,29 +793,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/keyTEMP.js">
+    <entry file="file://$PROJECT_DIR$/public/js/program.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="294" column="4" selection-start-line="294" selection-start-column="4" selection-end-line="294" selection-end-column="4" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="-12.137931">
+          <caret line="32" column="18" selection-start-line="32" selection-start-column="18" selection-end-line="32" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/keymapping.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.2702703">
-          <caret line="220" column="21" selection-start-line="220" selection-start-column="21" selection-end-line="220" selection-end-column="21" />
+        <state vertical-scroll-proportion="-4.8378377">
+          <caret line="128" column="0" selection-start-line="128" selection-start-column="0" selection-end-line="128" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/program.js">
+    <entry file="file://$PROJECT_DIR$/public/js/keyTEMP.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28858024">
-          <caret line="98" column="33" selection-start-line="98" selection-start-column="33" selection-end-line="98" selection-end-column="33" />
-          <folding />
+        <state vertical-scroll-proportion="0.050221566">
+          <caret line="2" column="5" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="5" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

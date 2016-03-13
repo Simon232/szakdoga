@@ -26,7 +26,7 @@ jQuery(document).keydown(function (e) {
     if (e.keyCode in map) {
         map[e.keyCode] = true;
 
-        if (map[87] && map[68]) { //  W + D
+        if (map[87] && map[68]) { // W + D
             if (!pause
                 && (obj.socketCube.z - movingSpeed) > -gameWidth / 2 + cubeHalf) {
 
@@ -37,11 +37,8 @@ jQuery(document).keydown(function (e) {
                         room: thisRoom
                     }
                 );
-
-                obj.camera.z -= Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
-                obj.camera.x -= Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
-
-
+                //obj.camera.z -= Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
+                //obj.camera.x -= Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
                 obj.socketCube.z -= Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
                 obj.socketCube.x -= Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
 
@@ -63,8 +60,8 @@ jQuery(document).keydown(function (e) {
                     }
                 );
 
-                obj.camera.z += Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
-                obj.camera.x += Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
+                //obj.camera.z += Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
+                //obj.camera.x += Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
 
 
                 obj.socketCube.z += Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
@@ -85,8 +82,8 @@ jQuery(document).keydown(function (e) {
                     }
                 );
 
-                obj.camera.z -= Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
-                obj.camera.x -= Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
+                //obj.camera.z -= Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
+                //obj.camera.x -= Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
 
 
                 obj.socketCube.z -= Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
@@ -107,8 +104,8 @@ jQuery(document).keydown(function (e) {
                     }
                 );
 
-                obj.camera.z += Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
-                obj.camera.x += Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
+                //obj.camera.z += Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
+                //obj.camera.x += Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
 
 
                 obj.socketCube.z += Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
@@ -119,26 +116,19 @@ jQuery(document).keydown(function (e) {
             //return;
         }
 
-        if (map[82]) { // R
-            obj.camera.lookY += movingSpeed;
-            changeScene();
-            //return;
-        }
-        if (map[70]) { // F
-            obj.camera.lookY -= movingSpeed;
-            changeScene();
-            //return;
-        }
+
         if (map[87]) { // W
             if (!pause &&
                 (obj.socketCube.z - movingSpeed) > (-1 * gameWidth) / 2 + cubeHalf) {
 
-                obj.camera.z -= Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
-                obj.camera.x -= Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
-
-
                 obj.socketCube.z -= Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
                 obj.socketCube.x -= Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
+
+                console.log((Math.cos(PI/2 + cubes[thisSocket].rotation.y) * 6) * movingSpeed);
+                console.log((Math.sin(PI/2 + cubes[thisSocket].rotation.y) * 6) * movingSpeed);
+
+                obj.camera.z = cubes[thisSocket].position.z + 6 * (Math.cos( cubes[thisSocket].rotation.y));
+                obj.camera.x = cubes[thisSocket].position.x + 6 * (Math.sin( cubes[thisSocket].rotation.y));
 
                 changeScene();
             } else {
@@ -150,12 +140,11 @@ jQuery(document).keydown(function (e) {
             if (!pause
                 && (obj.socketCube.z + movingSpeed) < gameWidth / 2 - cubeHalf) {
 
-                obj.camera.z += Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
-                obj.camera.x += Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
-
-
                 obj.socketCube.z += Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
                 obj.socketCube.x += Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
+
+                obj.camera.z = cubes[thisSocket].position.z + 6 * (Math.cos( cubes[thisSocket].rotation.y));
+                obj.camera.x = cubes[thisSocket].position.x + 6 * (Math.sin( cubes[thisSocket].rotation.y));
 
                 changeScene();
             }
@@ -195,10 +184,6 @@ jQuery(document).keydown(function (e) {
                 obj.camera.x = 0;
                 obj.camera.y = 4;
                 obj.camera.z = 6;
-                obj.camera.lookX = 0;
-                obj.camera.lookY = 0;
-                obj.camera.lookY = 0;
-                obj.camera.lookZ = 0;
 
                 obj.socketCube.x = 0.0;
                 obj.socketCube.y = 0.5;

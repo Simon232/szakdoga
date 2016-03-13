@@ -1,3 +1,9 @@
+/*x = cx + r * cos(a)
+ y = cy + r * sin(a)
+ * */
+
+
+
 /*
  if (map[37] && map[38]) { // left + up
  if (!pause
@@ -292,4 +298,16 @@
  changeScene();
  }
  return;
+
+
+ if (map[82]) { // R
+ obj.camera.lookY += movingSpeed;
+ changeScene();
+ //return;
+ }
+ if (map[70]) { // F
+ obj.camera.lookY -= movingSpeed;
+ changeScene();
+ //return;
+ }s
  }*/

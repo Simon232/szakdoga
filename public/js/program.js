@@ -106,7 +106,6 @@ var init = function () {
     pyramidGeometry.vertices.push( new THREE.Vector3( 14, 0, -9));
     pyramidGeometry.vertices.push( new THREE.Vector3( 10, 0, -9));
     pyramidGeometry.vertices.push( new THREE.Vector3( 12, 2, -7));
-
     //face
     pyramidGeometry.faces.push( new THREE.Face3(0,1,2));
     pyramidGeometry.faces.push( new THREE.Face3(0,2,3));
@@ -114,6 +113,7 @@ var init = function () {
     pyramidGeometry.faces.push( new THREE.Face3(1,2,4));
     pyramidGeometry.faces.push( new THREE.Face3(2,3,4));
     pyramidGeometry.faces.push( new THREE.Face3(3,0,4));
+    //pyramidGeometry.faceVertexUvs[0][0] = [ new THREE.Vector2(0.5, 0.5), new THREE.Vector2(0.5, 0.5), new THREE.Vector2(0.5, 0.5)]; // for textures
     var PyramidMesh = new THREE.Mesh(pyramidGeometry, pyramidMaterial);
 
     // load a texture, set wrap mode to repeat
