@@ -13,9 +13,9 @@ document.addEventListener('keyup', function (e) {
     keyPressed[e.keyCode] = false;
 }, false);
 
-function gameLoop() {
+function gameLogic() {
 
-    if (keyPressed[87]) { // W
+    if (keyPressed[87] || keyPressed[38]) { // W
         var newX = obj.socketCube.x - Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
         var newZ = obj.socketCube.z - Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
         if (!collision(newX, newZ)) {
@@ -36,7 +36,7 @@ function gameLoop() {
             changeScene();
         }
     }
-    if (keyPressed[83]) { // S
+    if (keyPressed[83] || keyPressed[40]) { // S
         var newX = obj.socketCube.x + Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
         var newZ = obj.socketCube.z + Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
         if (!collision(newX, newZ)) {
@@ -57,7 +57,7 @@ function gameLoop() {
             changeScene();
         }
     }
-    if (keyPressed[65]) { // A
+    if (keyPressed[65] || keyPressed[37]) { // A
         var newX = obj.socketCube.x - Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
         var newZ = obj.socketCube.z + Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
         if (!collision(newX, newZ)) {
@@ -76,7 +76,7 @@ function gameLoop() {
             changeScene();
         }
     }
-    if (keyPressed[68]) { // D
+    if (keyPressed[68] || keyPressed[39]) { // D
         var newX = obj.socketCube.x + Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
         var newZ = obj.socketCube.z - Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
         if (!collision(newX, newZ)) {
@@ -94,7 +94,15 @@ function gameLoop() {
             changeScene();
         }
     }
-    if (keyPressed[87] && keyPressed[68]) { // W + D
+    /*
+     *  37: false, // left
+     38: false, // up
+     39: false, // right
+     40: false, // down
+     * */
+
+
+    if ((keyPressed[87] && keyPressed[68]) || (keyPressed[38] && keyPressed[39])) { // W + D
         if (!pause
             && obj.socketCube.z <= (gameWidth / 2) - cubeHalf && obj.socketCube.z >= -(gameWidth / 2) + cubeHalf
             && obj.socketCube.x <= (gameWidth / 2) - cubeHalf && obj.socketCube.x >= -(gameWidth / 2) + cubeHalf
@@ -112,7 +120,7 @@ function gameLoop() {
         }
     }
 
-    if (keyPressed[83] && keyPressed[68]) { // S + D
+    if ((keyPressed[83] && keyPressed[68]) || (keyPressed[40] && keyPressed[39])) { // S + D
         if (!pause
             && obj.socketCube.z <= (gameWidth / 2) - cubeHalf && obj.socketCube.z >= -(gameWidth / 2) + cubeHalf
             && obj.socketCube.x <= (gameWidth / 2) - cubeHalf && obj.socketCube.x >= -(gameWidth / 2) + cubeHalf
@@ -130,7 +138,7 @@ function gameLoop() {
         }
     }
 
-    if (keyPressed[87] && keyPressed[65]) { // W + A
+    if ((keyPressed[87] && keyPressed[65]) || (keyPressed[38] && keyPressed[37])) { // W + A
         if (!pause
             && obj.socketCube.z <= (gameWidth / 2) - cubeHalf && obj.socketCube.z >= -(gameWidth / 2) + cubeHalf
             && obj.socketCube.x <= (gameWidth / 2) - cubeHalf && obj.socketCube.x >= -(gameWidth / 2) + cubeHalf
@@ -147,7 +155,7 @@ function gameLoop() {
         }
     }
 
-    if (keyPressed[83] && keyPressed[65]) { // S + A
+    if ((keyPressed[83] && keyPressed[65]) || (keyPressed[40] && keyPressed[37])) { // S + A
         if (!pause
             && obj.socketCube.z <= (gameWidth / 2) - cubeHalf && obj.socketCube.z >= -(gameWidth / 2) + cubeHalf
             && obj.socketCube.x <= (gameWidth / 2) - cubeHalf && obj.socketCube.x >= -(gameWidth / 2) + cubeHalf
@@ -194,14 +202,14 @@ function gameLoop() {
 
     // etc
     // update display here
-    setTimeout(gameLoop, 5);
+    setTimeout(gameLogic, 5);
 }
 
 var collision = function (newX, newZ) {
     if(otherPlayer !== '') {
-        return Math.abs(newX - cubes[otherPlayer].position.x) <= 1 && Math.abs(newZ - cubes[otherPlayer].position.z) <= 1;
+        return Math.abs(newX - cubes[otherPlayer].position.x) < 1 && Math.abs(newZ - cubes[otherPlayer].position.z) < 1;
     }
     return false;
 };
 
-gameLoop();
+gameLogic();
