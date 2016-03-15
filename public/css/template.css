@@ -6,6 +6,11 @@ body{
     position: absolute;
     color: rgba(255, 0, 0, 1);
     padding: 15px;
+
+
+}
+.on-the-top-img{
+    opacity: 0.5;
 }
 
 .graphic-container{
