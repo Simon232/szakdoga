@@ -91,6 +91,21 @@ io.on('connection', function (socket) {
     socket.on('reset',function(msg){
        io.emit('reset', msg);
     });
+
+    socket.on("isEmptyRoom", function(thisRoom){
+        var otherPlayer = '';
+        for(var i = 0; i < roomManager.length; i++){
+            if(roomManager[i].name == thisRoom){
+                if(roomManager[i].player1 != '' && roomManager[i].player1 != socket.id){
+                    otherPlayer = roomManager[i].player1;
+                }
+                if(roomManager[i].player2 != '' && roomManager[i].player2 != socket.id){
+                    otherPlayer = roomManager[i].player2;
+                }
+            }
+        };
+        socket.emit("isEmptyRoom", otherPlayer);
+    });
 });
 
 var addPlayerToRoom = function(room, player){
