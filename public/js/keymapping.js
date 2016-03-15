@@ -1,6 +1,6 @@
 var PI = Math.PI;
 var movingSpeed = 0.05;
-var rotationSpeed = PI / 160;
+var rotationSpeed = PI / 240;
 var cubeHalf = 0.49;
 var cameraDistance = 6;
 
@@ -30,7 +30,6 @@ function gameLoop() {
                 obj.socketCube.x -= Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
             }
 
-            console.log("tesztelek " + collision(newX, newZ));
             obj.camera.z = cubes[thisSocket].position.z + cameraDistance * (Math.cos(cubes[thisSocket].rotation.y));
             obj.camera.x = cubes[thisSocket].position.x + cameraDistance * (Math.sin(cubes[thisSocket].rotation.y));
 
@@ -52,7 +51,6 @@ function gameLoop() {
                 obj.socketCube.x += Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
             }
 
-            console.log("tesztelek " + collision(newX, newZ));
             obj.camera.z = cubes[thisSocket].position.z + cameraDistance * (Math.cos(cubes[thisSocket].rotation.y));
             obj.camera.x = cubes[thisSocket].position.x + cameraDistance * (Math.sin(cubes[thisSocket].rotation.y));
 
@@ -75,7 +73,6 @@ function gameLoop() {
                 obj.camera.x -= Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
             }
 
-            console.log("tesztelek " + collision(newX, newZ));
             changeScene();
         }
     }
@@ -94,7 +91,6 @@ function gameLoop() {
                 obj.socketCube.x += Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
                 obj.camera.x += Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
             }
-            console.log("tesztelek " + collision(newX, newZ));
             changeScene();
         }
     }

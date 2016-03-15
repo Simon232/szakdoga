@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ab917d04-1d80-4abe-90df-9ea5364f55dc" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/keymapping.js" afterPath="$PROJECT_DIR$/public/js/keymapping.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="szakdolgozat.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -82,8 +83,8 @@
           <file leaf-file-name="program.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/js/program.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-7.1034484">
-                  <caret line="261" column="0" selection-start-line="261" selection-start-column="0" selection-end-line="261" selection-end-column="0" />
+                <state vertical-scroll-proportion="-4.6896553">
+                  <caret line="8" column="20" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
                   <folding />
                 </state>
               </provider>
@@ -102,8 +103,8 @@
           <file leaf-file-name="keymapping.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/public/js/keymapping.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.81635803">
-                  <caret line="207" column="17" selection-start-line="207" selection-start-column="17" selection-end-line="207" selection-end-column="17" />
+                <state vertical-scroll-proportion="0.30709878">
+                  <caret line="92" column="13" selection-start-line="92" selection-start-column="13" selection-end-line="92" selection-end-column="13" />
                   <folding />
                 </state>
               </provider>
@@ -792,14 +793,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/program.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.1034484">
-          <caret line="261" column="0" selection-start-line="261" selection-start-column="0" selection-end-line="261" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/TODO">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -808,10 +801,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/program.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.6896553">
+          <caret line="8" column="20" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/keymapping.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.81635803">
-          <caret line="207" column="17" selection-start-line="207" selection-start-column="17" selection-end-line="207" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.30709878">
+          <caret line="92" column="13" selection-start-line="92" selection-start-column="13" selection-end-line="92" selection-end-column="13" />
           <folding />
         </state>
       </provider>
