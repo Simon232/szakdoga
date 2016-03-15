@@ -202,7 +202,10 @@ function gameLoop() {
 }
 
 var collision = function (newX, newZ) {
-    return Math.abs(newX - cubes[otherPlayer].position.x) <= 1 && Math.abs(newZ - cubes[otherPlayer].position.z) <= 1;
+    if(otherPlayer !== '') {
+        return Math.abs(newX - cubes[otherPlayer].position.x) <= 1 && Math.abs(newZ - cubes[otherPlayer].position.z) <= 1;
+    }
+    return false;
 };
 
 gameLoop();
