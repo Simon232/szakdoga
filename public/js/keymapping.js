@@ -1,8 +1,4 @@
-var PI = Math.PI;
-var movingSpeed = 0.05;
-var rotationSpeed = PI / 240;
-//var cubeHalf = 0.49;
-var cameraDistance = 6;
+
 
 var keyPressed = {};
 

@@ -8,6 +8,10 @@ var otherPlayer = undefined;
 
 var gameWidth = 100;
 var cubeHalf = 0.49;
+var PI = Math.PI;
+var movingSpeed = 0.05;
+var rotationSpeed = PI / 240;
+var cameraDistance = 6;
 
 var getRandomPosition = function(){
     var pos = 0;
@@ -45,6 +49,9 @@ var collision = function (newX, newZ) {
         var originalX = Math.abs(cubes[thisSocket].position.x - cubes[otherPlayer].position.x);
         var originalZ = Math.abs(cubes[thisSocket].position.z - cubes[otherPlayer].position.z);
         //return (colX < 1 && colZ < 1) && (originalX > colX && originalZ > colZ);
+        if(colX <= 1 && colZ <= 1 && (colX < (1 + 2 * movingSpeed) || colX < (1 + 2 * movingSpeed))){
+            return true;
+        }
         return colX <= 1 && colZ <= 1;
         /*if(colX < 1 && colZ < 1){
          if(originalX > colX && originalZ <= colZ){
