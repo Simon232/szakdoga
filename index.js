@@ -103,7 +103,7 @@ io.on('connection', function (socket) {
                     otherPlayer = roomManager[i].player2;
                 }
             }
-        };
+        }
         socket.emit("isEmptyRoom", otherPlayer);
     });
 });

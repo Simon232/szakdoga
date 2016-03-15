@@ -1,3 +1,4 @@
+
 var keyPressed = {};
 
 document.addEventListener('keydown', function (e) {
@@ -198,6 +199,6 @@ function gameLogic() {
     setTimeout(gameLogic, 5);
 }
 
-
-
-gameLogic();
+$(window).ready(function(){
+    gameLogic();
+});
