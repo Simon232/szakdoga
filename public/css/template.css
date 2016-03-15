@@ -12,6 +12,15 @@ body{
 .on-the-top-img{
     opacity: 0.5;
 }
+.on-the-top-right{
+    z-index: 1;
+    position: absolute;
+    right: 0;
+    padding: 15px;
+    padding-right: 25px;
+    color: rgba(255, 0, 0, 1);
+    font-size: 30px;
+}
 
 .graphic-container{
     position: absolute;

@@ -183,6 +183,9 @@ socket.on('new', function (msg) {
 
         socket.room = msg.room;
         thisRoom = msg.room;
+
+        document.querySelector(".on-the-top-right").textContent += thisRoom;
+
         thisSocket = msg.sid;
         thisColor = "rgb(" + R + "," + G + "," + B + ")";
         otherPlayer = '';
