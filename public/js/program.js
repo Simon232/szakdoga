@@ -7,11 +7,12 @@ var thisTexture = undefined;
 var otherPlayer = undefined;
 
 var gameWidth = 100;
+var cubeHalf = 0.49;
 
 var getRandomPosition = function(){
     var pos = 0;
     while(pos <= 1 && pos >= -1){
-        pos = Math.floor(Math.random() * 2) % 2 == 0 ? Math.random() * (gameWidth / 2) : -1* Math.random() * (gameWidth/2);
+        pos = Math.floor(Math.random() * 2) % 2 == 0 ? Math.random() * ((gameWidth / 2)-cubeHalf) : -1* Math.random() * ((gameWidth/2)-cubeHalf);
     }
     return pos;
 };
