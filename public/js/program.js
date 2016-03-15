@@ -322,9 +322,8 @@ socket.on('chat message', function (msg) {
 
 // *** functions ***
 var changeScene = function () {
-
-
-    if (socket.id !== undefined && socket.id !== null && !collision(obj.socketCube.x, obj.socketCube.z)) {
+    ///&& !collision(obj.socketCube.x, obj.socketCube.z)
+    if (socket.id !== undefined && socket.id !== null ) {
         cubes[thisSocket].position.x = obj.socketCube.x;
         //cubes[obj.sid].position.y = obj.pos.y;
         cubes[thisSocket].position.z = obj.socketCube.z;
