@@ -4,6 +4,7 @@ var thisSocket = undefined;
 var thisColor = undefined;
 var thisRoom = undefined;
 var thisTexture = undefined;
+var otherPlayer = undefined;
 
 var gameWidth = 100;
 
@@ -151,6 +152,7 @@ socket.on('new', function (msg) {
         thisRoom = msg.room;
         thisSocket = msg.sid;
         thisColor = "rgb(" + R + "," + G + "," + B + ")";
+        otherPlayer = '';
 
         var boxTexture = "";
         var randomNumber = Math.floor(Math.random() * 5);
@@ -254,7 +256,9 @@ socket.on('update', function (msg) {
 
     console.log("aaaaa Ezt kaptam: ", msg);
     if (msg.room == thisRoom) {
-        if (cubes[msg.sid] == undefined) {
+        if (cubes[msg.sid] == undefined) {  // masik jatekos csatlakozasa
+
+            otherPlayer = msg.sid;
 
             var socketCubeGeometry = new THREE.BoxGeometry(1, 1, 1);
             //var socketCubeMaterial = new THREE.MeshBasicMaterial({color: msg.color});

@@ -8,6 +8,8 @@
 ( ) Dinamic light
 ( ) JUMP
 (X) gameWidth max movable
-( ) collision 
+(X) collision
 ( ) collectible coins, resizing cubes
 (X) random position
+(X) better keyhandler
+(X) gameWidth is the maximum reachable place for player

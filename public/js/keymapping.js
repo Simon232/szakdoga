@@ -16,16 +16,21 @@ document.addEventListener('keyup', function (e) {
 function gameLoop() {
 
     if (keyPressed[87]) { // W
-        if (!pause) {
-            if (obj.socketCube.z - Math.cos(cubes[thisSocket].rotation.y) * movingSpeed >= -(gameWidth / 2) + cubeHalf
-                && obj.socketCube.z - Math.cos(cubes[thisSocket].rotation.y) * movingSpeed <= (gameWidth / 2) - cubeHalf) {
+        var newX = obj.socketCube.x - Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
+        var newZ = obj.socketCube.z - Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
+        if (!collision(newX, newZ)) {
+
+
+            if (newZ >= -(gameWidth / 2) + cubeHalf
+                && newZ <= (gameWidth / 2) - cubeHalf) {
                 obj.socketCube.z -= Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
             }
-            if (obj.socketCube.x - Math.sin(cubes[thisSocket].rotation.y) * movingSpeed >= -(gameWidth / 2) + cubeHalf
-                && obj.socketCube.x - Math.sin(cubes[thisSocket].rotation.y) * movingSpeed <= (gameWidth / 2) - cubeHalf) {
+            if (newX >= -(gameWidth / 2) + cubeHalf
+                && newX <= (gameWidth / 2) - cubeHalf) {
                 obj.socketCube.x -= Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
             }
 
+            console.log("tesztelek " + collision(newX, newZ));
             obj.camera.z = cubes[thisSocket].position.z + cameraDistance * (Math.cos(cubes[thisSocket].rotation.y));
             obj.camera.x = cubes[thisSocket].position.x + cameraDistance * (Math.sin(cubes[thisSocket].rotation.y));
 
@@ -33,17 +38,21 @@ function gameLoop() {
         }
     }
     if (keyPressed[83]) { // S
-        if (!pause) {
-            if (obj.socketCube.z + Math.cos(cubes[thisSocket].rotation.y) * movingSpeed >= -(gameWidth / 2) + cubeHalf
-                && obj.socketCube.z + Math.cos(cubes[thisSocket].rotation.y) * movingSpeed <= (gameWidth / 2) - cubeHalf
+        var newX = obj.socketCube.x + Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
+        var newZ = obj.socketCube.z + Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
+        if (!collision(newX, newZ)) {
+
+            if (newZ >= -(gameWidth / 2) + cubeHalf
+                && newZ <= (gameWidth / 2) - cubeHalf
             ) {
                 obj.socketCube.z += Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
             }
-            if (obj.socketCube.x + Math.sin(cubes[thisSocket].rotation.y) * movingSpeed >= -(gameWidth / 2) + cubeHalf
-                && obj.socketCube.x + Math.sin(cubes[thisSocket].rotation.y) * movingSpeed <= (gameWidth / 2) - cubeHalf) {
+            if (newX >= -(gameWidth / 2) + cubeHalf
+                && newX <= (gameWidth / 2) - cubeHalf) {
                 obj.socketCube.x += Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
             }
 
+            console.log("tesztelek " + collision(newX, newZ));
             obj.camera.z = cubes[thisSocket].position.z + cameraDistance * (Math.cos(cubes[thisSocket].rotation.y));
             obj.camera.x = cubes[thisSocket].position.x + cameraDistance * (Math.sin(cubes[thisSocket].rotation.y));
 
@@ -51,33 +60,41 @@ function gameLoop() {
         }
     }
     if (keyPressed[65]) { // A
-        if (!pause) {
-            if (obj.socketCube.z + Math.sin(cubes[thisSocket].rotation.y) * movingSpeed >= -(gameWidth / 2) + cubeHalf
-                && obj.socketCube.z + Math.sin(cubes[thisSocket].rotation.y) * movingSpeed <= (gameWidth / 2) - cubeHalf) {
+        var newX = obj.socketCube.x - Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
+        var newZ = obj.socketCube.z + Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
+        if (!collision(newX, newZ)) {
+
+            if (newZ >= -(gameWidth / 2) + cubeHalf
+                && newZ <= (gameWidth / 2) - cubeHalf) {
                 obj.socketCube.z += Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
                 obj.camera.z += Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
             }
-            if (obj.socketCube.x - Math.cos(cubes[thisSocket].rotation.y) * movingSpeed >= -(gameWidth / 2) + cubeHalf
-                && obj.socketCube.x - Math.cos(cubes[thisSocket].rotation.y) * movingSpeed <= (gameWidth / 2) - cubeHalf) {
+            if (newX >= -(gameWidth / 2) + cubeHalf
+                && newX <= (gameWidth / 2) - cubeHalf) {
                 obj.socketCube.x -= Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
                 obj.camera.x -= Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
             }
 
+            console.log("tesztelek " + collision(newX, newZ));
             changeScene();
         }
     }
     if (keyPressed[68]) { // D
-        if (!pause) {
-            if (obj.socketCube.z - Math.sin(cubes[thisSocket].rotation.y) * movingSpeed >= -(gameWidth / 2) + cubeHalf
-                && obj.socketCube.z - Math.sin(cubes[thisSocket].rotation.y) * movingSpeed <= (gameWidth / 2) - cubeHalf) {
+        var newX = obj.socketCube.x + Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
+        var newZ = obj.socketCube.z - Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
+        if (!collision(newX, newZ)) {
+
+            if (newZ >= -(gameWidth / 2) + cubeHalf
+                && newZ <= (gameWidth / 2) - cubeHalf) {
                 obj.socketCube.z -= Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
                 obj.camera.z -= Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
             }
-            if (obj.socketCube.x + Math.cos(cubes[thisSocket].rotation.y) * movingSpeed >= -(gameWidth / 2) + cubeHalf
-                && obj.socketCube.x + Math.cos(cubes[thisSocket].rotation.y) * movingSpeed <= (gameWidth / 2) - cubeHalf) {
+            if (newX >= -(gameWidth / 2) + cubeHalf
+                && newX <= (gameWidth / 2) - cubeHalf) {
                 obj.socketCube.x += Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
                 obj.camera.x += Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
             }
+            console.log("tesztelek " + collision(newX, newZ));
             changeScene();
         }
     }
@@ -183,5 +200,9 @@ function gameLoop() {
     // update display here
     setTimeout(gameLoop, 5);
 }
+
+var collision = function (newX, newZ) {
+    return Math.abs(newX - cubes[otherPlayer].position.x) <= 1 && Math.abs(newZ - cubes[otherPlayer].position.z) <= 1;
+};
 
 gameLoop();
