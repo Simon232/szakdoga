@@ -283,6 +283,7 @@ socket.on('rotation', function (msg) {
 socket.on('disconnect', function (msg) {
     console.log("user disconnected: ", msg);
     scene.remove(cubes[msg]);
+    otherPlayer = '';
 });
 
 socket.on('update', function (msg) {

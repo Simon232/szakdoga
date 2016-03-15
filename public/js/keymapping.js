@@ -1,5 +1,3 @@
-
-
 var keyPressed = {};
 
 document.addEventListener('keydown', function (e) {
@@ -15,7 +13,6 @@ function gameLogic() {
         var newX = obj.socketCube.x - Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
         var newZ = obj.socketCube.z - Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
         if (!collision(newX, newZ)) {
-
 
             if (newZ >= -(gameWidth / 2) + cubeHalf
                 && newZ <= (gameWidth / 2) - cubeHalf) {
