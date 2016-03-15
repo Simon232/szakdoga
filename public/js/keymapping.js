@@ -205,11 +205,6 @@ function gameLogic() {
     setTimeout(gameLogic, 5);
 }
 
-var collision = function (newX, newZ) {
-    if(otherPlayer !== '') {
-        return Math.abs(newX - cubes[otherPlayer].position.x) < 1 && Math.abs(newZ - cubes[otherPlayer].position.z) < 1;
-    }
-    return false;
-};
+
 
 gameLogic();

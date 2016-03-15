@@ -38,7 +38,32 @@ var obj = {
     }
 };
 
+var collision = function (newX, newZ) {
+    if(otherPlayer !== '') {
+        var colX = Math.abs(newX - cubes[otherPlayer].position.x);
+        var colZ = Math.abs(newZ - cubes[otherPlayer].position.z);
+        var originalX = Math.abs(cubes[thisSocket].position.x - cubes[otherPlayer].position.x);
+        var originalZ = Math.abs(cubes[thisSocket].position.z - cubes[otherPlayer].position.z);
+        //return (colX < 1 && colZ < 1) && (originalX > colX && originalZ > colZ);
+        return colX <= 1 && colZ <= 1;
+        /*if(colX < 1 && colZ < 1){
+         if(originalX > colX && originalZ <= colZ){
+         return false;
+         }
+         if(originalX > colX && originalZ > colZ){
+         return false;
+         }
+         if(originalZ > colZ && originalX <= colX){
+         return false;
+         }
+         else{
+         return true;
+         }
 
+         }*/
+    }
+    return false;
+};
 
 
 var init = function () {
@@ -291,7 +316,7 @@ socket.on('chat message', function (msg) {
 var changeScene = function () {
 
 
-    if (socket.id !== undefined && socket.id !== null) {
+    if (socket.id !== undefined && socket.id !== null && !collision(obj.socketCube.x, obj.socketCube.z)) {
         cubes[thisSocket].position.x = obj.socketCube.x;
         //cubes[obj.sid].position.y = obj.pos.y;
         cubes[thisSocket].position.z = obj.socketCube.z;
@@ -309,16 +334,6 @@ var changeScene = function () {
         camera.lookAt(new THREE.Vector3( cubes[thisSocket].position.x, cubes[thisSocket].position.y,  cubes[thisSocket].position.z));
     }
 };
-
-var isCollision = function(otherCube){
-    if(cubes[thisSocket].position.x > cubes[otherCube].position.x){
-        return false;
-    }
-
-
-    return true;
-};
-
 
 
 var animate = function () {
