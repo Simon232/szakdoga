@@ -324,9 +324,9 @@ socket.on('chat message', function (msg) {
 var changeScene = function () {
     ///&& !collision(obj.socketCube.x, obj.socketCube.z)
     if (socket.id !== undefined && socket.id !== null ) {
-        cubes[thisSocket].position.x = obj.socketCube.x;
+
         //cubes[obj.sid].position.y = obj.pos.y;
-        cubes[thisSocket].position.z = obj.socketCube.z;
+
         
         socket.emit('move', {
             sid: '/#' + socket.id,
@@ -334,6 +334,8 @@ var changeScene = function () {
             rotY: obj.socketCube.rotY,
             room: thisRoom
         });
+        cubes[thisSocket].position.x = obj.socketCube.x;
+        cubes[thisSocket].position.z = obj.socketCube.z;
 
         camera.position.x = obj.camera.x;
         camera.position.y = obj.camera.y;

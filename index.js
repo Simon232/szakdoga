@@ -34,7 +34,7 @@ io.on('connection', function (socket) {
     
     for(var i = 0; i < roomManager.length; i++){
         if(roomManager[i].player1 == socket.id || roomManager[i].player2 == socket.id){
-            console.log("itt v�tam", roomManager[i].name);
+            console.log("itt volt ", roomManager[i].name);
             chosenRoom = roomManager[i].name;
         }
     }
@@ -45,7 +45,7 @@ io.on('connection', function (socket) {
             chosenRoom = 'room#0';
         }
     }
-    console.log("miagec "+ chosenRoom);
+    console.log("valasztott szoba:  "+ chosenRoom);
     io.emit('new', {sid: socket.id, room: chosenRoom });
 
 
