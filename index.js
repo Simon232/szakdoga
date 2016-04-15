@@ -9,9 +9,12 @@ app.use(express.static('public'));
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
-/*
- * socket.on - amit a kliens k�ld
- * io.emit - amit a kliensnek k�ld�nk
+/* codes for me, to better understanding:
+ *
+ * socket.on - amit a kliens kuld
+ * io.emit - amit a kliensnek kuldunk
+ * socket.broadcast.to('room' + roomSize).emit("roomIsFull");
+ * io.sockets.in('room' + roomSize).emit('roomIsFull');
  * */
 
 var joinedUsers = 0;
@@ -26,6 +29,7 @@ io.on('connection', function (socket) {
     if (joinedUsers % 2 != 0) {
         ++roomSize;
 
+        //checking unused roomId-s to avoid id-collision (for example: 0,1,3,4 id's next value: 2, then 5)
         var usedRoomId = false;
         for(var i = 0; i < roomManager.length; i++){
             if( roomManager[i].id == roomSize){
@@ -33,6 +37,7 @@ io.on('connection', function (socket) {
             }
         }
         if(usedRoomId){
+            //calculate correct id
             for(var i = 0; i < roomManager.length; i++){
                 var resultIsBad = false;
                 for(var j = 0; j < roomManager.length; j++){
@@ -42,29 +47,27 @@ io.on('connection', function (socket) {
                 }
                 if(!resultIsBad){
                     roomSize = i;
-                    i = roomManager.length;
+                    i = roomManager.length; //break the cycle
                 }
             }
             roomManager.push(addRoom());
             socket.join('room#' + roomSize);
             socket.room = 'room#' + roomSize;
-            roomSize = roomManager.length -1;
+            roomSize = roomManager.length -1; //jump to the last known 'good' value
 
         }else {
             roomManager.push(addRoom());
             socket.join('room#' + roomSize);
-            socket.room = 'room#' + roomSize;
+            socket.room = 'room#' + roomSize; //if everything went well, we don't need to jump
         }
 
 
     }else{
-        var emptyRoom = findOnePlayerRoom();
+        var emptyRoom = findOnePlayerRoom(); //enough to find an empty room
         socket.join(emptyRoom);
         socket.room = emptyRoom;
     }
     socket.emit("joined", {room: roomSize});
-    //socket.broadcast.to('room' + roomSize).emit("roomIsFull");
-    //io.sockets.in('room' + roomSize).emit('roomIsFull');
     addPlayerToRoom(socket.room, socket.id);
     console.log("user: "+ socket.id + ' connected to: ' + socket.room );
 
