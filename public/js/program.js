@@ -5,6 +5,7 @@ var thisColor = undefined;
 var thisRoom = undefined;
 var thisTexture = undefined;
 var otherPlayer = undefined;
+var testRoom = undefined;
 
 var gameWidth = 100;
 var cubeHalf = 0.49;
@@ -13,10 +14,10 @@ var movingSpeed = 0.05;
 var rotationSpeed = PI / 240;
 var cameraDistance = 6;
 
-var getRandomPosition = function(){
+var getRandomPosition = function () {
     var pos = 0;
-    while(pos <= 1 && pos >= -1){
-        pos = Math.floor(Math.random() * 2) % 2 == 0 ? Math.random() * ((gameWidth / 2)-cubeHalf) : -1* Math.random() * ((gameWidth/2)-cubeHalf);
+    while (pos <= 1 && pos >= -1) {
+        pos = Math.floor(Math.random() * 2) % 2 == 0 ? Math.random() * ((gameWidth / 2) - cubeHalf) : -1 * Math.random() * ((gameWidth / 2) - cubeHalf);
     }
     return pos;
 };
@@ -43,13 +44,13 @@ var obj = {
 };
 
 var collision = function (newX, newZ) {
-    if(otherPlayer !== '') {
+    if (otherPlayer !== '') {
         var colX = Math.abs(newX - cubes[otherPlayer].position.x);
         var colZ = Math.abs(newZ - cubes[otherPlayer].position.z);
         var originalX = Math.abs(cubes[thisSocket].position.x - cubes[otherPlayer].position.x);
         var originalZ = Math.abs(cubes[thisSocket].position.z - cubes[otherPlayer].position.z);
         //return (colX < 1 && colZ < 1) && (originalX > colX && originalZ > colZ);
-        if(colX <= 1 && colZ <= 1 && (colX < (1 + 2 * movingSpeed) || colX < (1 + 2 * movingSpeed))){
+        if (colX <= 1 && colZ <= 1 && (colX < (1 + 2 * movingSpeed) || colX < (1 + 2 * movingSpeed))) {
             return true;
         }
         return colX <= 1 && colZ <= 1;
@@ -71,9 +72,15 @@ var collision = function (newX, newZ) {
     }
     return false;
 };
+socket.on("joined", function(obj){
+    console.log("testroom: " + "room#"+thisRoom);
+    //thisRoom = 'room#'+obj.room;
+    socket.emit("joined", {userName: "not implemented yet"});
+});
 
 
 var init = function () {
+
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
@@ -138,18 +145,18 @@ var init = function () {
     //define a geometry
     var pyramidGeometry = new THREE.Geometry();
     //verticles
-    pyramidGeometry.vertices.push( new THREE.Vector3( 10, 0, -5));
-    pyramidGeometry.vertices.push( new THREE.Vector3( 14, 0, -5));
-    pyramidGeometry.vertices.push( new THREE.Vector3( 14, 0, -9));
-    pyramidGeometry.vertices.push( new THREE.Vector3( 10, 0, -9));
-    pyramidGeometry.vertices.push( new THREE.Vector3( 12, 2, -7));
+    pyramidGeometry.vertices.push(new THREE.Vector3(10, 0, -5));
+    pyramidGeometry.vertices.push(new THREE.Vector3(14, 0, -5));
+    pyramidGeometry.vertices.push(new THREE.Vector3(14, 0, -9));
+    pyramidGeometry.vertices.push(new THREE.Vector3(10, 0, -9));
+    pyramidGeometry.vertices.push(new THREE.Vector3(12, 2, -7));
     //face
-    pyramidGeometry.faces.push( new THREE.Face3(0,1,2));
-    pyramidGeometry.faces.push( new THREE.Face3(0,2,3));
-    pyramidGeometry.faces.push( new THREE.Face3(0,1,4));
-    pyramidGeometry.faces.push( new THREE.Face3(1,2,4));
-    pyramidGeometry.faces.push( new THREE.Face3(2,3,4));
-    pyramidGeometry.faces.push( new THREE.Face3(3,0,4));
+    pyramidGeometry.faces.push(new THREE.Face3(0, 1, 2));
+    pyramidGeometry.faces.push(new THREE.Face3(0, 2, 3));
+    pyramidGeometry.faces.push(new THREE.Face3(0, 1, 4));
+    pyramidGeometry.faces.push(new THREE.Face3(1, 2, 4));
+    pyramidGeometry.faces.push(new THREE.Face3(2, 3, 4));
+    pyramidGeometry.faces.push(new THREE.Face3(3, 0, 4));
     //pyramidGeometry.faceVertexUvs[0][0] = [ new THREE.Vector2(0.5, 0.5), new THREE.Vector2(0.5, 0.5), new THREE.Vector2(0.5, 0.5)]; // for textures
     var PyramidMesh = new THREE.Mesh(pyramidGeometry, pyramidMaterial);
 
@@ -167,7 +174,6 @@ var init = function () {
     ground.position.y = 0;
     ground.position.z = 0;
     scene.add(ground);
-
 
 
     scene.add(x_line); //zold
@@ -259,7 +265,7 @@ socket.on('new', function (msg) {
     camera.position.y = 4;
     camera.position.z = cubes[thisSocket].position.z + 6;
 
-    camera.lookAt(new THREE.Vector3( cubes[thisSocket].position.x,  cubes[thisSocket].position.y,  cubes[thisSocket].position.z));
+    camera.lookAt(new THREE.Vector3(cubes[thisSocket].position.x, cubes[thisSocket].position.y, cubes[thisSocket].position.z));
 
 });
 
@@ -286,8 +292,13 @@ socket.on('rotation', function (msg) {
     }
 });
 
+socket.on("roomIsFull", function(){
+   //alert("roomIsFull");
+   //console.log("szopki");
+});
+
 socket.on('disconnect', function (msg) {
-    console.log("user disconnected: ", msg);
+    console.log(msg + " user disconnected: ");
     scene.remove(cubes[msg]);
     otherPlayer = '';
 });
@@ -329,11 +340,11 @@ socket.on('chat message', function (msg) {
 // *** functions ***
 var changeScene = function () {
     ///&& !collision(obj.socketCube.x, obj.socketCube.z)
-    if (socket.id !== undefined && socket.id !== null ) {
+    if (socket.id !== undefined && socket.id !== null) {
 
         //cubes[obj.sid].position.y = obj.pos.y;
 
-        
+
         socket.emit('move', {
             sid: '/#' + socket.id,
             pos: obj.socketCube,
@@ -346,7 +357,7 @@ var changeScene = function () {
         camera.position.x = obj.camera.x;
         camera.position.y = obj.camera.y;
         camera.position.z = obj.camera.z;
-        camera.lookAt(new THREE.Vector3( cubes[thisSocket].position.x, cubes[thisSocket].position.y,  cubes[thisSocket].position.z));
+        camera.lookAt(new THREE.Vector3(cubes[thisSocket].position.x, cubes[thisSocket].position.y, cubes[thisSocket].position.z));
     }
 };
 

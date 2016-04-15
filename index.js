@@ -9,78 +9,109 @@ app.use(express.static('public'));
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
-
+/*
+ * socket.on - amit a kliens k�ld
+ * io.emit - amit a kliensnek k�ld�nk
+ * */
 
 var joinedUsers = 0;
 var roomManager = [];
 var chosenRoom = "";
+var roomSize = -1;
 
 io.on('connection', function (socket) {
-/*
-* socket.on - amit a kliens k�ld
-* io.emit - amit a kliensnek k�ld�nk
-* */
 
     // *** connection section ***
-    console.log('a user connected ', socket.id);
-
     ++joinedUsers;
-    if (joinedUsers % 2 == 0 || joinedUsers == 1) {
-        roomManager.push(addRoom(false));
-        console.log("rooms new size: ", roomManager.length)
-    }
-    addPlayerToRoom(('room#'+ (joinedUsers - roomManager.length )), socket.id);
+    if (joinedUsers % 2 != 0) {
+        ++roomSize;
 
-    
-    for(var i = 0; i < roomManager.length; i++){
-        if(roomManager[i].player1 == socket.id || roomManager[i].player2 == socket.id){
-            console.log("itt volt ", roomManager[i].name);
-            chosenRoom = roomManager[i].name;
+        var usedRoomId = false;
+        for(var i = 0; i < roomManager.length; i++){
+            if( roomManager[i].id == roomSize){
+                usedRoomId = true;
+            }
         }
-    }
-    if(chosenRoom == ""){
-        if(joinedUsers - roomManager-length > -1) {
-            chosenRoom = 'room#' + (joinedUsers - roomManager.length );
-        }else{
-            chosenRoom = 'room#0';
-        }
-    }
-    console.log("valasztott szoba:  "+ chosenRoom);
-    io.emit('new', {sid: socket.id, room: chosenRoom });
+        if(usedRoomId){
+            for(var i = 0; i < roomManager.length; i++){
+                var resultIsBad = false;
+                for(var j = 0; j < roomManager.length; j++){
+                    if(roomManager[j].id == i){
+                        resultIsBad = true;
+                    }
+                }
+                if(!resultIsBad){
+                    roomSize = i;
+                    i = roomManager.length;
+                }
+            }
+            roomManager.push(addRoom());
+            socket.join('room#' + roomSize);
+            socket.room = 'room#' + roomSize;
+            roomSize = roomManager.length -1;
 
+        }else {
+            roomManager.push(addRoom());
+            socket.join('room#' + roomSize);
+            socket.room = 'room#' + roomSize;
+        }
+
+
+    }else{
+        var emptyRoom = findOnePlayerRoom();
+        socket.join(emptyRoom);
+        socket.room = emptyRoom;
+    }
+    socket.emit("joined", {room: roomSize});
+    //socket.broadcast.to('room' + roomSize).emit("roomIsFull");
+    //io.sockets.in('room' + roomSize).emit('roomIsFull');
+    addPlayerToRoom(socket.room, socket.id);
+    console.log("user: "+ socket.id + ' connected to: ' + socket.room );
+
+
+    io.emit('new', {sid: socket.id, room: socket.room});
+
+
+    socket.on("joined", function(obj){
+        socket.username = obj.userName;
+    });
 
     socket.on('disconnect', function () {
-        console.log('user disconnect', socket.id);
+        if (joinedUsers % 2 != 0) {
+            --roomSize;
+        }
 
-        console.log("debug: ", roomManager.length);
+        console.log("user: "+ socket.id + ' disconnect from: ' + socket.room);
+
+        //removeEmptyRoom
         for (var i = 0; i < roomManager.length; i++) {
             if (roomManager[i].player1 == socket.id) {
-                //roomManager.splice(i, 1);
                 roomManager[i].player1 = '';
             }
             if (roomManager[i].player2 == socket.id) {
                 roomManager[i].player2 = '';
             }
-            if(roomManager[i].player1 == '' && roomManager[i].player2 == ''){
+            if (roomManager[i].player1 == '' && roomManager[i].player2 == '') {
                 roomManager.splice(i, 1);
             }
         }
         --joinedUsers;
-        console.log("debug ut�n: ", roomManager.length);
         io.emit('disconnect', socket.id);
+        socket.leave(socket.room);
     });
 
     // *** movements section ***
     socket.on('move', function (msg) {
-        socket.broadcast.emit('move', msg);
+        socket.broadcast.to(socket.room).emit('move', msg);
+        //socket.broadcast.emit('move', msg);
     });
 
     socket.on('update', function (msg) {
-        socket.broadcast.emit('update', msg);
+        socket.broadcast.to(socket.room).emit('update', msg);
     });
 
     socket.on('rotation', function (msg) {
-        socket.broadcast.emit('rotation', msg);
+        socket.broadcast.to(socket.room).emit('rotation', msg);
     });
 
     // *** page functions section ***
@@ -88,143 +119,49 @@ io.on('connection', function (socket) {
         io.emit('chat message', msg);
     });
 
-    socket.on('reset',function(msg){
-       io.emit('reset', msg);
+    socket.on('reset', function (msg) {
+        io.emit('reset', msg);
     });
 
-    socket.on("isEmptyRoom", function(thisRoom){
-        var otherPlayer = '';
-        for(var i = 0; i < roomManager.length; i++){
-            if(roomManager[i].name == thisRoom){
-                if(roomManager[i].player1 != '' && roomManager[i].player1 != socket.id){
-                    otherPlayer = roomManager[i].player1;
-                }
-                if(roomManager[i].player2 != '' && roomManager[i].player2 != socket.id){
-                    otherPlayer = roomManager[i].player2;
-                }
-            }
-        }
-        socket.emit("isEmptyRoom", otherPlayer);
-    });
 });
 
-var addPlayerToRoom = function(room, player){
-    console.log("wat " + room + " " +player);
-    
-    
+var addPlayerToRoom = function (room, player) {
     var id = 0;
-    for(var i = 0; i < roomManager.length; i++){
-        if(roomManager[i].name == room){
-            console.log("AAAAA");
+    for (var i = 0; i < roomManager.length; i++) {
+        if (roomManager[i].name == room) {
             id = i;
         }
     }
-    
-    if(roomManager[id].player1 != '' && roomManager[id].player2 != '')
-    {
-        console.log("nemures");
-        for(var i = 0; i < roomManager.length; i++){
-            if(roomManager[i].player1 == '' || roomManager[i].player2 == ''){
-                id = i;   
-                break;
-            }
-        }
-        console.log("kiwi vagyok", id);
-    }
-    if(roomManager[id].player1 == ''){
+
+    if (roomManager[id].player1 == '') {
         roomManager[id].player1 = player;
     }
-    else if(roomManager[id].player2 == ''){
+    else if (roomManager[id].player2 == '') {
         roomManager[id].player2 = player;
     }
-    console.log("A csávót ide tettem: " + id + " pl1: " + roomManager[id].player1 + " pl2: " + roomManager[id].player2);
-    console.log("ROOM CHECK: name: " + roomManager[id].name + " player 1: "+roomManager[id].player1 + " player2: " + roomManager[id].player2);
 };
 
-var addRoom = function (private) {
-    var createId = 0;
-    for(var i = 0; i < roomManager.length; i++){
-        if(roomManager[i].name.charAt(5) == createId){
-            ++createId;
-            i = 0;
-        }
-    }
-    /*var conflict = false;
-    var ids = [];
-    for (var i = 0; i < roomManager.length; ++i) {
-        console.log("almafa",roomManager[i].name.charAt(5));
-        ids.push(roomManager[i].name.charAt(5));
-    }
-    for (var i = 0; i < ids.length; ++i) {
-        if (roomManager.length == ids[i]) {
-            conflict = true;
-        }
-    }
-    var createId = 0;
-    if (conflict) {
-        while (conflict) {
-
-            conflict = false;
-            for (var i = 0; i < ids.length; ++i) {
-                if (createId == ids[i]) {
-                    conflict = true;
-                }
-            }
-            ++createId;
-        }
-    }
-*/
+var addRoom = function () {
     return {
-        id: createId,
-        name: 'room#' + createId,
+        id: roomSize,
+        name: 'room#' + roomSize,
         player1: '',
-        player2: '',
-        private: private
+        player2: ''
     };
 };
-/*
- var roomIsEmpty = function (roomId) {
- return roomManager[roomID].player1 == '' && roomManager[roomID].player2 == '';
- };
 
- var roomIsFull = function (roomId) {
- return roomManager[roomID].player1 != '' && roomManager[roomID].player2 != '';
- };
+var findOnePlayerRoom = function(){
+    for(var i = 0; i < roomManager.length; i++){
+        if(roomManager[i].player1 == ''){
+            return roomManager[i].name;
+        }
+        if(roomManager[i].player2 == ''){
+            return roomManager[i].name;
+        }
+    }
+    return "HAHAHAHA";
+};
 
- var roomGetPlayer = function (player) {
- for (var i = 0; i < roomManager.length; i++) {
- if (roomManager[i].player1 == player || roomManager[i].player2 == player) {
- return roomManager[i].id;
- }
- }
- };
-
- var roomIsEmpty = function () {
- var empty = false;
- var id = 0;
- for (var i = 0; i < roomManager.length; i++) {
- if (roomManager[i].player1 == '' || roomManager[i].player2 == '') {
- empty = true;
- id = i;
- }
- i = roomManager.length + 1;
- }
- if (empty) {
- return {
- empty: empty,
- id: id
- };
- }
- return {empty: false, id: -1};
- };
-
- var joinRoom = function (player, id) {
-
- };
- */
 http.listen(port, function () {
-    console.log('listening on port:', port);
+    console.log('Server is started, listening on port:', port);
 });
-
-
-
