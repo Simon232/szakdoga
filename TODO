@@ -8,7 +8,7 @@
 ( ) Dinamic light
 ( ) JUMP
 (X) gameWidth max movable
-(?) collision
+(X) collision - tapasztalat: aszinkronitás és teljesítmény miatt nem megvalósítható a kitűzött cél
 ( ) collectible coins, resizing cubes
 (X) random position
 (X) better keyhandler

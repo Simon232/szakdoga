@@ -123,6 +123,26 @@ var init = function () {
     var y_line = new THREE.Mesh(line_geo2, line2_material);
     var z_line = new THREE.Mesh(line_geo3, line3_material);
 
+    var circleMaterial = new THREE.MeshBasicMaterial({color: 0x00006633});
+    var circleGeometry = new THREE.Geometry();
+    var rate = 0.0;
+    var angle = 20;
+    var rating = (2*PI) / (angle);
+    var radius = 2;
+
+    circleGeometry.vertices.push(new THREE.Vector3(3, 3, 0));
+    for (var i = 0; i < angle; i++) {
+        circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 3, radius * Math.sin(rate) + 3, 0));
+        rate += rating;
+        if(i === angle -1 ){
+            circleGeometry.vertices.push(circleGeometry.vertices[1]);
+        }else {
+            circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 3, radius * Math.sin(rate) + 3, 0));
+        }
+        circleGeometry.faces.push(new THREE.Face3(0, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
+    }
+    var circleMesh = new THREE.Mesh(circleGeometry, circleMaterial);
+
 
     var pyramidTexture = new THREE.TextureLoader().load("pics/pyramid.jpg");
     pyramidTexture.wrapS = THREE.RepeatWrapping;
@@ -167,6 +187,8 @@ var init = function () {
     scene.add(y_line); //piros
     scene.add(z_line); //kek
     scene.add(PyramidMesh);
+    scene.add(circleMesh);
+
 };
 
 // *** server calls ***
