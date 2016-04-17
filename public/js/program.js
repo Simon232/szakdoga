@@ -373,7 +373,7 @@ var changeScene = function () {
 
 
         socket.emit('move', {
-            sid: '/#' + socket.id,
+            sid: thisSocket,
             pos: obj.socketCube,
             rotY: obj.socketCube.rotY,
             room: thisRoom,
