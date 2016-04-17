@@ -291,10 +291,12 @@ socket.on('move', function (_obj) {
         cubes[_obj.sid].position.x = _obj.pos.x;
         //cubes[obj.sid].position.y = obj.pos.y;
         cubes[_obj.sid].position.z = _obj.pos.z;
-        camera.position.x = obj.camera.x;
-        camera.position.y = obj.camera.y;
-        camera.position.z = obj.camera.z;
-        camera.lookAt(new THREE.Vector3(cubes[thisSocket].position.x, cubes[thisSocket].position.y, cubes[thisSocket].position.z));
+        if (_obj.sid == thisSocket) {
+            camera.position.x = _obj.camera.x;
+            camera.position.y = _obj.camera.y;
+            camera.position.z = _obj.camera.z;
+            camera.lookAt(new THREE.Vector3(cubes[thisSocket].position.x, cubes[thisSocket].position.y, cubes[thisSocket].position.z));
+        }
     }
 });
 
@@ -367,7 +369,8 @@ var changeScene = function () {
             sid: '/#' + socket.id,
             pos: obj.socketCube,
             rotY: obj.socketCube.rotY,
-            room: thisRoom
+            room: thisRoom,
+            camera: {x: obj.camera.x, y: obj.camera.y, z: obj.camera.z}
         });
 
         //var isCollision = true;
