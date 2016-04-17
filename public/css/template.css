@@ -1,18 +1,20 @@
-body{
+body {
     margin: 0;
 }
-.on-the-top{
+
+.on-the-top {
     z-index: 1;
     position: absolute;
     color: rgba(255, 0, 0, 1);
     padding: 15px;
 
-
 }
-.on-the-top-img{
+
+.on-the-top-img {
     opacity: 0.5;
 }
-.on-the-top-right{
+
+.on-the-top-right {
     z-index: 1;
     position: absolute;
     right: 0;
@@ -22,7 +24,7 @@ body{
     font-size: 30px;
 }
 
-.graphic-container{
+.graphic-container {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -32,4 +34,24 @@ body{
     width: 100%;
     height: 100%;
     position: absolute;
+}
+
+.chat {
+    background-color: rgba(153, 255, 153, 0.1);
+    position: absolute;
+    right: 20px;
+
+}
+
+.messages {
+    height: 200px;
+    overflow-y: scroll;
+}
+
+.chat-form {
+}
+
+li {
+    width: 160px;
+    word-wrap: break-word;
 }

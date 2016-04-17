@@ -126,7 +126,7 @@ var init = function () {
     var circleMaterial = new THREE.MeshBasicMaterial({color: 0x00006633});
     var circleGeometry = new THREE.Geometry();
     var rate = 0.0;
-    var angle = 20;
+    var angle = 100;
     var rating = (2*PI) / (angle);
     var radius = 2;
 
@@ -203,6 +203,8 @@ socket.on('new', function (msg) {
         thisRoom = msg.room;
 
         document.querySelector(".on-the-top-right").textContent += thisRoom;
+        document.querySelector(".chat").style.top = window.innerHeight/4 + "px";
+
 
         thisSocket = msg.sid;
         thisColor = "rgb(" + R + "," + G + "," + B + ")";
@@ -359,9 +361,7 @@ socket.on('update', function (msg) {
     }
 });
 
-socket.on('chat message', function (msg) {
-    $('#messages').append($('<li>').text(msg));
-});
+
 
 
 // *** functions ***

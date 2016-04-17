@@ -21,6 +21,8 @@ var joinedUsers = 0;
 var roomManager = [];
 var roomSize = -1;
 var cubes = {};
+var roomMessages = {};
+
 
 io.on('connection', function (socket) {
 
@@ -50,15 +52,19 @@ io.on('connection', function (socket) {
                     i = roomManager.length; //break the cycle
                 }
             }
+            var roomName = 'room#' + roomSize;
             roomManager.push(addRoom());
-            socket.join('room#' + roomSize);
-            socket.room = 'room#' + roomSize;
+            roomMessages[roomName] = [];
+            socket.join(roomName);
+            socket.room = roomName;
             roomSize = roomManager.length -1; //jump to the last known 'good' value
 
         }else {
+            var roomName = 'room#' + roomSize;
             roomManager.push(addRoom());
-            socket.join('room#' + roomSize);
-            socket.room = 'room#' + roomSize; //if everything went well, we don't need to jump
+            roomMessages[roomName] = [];
+            socket.join(roomName);
+            socket.room = roomName; //if everything went well, we don't need to jump
         }
 
 
@@ -68,6 +74,7 @@ io.on('connection', function (socket) {
         socket.room = emptyRoom;
     }
     io.emit('new', {sid: socket.id, room: socket.room});
+    io.to(socket.room).emit("old messages", {sid: socket.id, historyMessage: roomMessages[socket.room]});
     //socket.emit("joined");
 
     addPlayerToRoom(socket.room, socket.id);
@@ -95,7 +102,11 @@ io.on('connection', function (socket) {
                 roomManager[i].player2 = '';
             }
             if (roomManager[i].player1 == '' && roomManager[i].player2 == '') {
+                var roomName = roomManager[i].name;
+                delete roomMessages[roomName];
                 roomManager.splice(i, 1);
+
+                console.log("Tarolt szoba uzenetek merete torles utan: " + Object.keys(roomMessages).length)
             }
         }
         --joinedUsers;
@@ -127,8 +138,14 @@ io.on('connection', function (socket) {
     });
 
     // *** page functions section ***
-    socket.on('chat message', function (msg) {
-        io.emit('chat message', msg);
+    socket.on('chat message', function (obj) {
+        if(roomMessages[obj.room].length == 5){
+            roomMessages[obj.room].shift();
+        }
+        roomMessages[obj.room].push(obj.msg);
+
+
+        io.to(obj.room).emit('chat message', obj);
     });
 
     socket.on('reset', function (msg) {
