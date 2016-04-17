@@ -298,12 +298,12 @@ socket.on('move', function (_obj) {
         cubes[_obj.sid].position.x = x;
         //cubes[obj.sid].position.y = obj.pos.y;
         cubes[_obj.sid].position.z = z;
-        if (_obj.sid == thisSocket) {
-            camera.position.x = camX;
-            camera.position.y = camY;
-            camera.position.z = camZ;
-            camera.lookAt(new THREE.Vector3(x, y, z));
-        }
+        //if (_obj.sid == thisSocket) {
+        //    camera.position.x = camX;
+        //    camera.position.y = camY;
+        //    camera.position.z = camZ;
+        //    camera.lookAt(new THREE.Vector3(x, y, z));
+        //}
     }
 });
 
