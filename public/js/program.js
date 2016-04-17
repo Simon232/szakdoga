@@ -273,8 +273,8 @@ socket.on('new', function (msg) {
 
 
 socket.on('move', function (_obj) {
-    if (_obj.room == thisRoom) {
-        var sid = _obj.sid;
+    var sid = _obj.sid;
+    if (_obj.room == thisRoom && sid !== thisSocket) {
         var x = _obj.pos.x;
         var y = _obj.pos.y;
         var z = _obj.pos.z;

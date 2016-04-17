@@ -107,8 +107,8 @@ io.on('connection', function (socket) {
     socket.on('move', function (msg) {
         if(!isCollision(msg)) {
             cubes[msg.sid] = msg.pos;
-            //socket.broadcast.to(socket.room).emit('move', msg);
-            io.to(socket.room).emit('move', msg);
+            socket.broadcast.to(socket.room).emit('move', msg);
+            //io.to(socket.room).emit('move', msg);
         }
         //socket.broadcast.emit('move', msg);
     });
