@@ -288,14 +288,21 @@ socket.on('new', function (msg) {
 
 socket.on('move', function (_obj) {
     if (_obj.room == thisRoom) {
-        cubes[_obj.sid].position.x = _obj.pos.x;
+        var x = _obj.pos.x;
+        var y = _obj.pos.y;
+        var z = _obj.pos.z;
+        var camX = _obj.camera.x;
+        var camY = _obj.camera.y;
+        var camZ = _obj.camera.z;
+
+        cubes[_obj.sid].position.x = x;
         //cubes[obj.sid].position.y = obj.pos.y;
-        cubes[_obj.sid].position.z = _obj.pos.z;
+        cubes[_obj.sid].position.z = z;
         if (_obj.sid == thisSocket) {
-            camera.position.x = _obj.camera.x;
-            camera.position.y = _obj.camera.y;
-            camera.position.z = _obj.camera.z;
-            camera.lookAt(new THREE.Vector3(cubes[thisSocket].position.x, cubes[thisSocket].position.y, cubes[thisSocket].position.z));
+            camera.position.x = camX;
+            camera.position.y = camY;
+            camera.position.z = camZ;
+            camera.lookAt(new THREE.Vector3(x, y, z));
         }
     }
 });
