@@ -72,10 +72,11 @@ var collision = function (newX, newZ) {
     }
     return false;
 };
-socket.on("joined", function(obj){
-    console.log("testroom: " + "room#"+thisRoom);
+socket.on("joined", function () {
+    console.log("miafasz");
+    //console.log("testroom: " + "room#"+thisRoom);
     //thisRoom = 'room#'+obj.room;
-    socket.emit("joined", {userName: "not implemented yet"});
+    socket.emit("joined", {userName: "not implemented yet", cube: cubes[thisSocket]});
 });
 
 
@@ -239,6 +240,14 @@ socket.on('new', function (msg) {
         cubes[thisSocket].position.z = obj.socketCube.z;
 
         scene.add(cubes[thisSocket]);
+        socket.emit("joined", {
+            userName: "not implemented yet",
+            cube: {
+                x: cubes[thisSocket].position.x,
+                y: cubes[thisSocket].position.y,
+                z: cubes[thisSocket].position.z
+            }
+        })
     }
 
     if (socket.id != undefined) { // elkuldom a kockamat a masiknak
@@ -266,7 +275,14 @@ socket.on('new', function (msg) {
     camera.position.z = cubes[thisSocket].position.z + 6;
 
     camera.lookAt(new THREE.Vector3(cubes[thisSocket].position.x, cubes[thisSocket].position.y, cubes[thisSocket].position.z));
-
+    socket.emit("joined", {
+        userName: "not implemented yet",
+        cube: {
+            x: cubes[thisSocket].position.x,
+            y: cubes[thisSocket].position.y,
+            z: cubes[thisSocket].position.z
+        }
+    })
 });
 
 
@@ -275,8 +291,6 @@ socket.on('move', function (obj) {
         cubes[obj.sid].position.x = obj.pos.x;
         //cubes[obj.sid].position.y = obj.pos.y;
         cubes[obj.sid].position.z = obj.pos.z;
-
-        //console.log("aaaaaa " + (cubes[obj.sid].position.z + '').length + " : " + cubes[obj.sid].position.z);
     }
 });
 
@@ -292,9 +306,9 @@ socket.on('rotation', function (msg) {
     }
 });
 
-socket.on("roomIsFull", function(){
-   //alert("roomIsFull");
-   //console.log("szopki");
+socket.on("roomIsFull", function () {
+    //alert("roomIsFull");
+    //console.log("szopki");
 });
 
 socket.on('disconnect', function (msg) {
@@ -305,7 +319,7 @@ socket.on('disconnect', function (msg) {
 
 socket.on('update', function (msg) {
 
-    console.log("aaaaa Ezt kaptam: ", msg);
+    console.log("Ezt kaptam: ", msg);
     if (msg.room == thisRoom) {
         if (cubes[msg.sid] == undefined) {  // masik jatekos csatlakozasa
 

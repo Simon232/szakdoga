@@ -19,8 +19,8 @@ app.get('/', function (req, res) {
 
 var joinedUsers = 0;
 var roomManager = [];
-var chosenRoom = "";
 var roomSize = -1;
+var cubes = {};
 
 io.on('connection', function (socket) {
 
@@ -67,16 +67,16 @@ io.on('connection', function (socket) {
         socket.join(emptyRoom);
         socket.room = emptyRoom;
     }
-    socket.emit("joined", {room: roomSize});
+    io.emit('new', {sid: socket.id, room: socket.room});
+    //socket.emit("joined");
+
     addPlayerToRoom(socket.room, socket.id);
     console.log("user: "+ socket.id + ' connected to: ' + socket.room );
 
-
-    io.emit('new', {sid: socket.id, room: socket.room});
-
-
     socket.on("joined", function(obj){
         socket.username = obj.userName;
+        cubes[socket.id] = obj.cube;
+        console.log( socket.id + " joined with this:  [" + cubes[socket.id].x + ", " + cubes[socket.id].y + ", " + cubes[socket.id].z + "]");
     });
 
     socket.on('disconnect', function () {
@@ -105,7 +105,10 @@ io.on('connection', function (socket) {
 
     // *** movements section ***
     socket.on('move', function (msg) {
-        socket.broadcast.to(socket.room).emit('move', msg);
+        if(!collision(msg)) {
+            cubes[msg.sid] = msg.pos;
+            socket.broadcast.to(socket.room).emit('move', msg);
+        }
         //socket.broadcast.emit('move', msg);
     });
 
@@ -163,6 +166,42 @@ var findOnePlayerRoom = function(){
         }
     }
     return "HAHAHAHA";
+};
+
+var getEnemyPlayerName = function(playerName, playerRoom){
+    var enemyName = '';
+    for(var i = 0; i < roomManager.length; i++){
+        if(roomManager[i].name == playerRoom){
+            if(roomManager[i].player1 == playerName){
+                enemyName = roomManager[i].player2;
+            }
+            else if(roomManager[i].player2 == playerName){
+                enemyName = roomManager[i].player1;
+            }
+        }
+    }
+    return enemyName;
+};
+
+var collision = function(obj){
+    var otherPlayer = getEnemyPlayerName(obj.sid, obj.room);
+    var thisSocket = obj.sid;
+    var newX = obj.pos.x;
+    var newZ = obj.pos.z;
+    var movingSpeed = 0.05;
+
+    if (otherPlayer !== '') {
+        var colX = Math.abs(newX - cubes[otherPlayer].x);
+        var colZ = Math.abs(newZ - cubes[otherPlayer].z);
+        var originalX = Math.abs(cubes[thisSocket].x - cubes[otherPlayer].x);
+        var originalZ = Math.abs(cubes[thisSocket].z - cubes[otherPlayer].z);
+        return (colX < 1 && colZ < 1) && (originalX > colX && originalZ > colZ);
+        /*if (colX <= 1 && colZ <= 1 && (colX < (1 + 2 * movingSpeed) || colX < (1 + 2 * movingSpeed))) {
+            return true;
+        }
+        return colX <= 1 && colZ <= 1;*/
+    }
+    return false;
 };
 
 http.listen(port, function () {
