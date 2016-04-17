@@ -112,6 +112,7 @@ io.on('connection', function (socket) {
         --joinedUsers;
         io.emit('disconnect', socket.id);
         socket.leave(socket.room);
+
     });
 
     // *** movements section ***
