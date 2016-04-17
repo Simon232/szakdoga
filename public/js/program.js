@@ -49,26 +49,12 @@ var collision = function (newX, newZ) {
         var colZ = Math.abs(newZ - cubes[otherPlayer].position.z);
         var originalX = Math.abs(cubes[thisSocket].position.x - cubes[otherPlayer].position.x);
         var originalZ = Math.abs(cubes[thisSocket].position.z - cubes[otherPlayer].position.z);
-        //return (colX < 1 && colZ < 1) && (originalX > colX && originalZ > colZ);
-        if (colX <= 1 && colZ <= 1 && (colX < (1 + 2 * movingSpeed) || colX < (1 + 2 * movingSpeed))) {
-            return true;
-        }
-        return colX <= 1 && colZ <= 1;
-        /*if(colX < 1 && colZ < 1){
-         if(originalX > colX && originalZ <= colZ){
-         return false;
-         }
-         if(originalX > colX && originalZ > colZ){
-         return false;
-         }
-         if(originalZ > colZ && originalX <= colX){
-         return false;
-         }
-         else{
+        return (colX < 1 && colZ < 1) && (originalX > colX && originalZ > colZ);
+        /*if (colX <= 1 && colZ <= 1 && (colX < (1 + 2 * movingSpeed) || colX < (1 + 2 * movingSpeed))) {
          return true;
          }
+         return colX <= 1 && colZ <= 1;*/
 
-         }*/
     }
     return false;
 };
@@ -288,22 +274,14 @@ socket.on('new', function (msg) {
 
 socket.on('move', function (_obj) {
     if (_obj.room == thisRoom) {
+        var sid = _obj.sid;
         var x = _obj.pos.x;
         var y = _obj.pos.y;
         var z = _obj.pos.z;
-        var camX = _obj.camera.x;
-        var camY = _obj.camera.y;
-        var camZ = _obj.camera.z;
 
-        cubes[_obj.sid].position.x = x;
+        cubes[sid].position.x = x;
         //cubes[obj.sid].position.y = obj.pos.y;
-        cubes[_obj.sid].position.z = z;
-        //if (_obj.sid == thisSocket) {
-        //    camera.position.x = camX;
-        //    camera.position.y = camY;
-        //    camera.position.z = camZ;
-        //    camera.lookAt(new THREE.Vector3(x, y, z));
-        //}
+        cubes[sid].position.z = z;
     }
 });
 
@@ -380,16 +358,13 @@ var changeScene = function () {
             camera: {x: obj.camera.x, y: obj.camera.y, z: obj.camera.z}
         });
 
-        //var isCollision = true;
-        //socket.emit()
-        //
-        //cubes[thisSocket].position.x = obj.socketCube.x;
-        //cubes[thisSocket].position.z = obj.socketCube.z;
-        //
-        //camera.position.x = obj.camera.x;
-        //camera.position.y = obj.camera.y;
-        //camera.position.z = obj.camera.z;
-        //camera.lookAt(new THREE.Vector3(cubes[thisSocket].position.x, cubes[thisSocket].position.y, cubes[thisSocket].position.z));
+        cubes[thisSocket].position.x = obj.socketCube.x;
+        cubes[thisSocket].position.z = obj.socketCube.z;
+
+        camera.position.x = obj.camera.x;
+        camera.position.y = obj.camera.y;
+        camera.position.z = obj.camera.z;
+        camera.lookAt(new THREE.Vector3(cubes[thisSocket].position.x, cubes[thisSocket].position.y, cubes[thisSocket].position.z));
     }
 };
 
