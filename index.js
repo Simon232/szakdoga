@@ -105,11 +105,17 @@ io.on('connection', function (socket) {
 
     // *** movements section ***
     socket.on('move', function (msg) {
-        if(!collision(msg)) {
+        if(!isCollision(msg)) {
             cubes[msg.sid] = msg.pos;
-            socket.broadcast.to(socket.room).emit('move', msg);
+            //socket.broadcast.to(socket.room).emit('move', msg);
+            io.to(socket.room).emit('move', msg);
         }
         //socket.broadcast.emit('move', msg);
+    });
+
+    socket.on("isCollision", function(obj){
+        var isCol = isCollision(obj);
+        socket.emit("isCollision", {respond: isCol});
     });
 
     socket.on('update', function (msg) {
@@ -183,7 +189,7 @@ var getEnemyPlayerName = function(playerName, playerRoom){
     return enemyName;
 };
 
-var collision = function(obj){
+var isCollision = function(obj){
     var otherPlayer = getEnemyPlayerName(obj.sid, obj.room);
     var thisSocket = obj.sid;
     var newX = obj.pos.x;

@@ -286,11 +286,15 @@ socket.on('new', function (msg) {
 });
 
 
-socket.on('move', function (obj) {
-    if (obj.room == thisRoom) {
-        cubes[obj.sid].position.x = obj.pos.x;
+socket.on('move', function (_obj) {
+    if (_obj.room == thisRoom) {
+        cubes[_obj.sid].position.x = _obj.pos.x;
         //cubes[obj.sid].position.y = obj.pos.y;
-        cubes[obj.sid].position.z = obj.pos.z;
+        cubes[_obj.sid].position.z = _obj.pos.z;
+        camera.position.x = obj.camera.x;
+        camera.position.y = obj.camera.y;
+        camera.position.z = obj.camera.z;
+        camera.lookAt(new THREE.Vector3(cubes[thisSocket].position.x, cubes[thisSocket].position.y, cubes[thisSocket].position.z));
     }
 });
 
@@ -365,13 +369,17 @@ var changeScene = function () {
             rotY: obj.socketCube.rotY,
             room: thisRoom
         });
-        cubes[thisSocket].position.x = obj.socketCube.x;
-        cubes[thisSocket].position.z = obj.socketCube.z;
 
-        camera.position.x = obj.camera.x;
-        camera.position.y = obj.camera.y;
-        camera.position.z = obj.camera.z;
-        camera.lookAt(new THREE.Vector3(cubes[thisSocket].position.x, cubes[thisSocket].position.y, cubes[thisSocket].position.z));
+        //var isCollision = true;
+        //socket.emit()
+        //
+        //cubes[thisSocket].position.x = obj.socketCube.x;
+        //cubes[thisSocket].position.z = obj.socketCube.z;
+        //
+        //camera.position.x = obj.camera.x;
+        //camera.position.y = obj.camera.y;
+        //camera.position.z = obj.camera.z;
+        //camera.lookAt(new THREE.Vector3(cubes[thisSocket].position.x, cubes[thisSocket].position.y, cubes[thisSocket].position.z));
     }
 };
 

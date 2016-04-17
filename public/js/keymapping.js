@@ -13,7 +13,7 @@ function gameLogic() {
     if (keyPressed[87] || keyPressed[38]) { // W
         var newX = obj.socketCube.x - Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
         var newZ = obj.socketCube.z - Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
-        if (!collision(newX, newZ)) {
+        //if (!collision(newX, newZ)) {
 
             if (newZ >= -(gameWidth / 2) + cubeHalf
                 && newZ <= (gameWidth / 2) - cubeHalf) {
@@ -28,12 +28,12 @@ function gameLogic() {
             obj.camera.x = cubes[thisSocket].position.x + cameraDistance * (Math.sin(cubes[thisSocket].rotation.y));
 
             changeScene();
-        }
+        //}
     }
     if (keyPressed[83] || keyPressed[40]) { // S
         var newX = obj.socketCube.x + Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
         var newZ = obj.socketCube.z + Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
-        if (!collision(newX, newZ)) {
+        //if (!collision(newX, newZ)) {
 
             if (newZ >= -(gameWidth / 2) + cubeHalf
                 && newZ <= (gameWidth / 2) - cubeHalf
@@ -49,12 +49,12 @@ function gameLogic() {
             obj.camera.x = cubes[thisSocket].position.x + cameraDistance * (Math.sin(cubes[thisSocket].rotation.y));
 
             changeScene();
-        }
+        //}
     }
     if (keyPressed[65] || keyPressed[37]) { // A
         var newX = obj.socketCube.x - Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
         var newZ = obj.socketCube.z + Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
-        if (!collision(newX, newZ)) {
+        //if (!collision(newX, newZ)) {
 
             if (newZ >= -(gameWidth / 2) + cubeHalf
                 && newZ <= (gameWidth / 2) - cubeHalf) {
@@ -68,12 +68,12 @@ function gameLogic() {
             }
 
             changeScene();
-        }
+        //}
     }
     if (keyPressed[68] || keyPressed[39]) { // D
         var newX = obj.socketCube.x + Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
         var newZ = obj.socketCube.z - Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
-        if (!collision(newX, newZ)) {
+        //if (!collision(newX, newZ)) {
 
             if (newZ >= -(gameWidth / 2) + cubeHalf
                 && newZ <= (gameWidth / 2) - cubeHalf) {
@@ -86,7 +86,7 @@ function gameLogic() {
                 obj.camera.x += Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
             }
             changeScene();
-        }
+        //}
     }
     /*
      *  37: false, // left
