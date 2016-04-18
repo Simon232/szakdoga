@@ -193,6 +193,8 @@ var init = function () {
 
 // *** server calls ***
 socket.on('new', function (msg) {
+    $('#other-player-joined').is(':hidden');
+
     if (thisSocket == undefined) { //sajat kocka
 
         var R = Math.floor(Math.random() * 256);
@@ -327,12 +329,27 @@ socket.on("roomIsFull", function () {
 });
 
 socket.on('disconnect', function (msg) {
+    setTimeout(function(){
+        document.querySelector(".other-player-disconnected").style.display = true;
+        $('.other-player-disconnected').toggle(1000);
+        setTimeout(function(){
+            $('.other-player-disconnected').toggle(3000);
+        }, 3000);
+    }, 1000);
     console.log(msg + " user disconnected: ");
     scene.remove(cubes[msg]);
     otherPlayer = '';
 });
 
 socket.on('update', function (msg) {
+
+    setTimeout(function(){
+        document.querySelector(".other-player-joined").style.display = true;
+        $('.other-player-joined').toggle(1000);
+        setTimeout(function(){
+            $('.other-player-joined').toggle(3000);
+        }, 3000);
+    }, 1000);
 
     console.log("Ezt kaptam: ", msg);
     if (msg.room == thisRoom) {

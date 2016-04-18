@@ -55,3 +55,22 @@ li {
     width: 160px;
     word-wrap: break-word;
 }
+
+.other-player-joined {
+    display: none;
+    position: absolute;
+    TOP: 35px;
+    right: 20px;
+    font-size: 30px;
+    color: blue;
+    width: 240px;
+}
+.other-player-disconnected {
+    display: none;
+    position: absolute;
+    TOP: 35px;
+    right: 20px;
+    font-size: 30px;
+    color: green;
+    width: 300px;
+}
