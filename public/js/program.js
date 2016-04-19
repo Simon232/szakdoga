@@ -172,10 +172,33 @@ var init = function () {
     
     
     var circleMesh = new THREE.Mesh(circleGeometry, circleMaterial);
+    var circleMesh2 = new THREE.Mesh(circleGeometry, circleMaterial);
+    var circleMesh3 = new THREE.Mesh(circleGeometry, circleMaterial);
+    var circleMesh4 = new THREE.Mesh(circleGeometry, circleMaterial);
+    var circleMesh5 = new THREE.Mesh(circleGeometry, circleMaterial);
     circleMesh.position.x = 2;
     circleMesh.position.y = 0.7;
     circleMesh.name = "coin";
     
+    circleMesh2.position.x = 2;
+    circleMesh2.position.y = 0.7;
+    circleMesh2.position.z = 1;
+    circleMesh2.name = "coin2";
+    
+    circleMesh3.position.x = 2;
+    circleMesh3.position.y = 0.7;
+    circleMesh3.position.z = 2;
+    circleMesh3.name = "coin3";
+    
+    circleMesh4.position.x = 2;
+    circleMesh4.position.y = 0.7;
+    circleMesh4.position.z = 3;
+    circleMesh4.name = "coin4";
+    
+    circleMesh5.position.x = 2;
+    circleMesh5.position.y = 0.7;
+    circleMesh5.position.z = 4;
+    circleMesh5.name = "coin5";
 
 
     var pyramidTexture = new THREE.TextureLoader().load("pics/pyramid.jpg");
@@ -222,6 +245,10 @@ var init = function () {
     scene.add(z_line); //kek
     scene.add(PyramidMesh);
     scene.add(circleMesh);
+    scene.add(circleMesh2);
+    scene.add(circleMesh3);
+    scene.add(circleMesh4);
+    scene.add(circleMesh5);
 
 };
 
@@ -446,13 +473,11 @@ var animate = function () {
     requestAnimationFrame(animate);
 
     renderer.render(scene, camera);
-    var coin = "";
     for(var i = 0; i < scene.children.length; i++){
-        if(scene.children[i].name == "coin"){
-            coin = scene.children[i];
+        if(scene.children[i].name.startsWith( "coin") ){
+            scene.children[i].rotation.y += 0.1;
         }
     }
-    coin.rotation.y += 0.1;
 };
 
 init();
