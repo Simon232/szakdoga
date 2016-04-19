@@ -123,40 +123,59 @@ var init = function () {
     var y_line = new THREE.Mesh(line_geo2, line2_material);
     var z_line = new THREE.Mesh(line_geo3, line3_material);
 
-    var circleMaterial = new THREE.MeshBasicMaterial({color: 0x00006633});
+    var circleMaterial = new THREE.MeshBasicMaterial({color: "rgb(255, 255, 102)"});
     var circleGeometry = new THREE.Geometry();
     var rate = 0.0;
-    var angle = 20;
+    var angle = 25;
     var rating = (2*PI) / (angle);
-    var radius = 2;
-
-    circleGeometry.vertices.push(new THREE.Vector3(3, 3, 0));
+    var radius = 0.5;
+    var circleWidth = 0.2;
+    
+    
+    //vertices number = 2*angle + 1
+    circleGeometry.vertices.push(new THREE.Vector3(0, 0, 0));
     for (var i = 0; i < angle; i++) {
-        circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 3, radius * Math.sin(rate) + 3, 0));
+        circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, 0));
         rate += rating;
         if(i === angle -1 ){
             circleGeometry.vertices.push(circleGeometry.vertices[1]);
         }else {
-            circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 3, radius * Math.sin(rate) + 3, 0));
+            circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, 0));
         }
         circleGeometry.faces.push(new THREE.Face3(0, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
     }
     
     rate = 0.0;
-    circleGeometry.vertices.push(new THREE.Vector3(3, 3, -0.5));
+    circleGeometry.vertices.push(new THREE.Vector3(0, 0, -0.1));
     var middle = circleGeometry.vertices.length-1;
     for (var i = 0; i < angle; i++) {
-        circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 3, radius * Math.sin(rate) + 3, -0.5));
+        circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, -0.1));
         rate += rating;
         if(i === angle -1 ){
             circleGeometry.vertices.push(circleGeometry.vertices[middle+1]);
         }else {
-            circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 3, radius * Math.sin(rate) + 3, -0.5));
+            circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, -0.1));
         }
         circleGeometry.faces.push(new THREE.Face3(middle, circleGeometry.vertices.length - 1, circleGeometry.vertices.length - 2));
     }
+    for(var i = 0; i < (angle*2); i++){
+        circleGeometry.vertices.push(circleGeometry.vertices[i+1]);
+        circleGeometry.vertices.push(circleGeometry.vertices[(i+1)+(2*angle+1)]);
+        circleGeometry.vertices.push(circleGeometry.vertices[(i+2)]);
+        circleGeometry.faces.push(new THREE.Face3(circleGeometry.vertices.length - 3, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
+        circleGeometry.vertices.push(circleGeometry.vertices[(i+1)+(2*angle+1)]);        
+        circleGeometry.vertices.push(circleGeometry.vertices[(i+1)+(2*angle+2)]);
+        circleGeometry.vertices.push(circleGeometry.vertices[(i+2)]);
+        circleGeometry.faces.push(new THREE.Face3(circleGeometry.vertices.length - 3, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
+    }
+    circleGeometry.vertices.push(circleGeometry.vertices[middle+1]);
+    
     
     var circleMesh = new THREE.Mesh(circleGeometry, circleMaterial);
+    circleMesh.position.x = 2;
+    circleMesh.position.y = 0.7;
+    circleMesh.name = "coin";
+    
 
 
     var pyramidTexture = new THREE.TextureLoader().load("pics/pyramid.jpg");
@@ -427,6 +446,13 @@ var animate = function () {
     requestAnimationFrame(animate);
 
     renderer.render(scene, camera);
+    var coin = "";
+    for(var i = 0; i < scene.children.length; i++){
+        if(scene.children[i].name == "coin"){
+            coin = scene.children[i];
+        }
+    }
+    coin.rotation.y += 0.1;
 };
 
 init();
