@@ -126,7 +126,7 @@ var init = function () {
     var circleMaterial = new THREE.MeshBasicMaterial({color: 0x00006633});
     var circleGeometry = new THREE.Geometry();
     var rate = 0.0;
-    var angle = 100;
+    var angle = 20;
     var rating = (2*PI) / (angle);
     var radius = 2;
 
@@ -141,6 +141,21 @@ var init = function () {
         }
         circleGeometry.faces.push(new THREE.Face3(0, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
     }
+    
+    rate = 0.0;
+    circleGeometry.vertices.push(new THREE.Vector3(3, 3, -0.5));
+    var middle = circleGeometry.vertices.length-1;
+    for (var i = 0; i < angle; i++) {
+        circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 3, radius * Math.sin(rate) + 3, -0.5));
+        rate += rating;
+        if(i === angle -1 ){
+            circleGeometry.vertices.push(circleGeometry.vertices[middle+1]);
+        }else {
+            circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 3, radius * Math.sin(rate) + 3, -0.5));
+        }
+        circleGeometry.faces.push(new THREE.Face3(middle, circleGeometry.vertices.length - 1, circleGeometry.vertices.length - 2));
+    }
+    
     var circleMesh = new THREE.Mesh(circleGeometry, circleMaterial);
 
 
