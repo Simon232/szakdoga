@@ -14,6 +14,13 @@ var movingSpeed = 0.05;
 var rotationSpeed = PI / 240;
 var cameraDistance = 6;
 
+
+var coin1 = "";
+var coin2 = "";
+var coin3 = "";
+var coin4 = "";
+var coin5 = "";
+
 var getRandomPosition = function () {
     var pos = 0;
     while (pos <= 1 && pos >= -1) {
@@ -250,6 +257,26 @@ var init = function () {
     scene.add(circleMesh4);
     scene.add(circleMesh5);
 
+
+
+    for(var i = 0; i < scene.children.length; i++){
+        if(scene.children[i].name == "coin" ){
+            coin1 = scene.children[i];
+        }
+        if(scene.children[i].name == "coin2" ){
+            coin2 = scene.children[i];
+        }
+        if(scene.children[i].name == "coin3" ){
+            coin3 = scene.children[i];
+        }
+        if(scene.children[i].name == "coin4" ){
+            coin4 = scene.children[i];
+        }
+        if(scene.children[i].name == "coin5" ){
+            coin5 = scene.children[i];
+        }
+    }
+
 };
 
 // *** server calls ***
@@ -469,15 +496,17 @@ var changeScene = function () {
 };
 
 
+
 var animate = function () {
     requestAnimationFrame(animate);
 
+    coin1.rotation.y += 0.1;
+    coin2.rotation.y += 0.1;
+    coin3.rotation.y += 0.1;
+    coin4.rotation.y += 0.1;
+    coin5.rotation.y += 0.1;
     renderer.render(scene, camera);
-    for(var i = 0; i < scene.children.length; i++){
-        if(scene.children[i].name.startsWith( "coin") ){
-            scene.children[i].rotation.y += 0.1;
-        }
-    }
+
 };
 
 init();
