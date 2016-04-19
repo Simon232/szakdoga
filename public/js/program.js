@@ -324,7 +324,7 @@ socket.on('new', function (msg) {
     }
 
     if (socket.id != undefined) { // elkuldom a kockamat a masiknak
-        console.log("aaaa Ez vagyok en: ", thisSocket);
+        console.log("Ez vagyok en: ", thisSocket);
         try {
 
             socket.emit('update', {
