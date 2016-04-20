@@ -22,6 +22,9 @@ var roomManager = [];
 var roomSize = -1;
 var cubes = {};
 var roomMessages = {};
+var gameWidth = 100;
+var coinPositions = {};
+var cointNumber = 10;
 
 
 io.on('connection', function (socket) {
@@ -33,21 +36,21 @@ io.on('connection', function (socket) {
 
         //checking unused roomId-s to avoid id-collision (for example: 0,1,3,4 id's next value: 2, then 5)
         var usedRoomId = false;
-        for(var i = 0; i < roomManager.length; i++){
-            if( roomManager[i].id == roomSize){
+        for (var i = 0; i < roomManager.length; i++) {
+            if (roomManager[i].id == roomSize) {
                 usedRoomId = true;
             }
         }
-        if(usedRoomId){
+        if (usedRoomId) {
             //calculate correct id
-            for(var i = 0; i < roomManager.length; i++){
+            for (var i = 0; i < roomManager.length; i++) {
                 var resultIsBad = false;
-                for(var j = 0; j < roomManager.length; j++){
-                    if(roomManager[j].id == i){
+                for (var j = 0; j < roomManager.length; j++) {
+                    if (roomManager[j].id == i) {
                         resultIsBad = true;
                     }
                 }
-                if(!resultIsBad){
+                if (!resultIsBad) {
                     roomSize = i;
                     i = roomManager.length; //break the cycle
                 }
@@ -57,9 +60,9 @@ io.on('connection', function (socket) {
             roomMessages[roomName] = [];
             socket.join(roomName);
             socket.room = roomName;
-            roomSize = roomManager.length -1; //jump to the last known 'good' value
+            roomSize = roomManager.length - 1; //jump to the last known 'good' value
 
-        }else {
+        } else {
             var roomName = 'room#' + roomSize;
             roomManager.push(addRoom());
             roomMessages[roomName] = [];
@@ -67,23 +70,33 @@ io.on('connection', function (socket) {
             socket.room = roomName; //if everything went well, we don't need to jump
         }
 
+        var positions = [];
+        for (var i = 0; i < cointNumber; i++) {
+            var x = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
+            var z = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
+            positions.push({x: x, z: z});
+        }
+        coinPositions[roomName] = positions;
 
-    }else{
+
+    } else {
         var emptyRoom = findOnePlayerRoom(); //enough to find an empty room
         socket.join(emptyRoom);
         socket.room = emptyRoom;
+
+        io.to(socket.room).emit("coinPositions", coinPositions[socket.room]);
     }
     io.emit('new', {sid: socket.id, room: socket.room});
     io.to(socket.room).emit("old messages", {sid: socket.id, historyMessage: roomMessages[socket.room]});
     //socket.emit("joined");
 
     addPlayerToRoom(socket.room, socket.id);
-    console.log("user: "+ socket.id + ' connected to: ' + socket.room );
+    console.log("user: " + socket.id + ' connected to: ' + socket.room);
 
-    socket.on("joined", function(obj){
+    socket.on("joined", function (obj) {
         socket.username = obj.userName;
         cubes[socket.id] = obj.cube;
-        console.log( socket.id + " joined with this:  [" + cubes[socket.id].x + ", " + cubes[socket.id].y + ", " + cubes[socket.id].z + "]");
+        console.log(socket.id + " joined with this:  [" + cubes[socket.id].x + ", " + cubes[socket.id].y + ", " + cubes[socket.id].z + "]");
     });
 
     socket.on('disconnect', function () {
@@ -91,7 +104,7 @@ io.on('connection', function (socket) {
             --roomSize;
         }
 
-        console.log("user: "+ socket.id + ' disconnect from: ' + socket.room);
+        console.log("user: " + socket.id + ' disconnect from: ' + socket.room);
 
         //removeEmptyRoom
         for (var i = 0; i < roomManager.length; i++) {
@@ -107,6 +120,7 @@ io.on('connection', function (socket) {
                 roomManager.splice(i, 1);
 
                 console.log("Tarolt szoba uzenetek merete torles utan: " + Object.keys(roomMessages).length)
+                delete coinPositions[roomName];
             }
         }
         --joinedUsers;
@@ -117,7 +131,7 @@ io.on('connection', function (socket) {
 
     // *** movements section ***
     socket.on('move', function (msg) {
-        if(!isCollision(msg)) {
+        if (!isCollision(msg)) {
             cubes[msg.sid] = msg.pos;
             socket.broadcast.to(socket.room).emit('move', msg);
             //io.to(socket.room).emit('move', msg);
@@ -125,7 +139,7 @@ io.on('connection', function (socket) {
         //socket.broadcast.emit('move', msg);
     });
 
-    socket.on("isCollision", function(obj){
+    socket.on("isCollision", function (obj) {
         var isCol = isCollision(obj);
         socket.emit("isCollision", {respond: isCol});
     });
@@ -140,7 +154,7 @@ io.on('connection', function (socket) {
 
     // *** page functions section ***
     socket.on('chat message', function (obj) {
-        if(roomMessages[obj.room].length == 5){
+        if (roomMessages[obj.room].length == 5) {
             roomMessages[obj.room].shift();
         }
         roomMessages[obj.room].push(obj.msg);
@@ -180,26 +194,26 @@ var addRoom = function () {
     };
 };
 
-var findOnePlayerRoom = function(){
-    for(var i = 0; i < roomManager.length; i++){
-        if(roomManager[i].player1 == ''){
+var findOnePlayerRoom = function () {
+    for (var i = 0; i < roomManager.length; i++) {
+        if (roomManager[i].player1 == '') {
             return roomManager[i].name;
         }
-        if(roomManager[i].player2 == ''){
+        if (roomManager[i].player2 == '') {
             return roomManager[i].name;
         }
     }
     return "HAHAHAHA";
 };
 
-var getEnemyPlayerName = function(playerName, playerRoom){
+var getEnemyPlayerName = function (playerName, playerRoom) {
     var enemyName = '';
-    for(var i = 0; i < roomManager.length; i++){
-        if(roomManager[i].name == playerRoom){
-            if(roomManager[i].player1 == playerName){
+    for (var i = 0; i < roomManager.length; i++) {
+        if (roomManager[i].name == playerRoom) {
+            if (roomManager[i].player1 == playerName) {
                 enemyName = roomManager[i].player2;
             }
-            else if(roomManager[i].player2 == playerName){
+            else if (roomManager[i].player2 == playerName) {
                 enemyName = roomManager[i].player1;
             }
         }
@@ -207,7 +221,7 @@ var getEnemyPlayerName = function(playerName, playerRoom){
     return enemyName;
 };
 
-var isCollision = function(obj){
+var isCollision = function (obj) {
     var otherPlayer = getEnemyPlayerName(obj.sid, obj.room);
     var thisSocket = obj.sid;
     var newX = obj.pos.x;
@@ -221,9 +235,9 @@ var isCollision = function(obj){
         var originalZ = Math.abs(cubes[thisSocket].z - cubes[otherPlayer].z);
         return (colX < 1 && colZ < 1) && (originalX > colX && originalZ > colZ);
         /*if (colX <= 1 && colZ <= 1 && (colX < (1 + 2 * movingSpeed) || colX < (1 + 2 * movingSpeed))) {
-            return true;
-        }
-        return colX <= 1 && colZ <= 1;*/
+         return true;
+         }
+         return colX <= 1 && colZ <= 1;*/
     }
     return false;
 };

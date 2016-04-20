@@ -13,13 +13,9 @@ var PI = Math.PI;
 var movingSpeed = 0.05;
 var rotationSpeed = PI / 240;
 var cameraDistance = 6;
+var coinPositions = [];
 
-
-var coin1 = "";
-var coin2 = "";
-var coin3 = "";
-var coin4 = "";
-var coin5 = "";
+var coinMeshes = [];
 
 var getRandomPosition = function () {
     var pos = 0;
@@ -130,82 +126,7 @@ var init = function () {
     var y_line = new THREE.Mesh(line_geo2, line2_material);
     var z_line = new THREE.Mesh(line_geo3, line3_material);
 
-    var circleMaterial = new THREE.MeshBasicMaterial({color: "rgb(255, 255, 102)"});
-    var circleGeometry = new THREE.Geometry();
-    var rate = 0.0;
-    var angle = 25;
-    var rating = (2*PI) / (angle);
-    var radius = 0.5;
-    var circleWidth = 0.2;
-    
-    
-    //vertices number = 2*angle + 1
-    circleGeometry.vertices.push(new THREE.Vector3(0, 0, 0));
-    for (var i = 0; i < angle; i++) {
-        circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, 0));
-        rate += rating;
-        if(i === angle -1 ){
-            circleGeometry.vertices.push(circleGeometry.vertices[1]);
-        }else {
-            circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, 0));
-        }
-        circleGeometry.faces.push(new THREE.Face3(0, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
-    }
-    
-    rate = 0.0;
-    circleGeometry.vertices.push(new THREE.Vector3(0, 0, -0.1));
-    var middle = circleGeometry.vertices.length-1;
-    for (var i = 0; i < angle; i++) {
-        circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, -0.1));
-        rate += rating;
-        if(i === angle -1 ){
-            circleGeometry.vertices.push(circleGeometry.vertices[middle+1]);
-        }else {
-            circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, -0.1));
-        }
-        circleGeometry.faces.push(new THREE.Face3(middle, circleGeometry.vertices.length - 1, circleGeometry.vertices.length - 2));
-    }
-    for(var i = 0; i < (angle*2); i++){
-        circleGeometry.vertices.push(circleGeometry.vertices[i+1]);
-        circleGeometry.vertices.push(circleGeometry.vertices[(i+1)+(2*angle+1)]);
-        circleGeometry.vertices.push(circleGeometry.vertices[(i+2)]);
-        circleGeometry.faces.push(new THREE.Face3(circleGeometry.vertices.length - 3, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
-        circleGeometry.vertices.push(circleGeometry.vertices[(i+1)+(2*angle+1)]);        
-        circleGeometry.vertices.push(circleGeometry.vertices[(i+1)+(2*angle+2)]);
-        circleGeometry.vertices.push(circleGeometry.vertices[(i+2)]);
-        circleGeometry.faces.push(new THREE.Face3(circleGeometry.vertices.length - 3, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
-    }
-    circleGeometry.vertices.push(circleGeometry.vertices[middle+1]);
-    
-    
-    var circleMesh = new THREE.Mesh(circleGeometry, circleMaterial);
-    var circleMesh2 = new THREE.Mesh(circleGeometry, circleMaterial);
-    var circleMesh3 = new THREE.Mesh(circleGeometry, circleMaterial);
-    var circleMesh4 = new THREE.Mesh(circleGeometry, circleMaterial);
-    var circleMesh5 = new THREE.Mesh(circleGeometry, circleMaterial);
-    circleMesh.position.x = 2;
-    circleMesh.position.y = 0.7;
-    circleMesh.name = "coin";
-    
-    circleMesh2.position.x = 2;
-    circleMesh2.position.y = 0.7;
-    circleMesh2.position.z = 1;
-    circleMesh2.name = "coin2";
-    
-    circleMesh3.position.x = 2;
-    circleMesh3.position.y = 0.7;
-    circleMesh3.position.z = 2;
-    circleMesh3.name = "coin3";
-    
-    circleMesh4.position.x = 2;
-    circleMesh4.position.y = 0.7;
-    circleMesh4.position.z = 3;
-    circleMesh4.name = "coin4";
-    
-    circleMesh5.position.x = 2;
-    circleMesh5.position.y = 0.7;
-    circleMesh5.position.z = 4;
-    circleMesh5.name = "coin5";
+
 
 
     var pyramidTexture = new THREE.TextureLoader().load("pics/pyramid.jpg");
@@ -251,31 +172,7 @@ var init = function () {
     scene.add(y_line); //piros
     scene.add(z_line); //kek
     scene.add(PyramidMesh);
-    scene.add(circleMesh);
-    scene.add(circleMesh2);
-    scene.add(circleMesh3);
-    scene.add(circleMesh4);
-    scene.add(circleMesh5);
 
-
-
-    for(var i = 0; i < scene.children.length; i++){
-        if(scene.children[i].name == "coin" ){
-            coin1 = scene.children[i];
-        }
-        if(scene.children[i].name == "coin2" ){
-            coin2 = scene.children[i];
-        }
-        if(scene.children[i].name == "coin3" ){
-            coin3 = scene.children[i];
-        }
-        if(scene.children[i].name == "coin4" ){
-            coin4 = scene.children[i];
-        }
-        if(scene.children[i].name == "coin5" ){
-            coin5 = scene.children[i];
-        }
-    }
 
 };
 
@@ -385,6 +282,67 @@ socket.on('new', function (msg) {
     })
 });
 
+socket.on("coinPositions", function(obj){
+    coinPositions = obj;
+
+    var circleMaterial = new THREE.MeshBasicMaterial({color: "rgb(255, 255, 102)"});
+    var circleGeometry = new THREE.Geometry();
+    var rate = 0.0;
+    var angle = 25;
+    var rating = (2*PI) / (angle);
+    var radius = 0.5;
+    var circleWidth = 0.2;
+
+
+    //vertices number = 2*angle + 1
+    circleGeometry.vertices.push(new THREE.Vector3(0, 0, 0));
+    for (var i = 0; i < angle; i++) {
+        circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, 0));
+        rate += rating;
+        if(i === angle -1 ){
+            circleGeometry.vertices.push(circleGeometry.vertices[1]);
+        }else {
+            circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, 0));
+        }
+        circleGeometry.faces.push(new THREE.Face3(0, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
+    }
+
+    rate = 0.0;
+    circleGeometry.vertices.push(new THREE.Vector3(0, 0, -0.1));
+    var middle = circleGeometry.vertices.length-1;
+    for (var i = 0; i < angle; i++) {
+        circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, -0.1));
+        rate += rating;
+        if(i === angle -1 ){
+            circleGeometry.vertices.push(circleGeometry.vertices[middle+1]);
+        }else {
+            circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, -0.1));
+        }
+        circleGeometry.faces.push(new THREE.Face3(middle, circleGeometry.vertices.length - 1, circleGeometry.vertices.length - 2));
+    }
+    for(var i = 0; i < (angle*2); i++){
+        circleGeometry.vertices.push(circleGeometry.vertices[i+1]);
+        circleGeometry.vertices.push(circleGeometry.vertices[(i+1)+(2*angle+1)]);
+        circleGeometry.vertices.push(circleGeometry.vertices[(i+2)]);
+        circleGeometry.faces.push(new THREE.Face3(circleGeometry.vertices.length - 3, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
+        circleGeometry.vertices.push(circleGeometry.vertices[(i+1)+(2*angle+1)]);
+        circleGeometry.vertices.push(circleGeometry.vertices[(i+1)+(2*angle+2)]);
+        circleGeometry.vertices.push(circleGeometry.vertices[(i+2)]);
+        circleGeometry.faces.push(new THREE.Face3(circleGeometry.vertices.length - 3, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
+    }
+    circleGeometry.vertices.push(circleGeometry.vertices[middle+1]);
+
+    for(var i = 0; i < coinPositions.length; i++){
+        coinMeshes.push(new THREE.Mesh(circleGeometry, circleMaterial));
+        coinMeshes[coinMeshes.length-1].position.x = coinPositions[i].x;
+        coinMeshes[coinMeshes.length-1].position.y = 0.7;
+        coinMeshes[coinMeshes.length-1].position.z = coinPositions[i].z;
+        coinMeshes[coinMeshes.length-1].name = "coin" + i;
+        scene.add(coinMeshes[coinMeshes.length-1]);
+    }
+
+
+});
 
 socket.on('move', function (_obj) {
     var sid = _obj.sid;
@@ -500,11 +458,10 @@ var changeScene = function () {
 var animate = function () {
     requestAnimationFrame(animate);
 
-    coin1.rotation.y += 0.1;
-    coin2.rotation.y += 0.1;
-    coin3.rotation.y += 0.1;
-    coin4.rotation.y += 0.1;
-    coin5.rotation.y += 0.1;
+    for(var i = 0; i < coinMeshes.length; i++){
+        coinMeshes[i].rotation.y += 0.1;
+    }
+
     renderer.render(scene, camera);
 
 };
