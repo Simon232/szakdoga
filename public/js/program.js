@@ -82,7 +82,8 @@ var init = function () {
     light.position.z = 5;
     scene.add(light);
 
-    renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+    renderer.setClearColor( 0x000000, 0 );
     //renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth - (window.innerWidth / 100), window.innerHeight - (window.innerHeight / 50));
     document.body.appendChild(renderer.domElement);
@@ -214,12 +215,12 @@ socket.on('new', function (msg) {
         if (randomNumber == 4) {
             boxTexture = "pics/box5.jpg";
         }
-        if (randomNumber == 4) {
-            boxTexture = "pics/transparent.jpg";
-        }
-        if (randomNumber == 4) {
-            boxTexture = "pics/earth.png";
-        }
+        //if (randomNumber == 5) {
+        //    boxTexture = "pics/transparent.jpg";
+        //}
+        //if (randomNumber == 6) {
+        //    boxTexture = "pics/earth.png";
+        //}
         thisTexture = boxTexture;
 
         var textureBox = new THREE.TextureLoader().load(boxTexture);
