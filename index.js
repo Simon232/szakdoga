@@ -86,7 +86,7 @@ io.on('connection', function (socket) {
 
         io.to(socket.room).emit("coinPositions", coinPositions[socket.room]);
     }
-    io.emit('new', {sid: socket.id, room: socket.room});
+    io.to(socket.room).emit('new', {sid: socket.id, room: socket.room});
     io.to(socket.room).emit("old messages", {sid: socket.id, historyMessage: roomMessages[socket.room]});
     //socket.emit("joined");
 
@@ -125,8 +125,7 @@ io.on('connection', function (socket) {
             }
         }
         --joinedUsers;
-        io.emit('disconnect', socket.id);
-        socket.to(socket.room).broadcast.emit("unjoined");
+        io.to(socket.room).emit('disconnect', socket.id);
         socket.leave(socket.room);
 
     });
@@ -166,7 +165,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('reset', function (msg) {
-        io.emit('reset', msg);
+        socket.to(socket.room).broadcast.emit('reset', msg);
     });
 
 });

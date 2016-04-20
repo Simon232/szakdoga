@@ -72,19 +72,6 @@ socket.on("joined", function () {
     //socket.emit("joined", {userName: "not implemented yet", cube: cubes[thisSocket]});
 });
 
-socket.on("unjoined", function(){
-    setTimeout(function () {
-        document.querySelector(".other-player-disconnected").style.display = true;
-        $('.other-player-disconnected').toggle(1000);
-        setTimeout(function () {
-            $('.other-player-disconnected').toggle(3000);
-        }, 3000);
-    }, 1000);
-
-    for (var i = 0; i < coinMeshes.length; i++) {
-        scene.remove(coinMeshes[i]);
-    }
-});
 
 
 var init = function () {
@@ -411,15 +398,22 @@ socket.on('rotation', function (msg) {
     }
 });
 
-socket.on("roomIsFull", function () {
-    //alert("roomIsFull");
-    //console.log("szopki");
-});
-
 socket.on('disconnect', function (msg) {
     console.log(msg + " user disconnected: ");
     scene.remove(cubes[msg]);
     otherPlayer = '';
+
+    setTimeout(function () {
+        document.querySelector(".other-player-disconnected").style.display = true;
+        $('.other-player-disconnected').toggle(1000);
+        setTimeout(function () {
+            $('.other-player-disconnected').toggle(3000);
+        }, 3000);
+    }, 1000);
+
+    for (var i = 0; i < coinMeshes.length; i++) {
+        scene.remove(coinMeshes[i]);
+    }
 
 });
 
