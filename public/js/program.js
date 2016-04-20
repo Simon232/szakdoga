@@ -49,7 +49,6 @@ var obj = {
 socket.on("giveNewCoin", function (obj) {
     scene.remove(coinMeshes[obj.index]);
     if (obj.sid == thisSocket) {
-        lastSocket = thisSocket;
         document.querySelector(".points").textContent = thisPoints;
     }
 
@@ -58,7 +57,7 @@ socket.on("giveNewCoin", function (obj) {
     coin.position.y = 0.7;
     coin.position.z = obj.z;
     coinMeshes.push(coin);
-    scene.add(coinMeshes[obj.index]);
+    scene.add(coinMeshes[coinMeshes.length-1]);
 
 });
 
