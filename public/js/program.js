@@ -65,19 +65,17 @@ var collision = function (obj) {
     var coinBoxWidth = 0.55;
     var coinIndex = -1;
 
-    setTimeout(function(
-        for (var i = 0; i < coinMeshes.length; i++) {
+    setTimeout(function(){    for (var i = 0; i < coinMeshes.length; i++) {
         if (Math.abs(coinMeshes[i].position.x - obj.x) < coinBoxWidth && Math.abs(coinMeshes[i].position.z - obj.z) < coinBoxWidth) {
             coinIndex = i;
         }
     }
-    if (coinIndex != -1) {
-        scene.remove(coinMeshes[coinIndex]);
-        thisPoints += 10;
-        console.log("my point: " + thisPoints);
-        socket.emit("giveNewCoin", coinIndex);
-    }
-    ){},100);
+        if (coinIndex != -1) {
+            scene.remove(coinMeshes[coinIndex]);
+            thisPoints += 10;
+            console.log("my point: " + thisPoints);
+            socket.emit("giveNewCoin", coinIndex);
+        }},100);
 
     /*if (otherPlayer !== '') {
      var colX = Math.abs(newX - cubes[otherPlayer].position.x);
