@@ -1,0 +1,29 @@
+    var asdTexture = new THREE.TextureLoader().load("pics/pyramid.jpg");
+    //pyramidTexture.wrapS = THREE.RepeatWrapping;
+    //pyramidTexture.wrapT = THREE.RepeatWrapping;
+    //pyramidTexture.repeat.set(4, 4);
+    var asdMaterial = new THREE.MeshBasicMaterial({map: asdTexture});
+    //define a geometry
+    var asdGeometry = new THREE.Geometry();
+    //verticles
+    asdGeometry.vertices.push(new THREE.Vector3(1, 1, 0));
+    asdGeometry.vertices.push(new THREE.Vector3(5, 1, 0));
+    asdGeometry.vertices.push(new THREE.Vector3(5, 5, 0));
+    asdGeometry.vertices.push(new THREE.Vector3(1, 5, 0));
+    //face
+    asdGeometry.faces.push(new THREE.Face3(0, 1, 2));
+    asdGeometry.faces.push(new THREE.Face3(0, 2, 3));
+
+    var uvs = [];
+    uvs.push(new THREE.Vector2(0.0, 0.0));
+    uvs.push(new THREE.Vector2(1.0, 0.0));
+    uvs.push(new THREE.Vector2(1.0, 1.0));
+    uvs.push(new THREE.Vector2(0.0, 1.0));
+
+    asdGeometry.faceVertexUvs[0].push( [uvs[0],uvs[1],uvs[2]]);
+    asdGeometry.faceVertexUvs[0].push( [uvs[0],uvs[2],uvs[3]]);
+
+    var asd = new THREE.Mesh(asdGeometry, asdMaterial);
+
+
+    scene.add(asd);
