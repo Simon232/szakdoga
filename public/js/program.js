@@ -79,6 +79,7 @@ var collision = function (obj) {
         }
     }, 1000);
 
+
     /*if (otherPlayer !== '') {
      var colX = Math.abs(newX - cubes[otherPlayer].position.x);
      var colZ = Math.abs(newZ - cubes[otherPlayer].position.z);
