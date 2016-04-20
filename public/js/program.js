@@ -198,7 +198,7 @@ socket.on('new', function (msg) {
         otherPlayer = '';
 
         var boxTexture = "";
-        var randomNumber = Math.floor(Math.random() * 5);
+        var randomNumber = Math.floor(Math.random() * 7);
         if (randomNumber == 0) {
             boxTexture = "pics/box.jpg";
         }
@@ -213,6 +213,12 @@ socket.on('new', function (msg) {
         }
         if (randomNumber == 4) {
             boxTexture = "pics/box5.jpg";
+        }
+        if (randomNumber == 4) {
+            boxTexture = "pics/transparent.jpg";
+        }
+        if (randomNumber == 4) {
+            boxTexture = "pics/earth.png";
         }
         thisTexture = boxTexture;
 
@@ -446,9 +452,13 @@ var changeScene = function () {
         cubes[thisSocket].position.x = obj.socketCube.x;
         cubes[thisSocket].position.z = obj.socketCube.z;
 
-        camera.position.x = obj.camera.x;
+        if(Math.abs(gameWidth/2 - cameraDistance/3) > Math.abs(obj.camera.x)) {
+            camera.position.x = obj.camera.x;
+        }
         camera.position.y = obj.camera.y;
-        camera.position.z = obj.camera.z;
+        if(Math.abs(gameWidth/2 - cameraDistance/3) > Math.abs(obj.camera.z)) {
+            camera.position.z = obj.camera.z;
+        }
         camera.lookAt(new THREE.Vector3(cubes[thisSocket].position.x, cubes[thisSocket].position.y, cubes[thisSocket].position.z));
     }
 };
