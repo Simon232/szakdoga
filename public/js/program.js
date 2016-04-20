@@ -60,10 +60,30 @@ var collision = function (newX, newZ) {
     return false;
 };
 socket.on("joined", function () {
-    console.log("miafasz");
+    setTimeout(function () {
+        document.querySelector(".other-player-joined").style.display = true;
+        $('.other-player-joined').toggle(1000);
+        setTimeout(function () {
+            $('.other-player-joined').toggle(3000);
+        }, 3000);
+    }, 1000);
     //console.log("testroom: " + "room#"+thisRoom);
     //thisRoom = 'room#'+obj.room;
-    socket.emit("joined", {userName: "not implemented yet", cube: cubes[thisSocket]});
+    //socket.emit("joined", {userName: "not implemented yet", cube: cubes[thisSocket]});
+});
+
+socket.on("unjoined", function(){
+    setTimeout(function () {
+        document.querySelector(".other-player-disconnected").style.display = true;
+        $('.other-player-disconnected').toggle(1000);
+        setTimeout(function () {
+            $('.other-player-disconnected').toggle(3000);
+        }, 3000);
+    }, 1000);
+
+    for (var i = 0; i < coinMeshes.length; i++) {
+        scene.remove(coinMeshes[i]);
+    }
 });
 
 
@@ -288,14 +308,14 @@ socket.on('new', function (msg) {
         }
     }
 
-    socket.emit("joined", {
-        userName: "not implemented yet",
-        cube: {
-            x: cubes[thisSocket].position.x,
-            y: cubes[thisSocket].position.y,
-            z: cubes[thisSocket].position.z
-        }
-    })
+    //socket.emit("joined", {
+    //    userName: "not implemented yet",
+    //    cube: {
+    //        x: cubes[thisSocket].position.x,
+    //        y: cubes[thisSocket].position.y,
+    //        z: cubes[thisSocket].position.z
+    //    }
+    //})
 });
 
 socket.on("coinPositions", function (obj) {
@@ -397,31 +417,13 @@ socket.on("roomIsFull", function () {
 });
 
 socket.on('disconnect', function (msg) {
-    setTimeout(function () {
-        document.querySelector(".other-player-disconnected").style.display = true;
-        $('.other-player-disconnected').toggle(1000);
-        setTimeout(function () {
-            $('.other-player-disconnected').toggle(3000);
-        }, 3000);
-    }, 1000);
     console.log(msg + " user disconnected: ");
     scene.remove(cubes[msg]);
     otherPlayer = '';
 
-    for (var i = 0; i < coinMeshes.length; i++) {
-        scene.remove(coinMeshes[i]);
-    }
 });
 
 socket.on('update', function (msg) {
-
-    setTimeout(function () {
-        document.querySelector(".other-player-joined").style.display = true;
-        $('.other-player-joined').toggle(1000);
-        setTimeout(function () {
-            $('.other-player-joined').toggle(3000);
-        }, 3000);
-    }, 1000);
 
     console.log("Ezt kaptam: ", msg);
     if (msg.room == thisRoom) {

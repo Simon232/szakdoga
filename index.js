@@ -97,6 +97,7 @@ io.on('connection', function (socket) {
         socket.username = obj.userName;
         cubes[socket.id] = obj.cube;
         console.log(socket.id + " joined with this:  [" + cubes[socket.id].x + ", " + cubes[socket.id].y + ", " + cubes[socket.id].z + "]");
+        socket.to(socket.room).broadcast.emit("joined");
     });
 
     socket.on('disconnect', function () {
@@ -125,6 +126,7 @@ io.on('connection', function (socket) {
         }
         --joinedUsers;
         io.emit('disconnect', socket.id);
+        socket.to(socket.room).broadcast.emit("unjoined");
         socket.leave(socket.room);
 
     });
