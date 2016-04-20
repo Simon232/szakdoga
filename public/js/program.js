@@ -51,7 +51,7 @@ socket.on("giveNewCoin", function (obj) {
         document.querySelector(".points").textContent = thisPoints;
     }else{
         scene.remove(coinMeshes[obj.index]);
-        coinMeshes.splice(coinIndex, 1);
+        coinMeshes.splice(obj.index, 1);
     }
 
     var coin = getCoin();
