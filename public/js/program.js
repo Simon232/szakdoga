@@ -5,7 +5,6 @@ var thisColor = undefined;
 var thisRoom = undefined;
 var thisTexture = undefined;
 var otherPlayer = undefined;
-var testRoom = undefined;
 
 var gameWidth = 100;
 var cubeHalf = 0.49;
@@ -13,7 +12,6 @@ var PI = Math.PI;
 var movingSpeed = 0.05;
 var rotationSpeed = PI / 240;
 var cameraDistance = 6;
-var coinPositions = [];
 
 var coinMeshes = [];
 
@@ -189,7 +187,6 @@ var init = function () {
 
 // *** server calls ***
 socket.on('new', function (msg) {
-    $('#other-player-joined').is(':hidden');
 
     if (thisSocket == undefined) { //sajat kocka
 
@@ -253,6 +250,12 @@ socket.on('new', function (msg) {
         cubes[thisSocket].position.y = obj.socketCube.y;
         cubes[thisSocket].position.z = obj.socketCube.z;
 
+        camera.position.x = cubes[thisSocket].position.x;
+        camera.position.y = 4;
+        camera.position.z = cubes[thisSocket].position.z + 6;
+
+        camera.lookAt(new THREE.Vector3(cubes[thisSocket].position.x, cubes[thisSocket].position.y, cubes[thisSocket].position.z));
+
         scene.add(cubes[thisSocket]);
         socket.emit("joined", {
             userName: "not implemented yet",
@@ -261,7 +264,9 @@ socket.on('new', function (msg) {
                 y: cubes[thisSocket].position.y,
                 z: cubes[thisSocket].position.z
             }
-        })
+        });
+
+
     }
 
     if (socket.id != undefined) { // elkuldom a kockamat a masiknak
@@ -284,11 +289,6 @@ socket.on('new', function (msg) {
         }
     }
 
-    camera.position.x = cubes[thisSocket].position.x;
-    camera.position.y = 4;
-    camera.position.z = cubes[thisSocket].position.z + 6;
-
-    camera.lookAt(new THREE.Vector3(cubes[thisSocket].position.x, cubes[thisSocket].position.y, cubes[thisSocket].position.z));
     socket.emit("joined", {
         userName: "not implemented yet",
         cube: {
@@ -300,7 +300,7 @@ socket.on('new', function (msg) {
 });
 
 socket.on("coinPositions", function (obj) {
-    coinPositions = obj;
+    var coinPositions = obj;
 
     var circleMaterial = new THREE.MeshBasicMaterial({color: "rgb(255, 255, 102)"});
     var circleGeometry = new THREE.Geometry();
