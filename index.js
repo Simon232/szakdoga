@@ -132,11 +132,11 @@ io.on('connection', function (socket) {
 
     // *** movements section ***
     socket.on('move', function (msg) {
-        if (!isCollision(msg)) {
-            cubes[msg.sid] = msg.pos;
-            socket.broadcast.to(socket.room).emit('move', msg);
-            //io.to(socket.room).emit('move', msg);
-        }
+        //if (!isCollision(msg)) {
+        cubes[msg.sid] = msg.pos;
+        socket.broadcast.to(socket.room).emit('move', msg);
+        //io.to(socket.room).emit('move', msg);
+        //}
         //socket.broadcast.emit('move', msg);
     });
 
@@ -162,6 +162,14 @@ io.on('connection', function (socket) {
 
 
         io.to(obj.room).emit('chat message', obj);
+    });
+
+    socket.on("giveNewCoin", function (index) {
+        coinPositions[socket.room][index] = "";
+        var x = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
+        var z = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
+        coinPositions[socket.room][index] = {x: x, z: z};
+        io.to(socket.room).emit("giveNewCoin", {index: index, x: x, z: z});
     });
 
     socket.on('reset', function (msg) {

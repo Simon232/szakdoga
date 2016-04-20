@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab917d04-1d80-4abe-90df-9ea5364f55dc" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.js" afterPath="$PROJECT_DIR$/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/keymapping.js" afterPath="$PROJECT_DIR$/public/js/keymapping.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/program.js" afterPath="$PROJECT_DIR$/public/js/program.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -39,8 +41,8 @@
           <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/index.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-0.03167421">
-                  <caret line="16" column="52" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="52" />
+                <state vertical-scroll-proportion="0.6334842">
+                  <caret line="171" column="62" selection-start-line="171" selection-start-column="62" selection-end-line="171" selection-end-column="62" />
                   <folding />
                 </state>
               </provider>
@@ -73,8 +75,8 @@
           <file leaf-file-name="program.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/public/js/program.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.9230769">
-                  <caret line="344" column="5" selection-start-line="344" selection-start-column="5" selection-end-line="344" selection-end-column="5" />
+                <state vertical-scroll-proportion="0.41025642">
+                  <caret line="52" column="28" selection-start-line="52" selection-start-column="28" selection-end-line="52" selection-end-column="28" />
                   <folding />
                 </state>
               </provider>
@@ -93,8 +95,8 @@
           <file leaf-file-name="keymapping.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/js/keymapping.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-7.793103">
-                  <caret line="136" column="18" selection-start-line="136" selection-start-column="17" selection-end-line="136" selection-end-column="18" />
+                <state vertical-scroll-proportion="-5.862069">
+                  <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -166,8 +168,8 @@
         <option value="$PROJECT_DIR$/public/js/logic.js" />
         <option value="$PROJECT_DIR$/public/css/template.css" />
         <option value="$PROJECT_DIR$/public/js/geoTemp" />
-        <option value="$PROJECT_DIR$/public/js/keymapping.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/public/js/keymapping.js" />
         <option value="$PROJECT_DIR$/index.js" />
         <option value="$PROJECT_DIR$/public/js/program.js" />
       </list>
@@ -761,26 +763,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/keymapping.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.793103">
-          <caret line="136" column="18" selection-start-line="136" selection-start-column="17" selection-end-line="136" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/socket.io/lib/socket.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
           <caret line="126" column="0" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.03167421">
-          <caret line="16" column="52" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="52" />
           <folding />
         </state>
       </provider>
@@ -793,10 +779,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/keymapping.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.862069">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6334842">
+          <caret line="171" column="62" selection-start-line="171" selection-start-column="62" selection-end-line="171" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/program.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9230769">
-          <caret line="344" column="5" selection-start-line="344" selection-start-column="5" selection-end-line="344" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.41025642">
+          <caret line="52" column="28" selection-start-line="52" selection-start-column="28" selection-end-line="52" selection-end-column="28" />
           <folding />
         </state>
       </provider>

@@ -1,4 +1,3 @@
-
 var keyPressed = {};
 
 document.addEventListener('keydown', function (e) {

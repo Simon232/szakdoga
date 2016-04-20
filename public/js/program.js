@@ -5,6 +5,7 @@ var thisColor = undefined;
 var thisRoom = undefined;
 var thisTexture = undefined;
 var otherPlayer = undefined;
+var thisPoints = 0;
 
 var gameWidth = 100;
 var cubeHalf = 0.49;
@@ -12,6 +13,7 @@ var PI = Math.PI;
 var movingSpeed = 0.05;
 var rotationSpeed = PI / 240;
 var cameraDistance = 6;
+
 
 var coinMeshes = [];
 
@@ -44,20 +46,44 @@ var obj = {
     }
 };
 
-var collision = function (newX, newZ) {
-    if (otherPlayer !== '') {
-        var colX = Math.abs(newX - cubes[otherPlayer].position.x);
-        var colZ = Math.abs(newZ - cubes[otherPlayer].position.z);
-        var originalX = Math.abs(cubes[thisSocket].position.x - cubes[otherPlayer].position.x);
-        var originalZ = Math.abs(cubes[thisSocket].position.z - cubes[otherPlayer].position.z);
-        return (colX < 1 && colZ < 1) && (originalX > colX && originalZ > colZ);
-        /*if (colX <= 1 && colZ <= 1 && (colX < (1 + 2 * movingSpeed) || colX < (1 + 2 * movingSpeed))) {
-         return true;
-         }
-         return colX <= 1 && colZ <= 1;*/
+socket.on("giveNewCoin", function (obj) {
+    var coin = getCoin();
+    coin.position.x = obj.x;
+    coin.position.y = 0.7;
+    coin.position.z = obj.z;
+    coinMeshes[obj.index] = coin;
+    scene.add(coinMeshes[obj.index]);
+});
 
+var collision = function (obj) {
+    var coinBoxWidth = 0.55;
+    var coinIndex = -1;
+
+    for (var i = 0; i < coinMeshes.length; i++) {
+        if (Math.abs(coinMeshes[i].position.x - obj.x) < coinBoxWidth && Math.abs(coinMeshes[i].position.z - obj.z) < coinBoxWidth) {
+            coinIndex = i;
+        }
     }
-    return false;
+
+    if(coinIndex != -1){
+        thisPoints += 10;
+        console.log("my point: " + thisPoints);
+        socket.emit("giveNewCoin", coinIndex);
+        scene.remove(coinMeshes[coinIndex]);
+    }
+    /*if (otherPlayer !== '') {
+     var colX = Math.abs(newX - cubes[otherPlayer].position.x);
+     var colZ = Math.abs(newZ - cubes[otherPlayer].position.z);
+     var originalX = Math.abs(cubes[thisSocket].position.x - cubes[otherPlayer].position.x);
+     var originalZ = Math.abs(cubes[thisSocket].position.z - cubes[otherPlayer].position.z);
+     return (colX < 1 && colZ < 1) && (originalX > colX && originalZ > colZ);
+     /*if (colX <= 1 && colZ <= 1 && (colX < (1 + 2 * movingSpeed) || colX < (1 + 2 * movingSpeed))) {
+     return true;
+     }
+     return colX <= 1 && colZ <= 1;
+
+     }
+     return false;*/
 };
 socket.on("joined", function () {
     setTimeout(function () {
@@ -300,10 +326,8 @@ socket.on('new', function (msg) {
     //})
 });
 
-socket.on("coinPositions", function (obj) {
-    var coinPositions = obj;
-
-    //var circleMaterial = new THREE.MeshBasicMaterial({color: "rgb(255, 255, 102)"});
+var getCoin = function(){
+        //var circleMaterial = new THREE.MeshBasicMaterial({color: "rgb(255, 255, 102)"});
     var coinTexture = new THREE.TextureLoader().load("pics/coin.jpg");
     var circleMaterial = new THREE.MeshBasicMaterial({map: coinTexture});
     var circleGeometry = new THREE.Geometry();
@@ -311,8 +335,6 @@ socket.on("coinPositions", function (obj) {
     var angle = 25;
     var rating = (2 * PI) / (angle);
     var radius = 0.5;
-    var circleWidth = 0.2;
-
 
     //vertices number = 2*angle + 1
     circleGeometry.vertices.push(new THREE.Vector3(0, 0, 0.05));
@@ -355,9 +377,15 @@ socket.on("coinPositions", function (obj) {
     }
     circleGeometry.vertices.push(circleGeometry.vertices[middle + 1]);
 
+    var coinMesh = new THREE.Mesh(circleGeometry, circleMaterial);
+    return coinMesh;
+};
+
+socket.on("coinPositions", function (obj) {
+    var coinPositions = obj;
 
     for (var i = 0; i < coinPositions.length; i++) {
-        coinMeshes.push(new THREE.Mesh(circleGeometry, circleMaterial));
+        coinMeshes.push(getCoin());
         coinMeshes[coinMeshes.length - 1].position.x = coinPositions[i].x;
         coinMeshes[coinMeshes.length - 1].position.y = 0.7;
         coinMeshes[coinMeshes.length - 1].position.z = coinPositions[i].z;
@@ -447,8 +475,7 @@ var changeScene = function () {
     if (socket.id !== undefined && socket.id !== null) {
 
         //cubes[obj.sid].position.y = obj.pos.y;
-
-
+        collision(obj.socketCube);
         socket.emit('move', {
             sid: thisSocket,
             pos: obj.socketCube,
