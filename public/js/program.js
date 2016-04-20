@@ -199,7 +199,7 @@ socket.on('new', function (msg) {
         otherPlayer = '';
 
         var boxTexture = "";
-        var randomNumber = Math.floor(Math.random() * 7);
+        var randomNumber = Math.floor(Math.random() * 5);
         if (randomNumber == 0) {
             boxTexture = "pics/box.jpg";
         }
