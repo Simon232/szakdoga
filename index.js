@@ -169,7 +169,7 @@ io.on('connection', function (socket) {
         var x = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
         var z = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
         coinPositions[socket.room][index] = {x: x, z: z};
-        io.to(socket.room).emit("giveNewCoin", {index: index, x: x, z: z});
+        io.to(socket.room).emit("giveNewCoin", {sid: socket.id, index: index, x: x, z: z});
     });
 
     socket.on('reset', function (msg) {
