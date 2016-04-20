@@ -67,12 +67,7 @@ socket.on("joined", function () {
             $('.other-player-joined').toggle(3000);
         }, 3000);
     }, 1000);
-    //console.log("testroom: " + "room#"+thisRoom);
-    //thisRoom = 'room#'+obj.room;
-    //socket.emit("joined", {userName: "not implemented yet", cube: cubes[thisSocket]});
 });
-
-
 
 var init = function () {
 
@@ -320,14 +315,14 @@ socket.on("coinPositions", function (obj) {
 
 
     //vertices number = 2*angle + 1
-    circleGeometry.vertices.push(new THREE.Vector3(0, 0, 0));
+    circleGeometry.vertices.push(new THREE.Vector3(0, 0, 0.05));
     for (var i = 0; i < angle; i++) {
-        circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, 0));
+        circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, 0.05));
         rate += rating;
         if (i === angle - 1) {
             circleGeometry.vertices.push(circleGeometry.vertices[1]);
         } else {
-            circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, 0));
+            circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, 0.05));
         }
         circleGeometry.faces.push(new THREE.Face3(0, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
         circleGeometry.faceVertexUvs[0].push([new THREE.Vector2(1.0, 0, 0), new THREE.Vector2(1.0, 1, 0), new THREE.Vector2(0.0, 0, 0)]);
@@ -335,15 +330,15 @@ socket.on("coinPositions", function (obj) {
 
 
     rate = 0.0;
-    circleGeometry.vertices.push(new THREE.Vector3(0, 0, -0.1));
+    circleGeometry.vertices.push(new THREE.Vector3(0, 0, -0.05));
     var middle = circleGeometry.vertices.length - 1;
     for (var i = 0; i < angle; i++) {
-        circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, -0.1));
+        circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, -0.05));
         rate += rating;
         if (i === angle - 1) {
             circleGeometry.vertices.push(circleGeometry.vertices[middle + 1]);
         } else {
-            circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, -0.1));
+            circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, -0.05));
         }
         circleGeometry.faces.push(new THREE.Face3(middle, circleGeometry.vertices.length - 1, circleGeometry.vertices.length - 2));
         circleGeometry.faceVertexUvs[0].push([new THREE.Vector2(1.0, 0, 0), new THREE.Vector2(1.0, 1, 0), new THREE.Vector2(0.0, 0, 0)]);
@@ -369,7 +364,6 @@ socket.on("coinPositions", function (obj) {
         coinMeshes[coinMeshes.length - 1].name = "coin" + i;
         scene.add(coinMeshes[coinMeshes.length - 1]);
     }
-
 
 });
 
