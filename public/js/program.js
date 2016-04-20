@@ -149,13 +149,13 @@ var init = function () {
     //pyramidGeometry.faceVertexUvs[0][0] = [ new THREE.Vector2(0.5, 0.5), new THREE.Vector2(0.5, 0.5), new THREE.Vector2(0.5, 0.5)]; // for textures
 
     var pyramidUvs = [];
-    pyramidUvs.push(new THREE.Vector2( 0.0, 0.0));
-    pyramidUvs.push(new THREE.Vector2( 0.0, 1.0));
-    pyramidUvs.push(new THREE.Vector2( 1.0, 1.0));
-    pyramidGeometry.faceVertexUvs[0].push([ pyramidUvs[1],pyramidUvs[2],pyramidUvs[0]]);
-    pyramidGeometry.faceVertexUvs[0].push([ pyramidUvs[1],pyramidUvs[2],pyramidUvs[0]]);
-    pyramidGeometry.faceVertexUvs[0].push([ pyramidUvs[1],pyramidUvs[2],pyramidUvs[0]]);
-    pyramidGeometry.faceVertexUvs[0].push([ pyramidUvs[1],pyramidUvs[2],pyramidUvs[0]]);
+    pyramidUvs.push(new THREE.Vector2(0.0, 0.0));
+    pyramidUvs.push(new THREE.Vector2(0.0, 1.0));
+    pyramidUvs.push(new THREE.Vector2(1.0, 1.0));
+    pyramidGeometry.faceVertexUvs[0].push([pyramidUvs[1], pyramidUvs[2], pyramidUvs[0]]);
+    pyramidGeometry.faceVertexUvs[0].push([pyramidUvs[1], pyramidUvs[2], pyramidUvs[0]]);
+    pyramidGeometry.faceVertexUvs[0].push([pyramidUvs[1], pyramidUvs[2], pyramidUvs[0]]);
+    pyramidGeometry.faceVertexUvs[0].push([pyramidUvs[1], pyramidUvs[2], pyramidUvs[0]]);
 
     var PyramidMesh = new THREE.Mesh(pyramidGeometry, pyramidMaterial);
     PyramidMesh.position.x = 10;
@@ -323,9 +323,8 @@ socket.on("coinPositions", function (obj) {
             circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, 0));
         }
         circleGeometry.faces.push(new THREE.Face3(0, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
-        circleGeometry.faceVertexUvs[0].push([ new THREE.Vector2( 1.0, 0,0), new THREE.Vector2( 1.0, 1,0), new THREE.Vector2( 0.0, 0,0)]);
+        circleGeometry.faceVertexUvs[0].push([new THREE.Vector2(1.0, 0, 0), new THREE.Vector2(1.0, 1, 0), new THREE.Vector2(0.0, 0, 0)]);
     }
-
 
 
     rate = 0.0;
@@ -340,7 +339,7 @@ socket.on("coinPositions", function (obj) {
             circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, -0.1));
         }
         circleGeometry.faces.push(new THREE.Face3(middle, circleGeometry.vertices.length - 1, circleGeometry.vertices.length - 2));
-        circleGeometry.faceVertexUvs[0].push([ new THREE.Vector2( 1.0, 0,0), new THREE.Vector2( 1.0, 1,0), new THREE.Vector2( 0.0, 0,0)]);
+        circleGeometry.faceVertexUvs[0].push([new THREE.Vector2(1.0, 0, 0), new THREE.Vector2(1.0, 1, 0), new THREE.Vector2(0.0, 0, 0)]);
     }
     for (var i = 0; i < (angle * 2); i++) {
         circleGeometry.vertices.push(circleGeometry.vertices[i + 1]);
@@ -353,8 +352,6 @@ socket.on("coinPositions", function (obj) {
         circleGeometry.faces.push(new THREE.Face3(circleGeometry.vertices.length - 3, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
     }
     circleGeometry.vertices.push(circleGeometry.vertices[middle + 1]);
-
-
 
 
     for (var i = 0; i < coinPositions.length; i++) {
@@ -475,9 +472,11 @@ var changeScene = function () {
 
         if (Math.abs(gameWidth / 2 - cameraDistance / 3) > Math.abs(obj.camera.x)) {
             camera.position.x = obj.camera.x;
+
         }
         camera.position.y = obj.camera.y;
         if (Math.abs(gameWidth / 2 - cameraDistance / 3) > Math.abs(obj.camera.z)) {
+
             camera.position.z = obj.camera.z;
         }
         camera.lookAt(new THREE.Vector3(cubes[thisSocket].position.x, cubes[thisSocket].position.y, cubes[thisSocket].position.z));

@@ -10,7 +10,7 @@ document.addEventListener('keyup', function (e) {
 
 function gameLogic() {
 
-    if (keyPressed[87] || keyPressed[38]) { // W
+    if (/*keyPressed[87] || */keyPressed[38]) { // W
         var newX = obj.socketCube.x - Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
         var newZ = obj.socketCube.z - Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
         //if (!collision(newX, newZ)) {
@@ -30,7 +30,7 @@ function gameLogic() {
             changeScene();
         //}
     }
-    if (keyPressed[83] || keyPressed[40]) { // S
+    if (/*keyPressed[83] || */keyPressed[40]) { // S
         var newX = obj.socketCube.x + Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
         var newZ = obj.socketCube.z + Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
         //if (!collision(newX, newZ)) {
@@ -51,7 +51,7 @@ function gameLogic() {
             changeScene();
         //}
     }
-    if (keyPressed[65] || keyPressed[37]) { // A
+    if (/*keyPressed[65] || */keyPressed[37]) { // A
         var newX = obj.socketCube.x - Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
         var newZ = obj.socketCube.z + Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
         //if (!collision(newX, newZ)) {
@@ -70,7 +70,7 @@ function gameLogic() {
             changeScene();
         //}
     }
-    if (keyPressed[68] || keyPressed[39]) { // D
+    if (/*keyPressed[68] ||*/ keyPressed[39]) { // D
         var newX = obj.socketCube.x + Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
         var newZ = obj.socketCube.z - Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
         //if (!collision(newX, newZ)) {
@@ -96,7 +96,7 @@ function gameLogic() {
      * */
 
 
-    if ((keyPressed[87] && keyPressed[68]) || (keyPressed[38] && keyPressed[39])) { // W + D
+    if ((/*keyPressed[87] && keyPressed[68]) || */(keyPressed[38] && keyPressed[39]))) { // W + D
         if (!pause
             && obj.socketCube.z <= (gameWidth / 2) - cubeHalf && obj.socketCube.z >= -(gameWidth / 2) + cubeHalf
             && obj.socketCube.x <= (gameWidth / 2) - cubeHalf && obj.socketCube.x >= -(gameWidth / 2) + cubeHalf
@@ -114,7 +114,7 @@ function gameLogic() {
         }
     }
 
-    if ((keyPressed[83] && keyPressed[68]) || (keyPressed[40] && keyPressed[39])) { // S + D
+    if ((/*keyPressed[83] && keyPressed[68]) ||*/ (keyPressed[40] && keyPressed[39])) ){ // S + D
         if (!pause
             && obj.socketCube.z <= (gameWidth / 2) - cubeHalf && obj.socketCube.z >= -(gameWidth / 2) + cubeHalf
             && obj.socketCube.x <= (gameWidth / 2) - cubeHalf && obj.socketCube.x >= -(gameWidth / 2) + cubeHalf
@@ -132,7 +132,7 @@ function gameLogic() {
         }
     }
 
-    if ((keyPressed[87] && keyPressed[65]) || (keyPressed[38] && keyPressed[37])) { // W + A
+    if ((/*keyPressed[87] && keyPressed[65]) || */(keyPressed[38] && keyPressed[37]))) { // W + A
         if (!pause
             && obj.socketCube.z <= (gameWidth / 2) - cubeHalf && obj.socketCube.z >= -(gameWidth / 2) + cubeHalf
             && obj.socketCube.x <= (gameWidth / 2) - cubeHalf && obj.socketCube.x >= -(gameWidth / 2) + cubeHalf
@@ -149,7 +149,7 @@ function gameLogic() {
         }
     }
 
-    if ((keyPressed[83] && keyPressed[65]) || (keyPressed[40] && keyPressed[37])) { // S + A
+    if ((/*keyPressed[83] && keyPressed[65]) ||*/ (keyPressed[40] && keyPressed[37]))) { // S + A
         if (!pause
             && obj.socketCube.z <= (gameWidth / 2) - cubeHalf && obj.socketCube.z >= -(gameWidth / 2) + cubeHalf
             && obj.socketCube.x <= (gameWidth / 2) - cubeHalf && obj.socketCube.x >= -(gameWidth / 2) + cubeHalf
