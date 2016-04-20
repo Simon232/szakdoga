@@ -47,9 +47,11 @@ var obj = {
 };
 
 socket.on("giveNewCoin", function (obj) {
-    scene.remove(coinMeshes[obj.index]);
     if (obj.sid == thisSocket) {
         document.querySelector(".points").textContent = thisPoints;
+    }else{
+        scene.remove(coinMeshes[obj.index]);
+        coinMeshes.splice(coinIndex, 1);
     }
 
     var coin = getCoin();
@@ -76,7 +78,7 @@ var collision = function (obj) {
         coinMeshes.splice(coinIndex, 1);
         thisPoints += 10;
         console.log("my point: " + thisPoints);
-        socket.emit("giveNewCoin");
+        socket.emit("giveNewCoin", coinIndex);
     }
 
 
