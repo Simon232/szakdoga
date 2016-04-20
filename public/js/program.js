@@ -266,7 +266,6 @@ socket.on('new', function (msg) {
             }
         });
 
-
     }
 
     if (socket.id != undefined) { // elkuldom a kockamat a masiknak
@@ -302,7 +301,9 @@ socket.on('new', function (msg) {
 socket.on("coinPositions", function (obj) {
     var coinPositions = obj;
 
-    var circleMaterial = new THREE.MeshBasicMaterial({color: "rgb(255, 255, 102)"});
+    //var circleMaterial = new THREE.MeshBasicMaterial({color: "rgb(255, 255, 102)"});
+    var coinTexture = new THREE.TextureLoader().load("pics/coin.jpg");
+    var circleMaterial = new THREE.MeshBasicMaterial({map: coinTexture});
     var circleGeometry = new THREE.Geometry();
     var rate = 0.0;
     var angle = 25;
@@ -322,7 +323,10 @@ socket.on("coinPositions", function (obj) {
             circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, 0));
         }
         circleGeometry.faces.push(new THREE.Face3(0, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
+        circleGeometry.faceVertexUvs[0].push([ new THREE.Vector2( 1.0, 0,0), new THREE.Vector2( 1.0, 1,0), new THREE.Vector2( 0.0, 0,0)]);
     }
+
+
 
     rate = 0.0;
     circleGeometry.vertices.push(new THREE.Vector3(0, 0, -0.1));
@@ -336,6 +340,7 @@ socket.on("coinPositions", function (obj) {
             circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, -0.1));
         }
         circleGeometry.faces.push(new THREE.Face3(middle, circleGeometry.vertices.length - 1, circleGeometry.vertices.length - 2));
+        circleGeometry.faceVertexUvs[0].push([ new THREE.Vector2( 1.0, 0,0), new THREE.Vector2( 1.0, 1,0), new THREE.Vector2( 0.0, 0,0)]);
     }
     for (var i = 0; i < (angle * 2); i++) {
         circleGeometry.vertices.push(circleGeometry.vertices[i + 1]);
@@ -348,6 +353,9 @@ socket.on("coinPositions", function (obj) {
         circleGeometry.faces.push(new THREE.Face3(circleGeometry.vertices.length - 3, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
     }
     circleGeometry.vertices.push(circleGeometry.vertices[middle + 1]);
+
+
+
 
     for (var i = 0; i < coinPositions.length; i++) {
         coinMeshes.push(new THREE.Mesh(circleGeometry, circleMaterial));
