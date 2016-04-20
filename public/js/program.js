@@ -49,35 +49,37 @@ var obj = {
 socket.on("giveNewCoin", function (obj) {
     scene.remove(coinMeshes[obj.index]);
     if (obj.sid == thisSocket) {
+        lastSocket = thisSocket;
         document.querySelector(".points").textContent = thisPoints;
     }
-
 
     var coin = getCoin();
     coin.position.x = obj.x;
     coin.position.y = 0.7;
     coin.position.z = obj.z;
-    coinMeshes[obj.index] = coin;
+    coinMeshes.push(coin);
     scene.add(coinMeshes[obj.index]);
+
 });
 
 var collision = function (obj) {
     var coinBoxWidth = 0.55;
     var coinIndex = -1;
 
-    setTimeout(function () {
-        for (var i = 0; i < coinMeshes.length; i++) {
-            if (Math.abs(coinMeshes[i].position.x - obj.x) < coinBoxWidth && Math.abs(coinMeshes[i].position.z - obj.z) < coinBoxWidth) {
-                coinIndex = i;
-            }
+
+    for (var i = 0; i < coinMeshes.length; i++) {
+        if (Math.abs(coinMeshes[i].position.x - obj.x) < coinBoxWidth && Math.abs(coinMeshes[i].position.z - obj.z) < coinBoxWidth) {
+            coinIndex = i;
         }
-        if (coinIndex != -1) {
-            scene.remove(coinMeshes[coinIndex]);
-            thisPoints += 10;
-            console.log("my point: " + thisPoints);
-            socket.emit("giveNewCoin", coinIndex);
-        }
-    }, 1000);
+    }
+    if (coinIndex != -1) {
+        scene.remove(coinMeshes[coinIndex]);
+        coinMeshes.splice(coinIndex, 1);
+        thisPoints += 10;
+        console.log("my point: " + thisPoints);
+        socket.emit("giveNewCoin");
+    }
+
 
 
     /*if (otherPlayer !== '') {
