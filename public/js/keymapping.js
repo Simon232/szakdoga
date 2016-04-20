@@ -25,11 +25,11 @@ function gameLogic() {
 
             obj.camera.z = cubes[thisSocket].position.z + cameraDistance * (Math.cos(cubes[thisSocket].rotation.y));
             obj.camera.x = cubes[thisSocket].position.x + cameraDistance * (Math.sin(cubes[thisSocket].rotation.y));
-
+            collision(obj.socketCube);
             changeScene();
         //}
     }
-    if (/*keyPressed[83] || */keyPressed[40]) { // S
+    else if (/*keyPressed[83] || */keyPressed[40]) { // S
         var newX = obj.socketCube.x + Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
         var newZ = obj.socketCube.z + Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
         //if (!collision(newX, newZ)) {
@@ -47,10 +47,11 @@ function gameLogic() {
             obj.camera.z = cubes[thisSocket].position.z + cameraDistance * (Math.cos(cubes[thisSocket].rotation.y));
             obj.camera.x = cubes[thisSocket].position.x + cameraDistance * (Math.sin(cubes[thisSocket].rotation.y));
 
+            collision(obj.socketCube);
             changeScene();
         //}
     }
-    if (/*keyPressed[65] || */keyPressed[37]) { // A
+    else if (/*keyPressed[65] || */keyPressed[37]) { // A
         var newX = obj.socketCube.x - Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
         var newZ = obj.socketCube.z + Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
         //if (!collision(newX, newZ)) {
@@ -66,10 +67,11 @@ function gameLogic() {
                 obj.camera.x -= Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
             }
 
+            collision(obj.socketCube);
             changeScene();
         //}
     }
-    if (/*keyPressed[68] ||*/ keyPressed[39]) { // D
+    else if (/*keyPressed[68] ||*/ keyPressed[39]) { // D
         var newX = obj.socketCube.x + Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
         var newZ = obj.socketCube.z - Math.sin(cubes[thisSocket].rotation.y) * movingSpeed;
         //if (!collision(newX, newZ)) {
@@ -84,6 +86,7 @@ function gameLogic() {
                 obj.socketCube.x += Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
                 obj.camera.x += Math.cos(cubes[thisSocket].rotation.y) * movingSpeed;
             }
+            collision(obj.socketCube);
             changeScene();
         //}
     }

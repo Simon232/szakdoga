@@ -74,3 +74,25 @@ li {
     color: green;
     width: 300px;
 }
+
+.points-container{
+    position: absolute;
+    top: 50px;
+    color: rgba(255, 0, 0, 1);
+    font-size: 30px;
+    display: inline-block;
+}
+.your-points{
+    position: absolute;
+    top: 50px;
+    color: rgba(255, 0, 0, 1);
+    font-size: 30px;
+    display: inline-block;
+}
+.points{
+    position: absolute;
+    top: 50px;
+    color: rgba(255, 0, 0, 1);
+    font-size: 30px;
+    display: inline-block;
+}

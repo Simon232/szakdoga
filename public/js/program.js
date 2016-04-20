@@ -11,7 +11,7 @@ var gameWidth = 100;
 var cubeHalf = 0.49;
 var PI = Math.PI;
 var movingSpeed = 0.05;
-var rotationSpeed = PI / 240;
+var rotationSpeed = PI / 180;
 var cameraDistance = 6;
 
 
@@ -47,6 +47,7 @@ var obj = {
 };
 
 socket.on("giveNewCoin", function (obj) {
+    scene.remove(coinMeshes[obj.index]);
     var coin = getCoin();
     coin.position.x = obj.x;
     coin.position.y = 0.7;
@@ -65,11 +66,14 @@ var collision = function (obj) {
         }
     }
 
-    if(coinIndex != -1){
+    if (coinIndex != -1) {
+
+        removeOnce = false;
+        scene.remove(coinMeshes[coinIndex]);
         thisPoints += 10;
+        document.querySelector(".points").textContent = thisPoints;
         console.log("my point: " + thisPoints);
         socket.emit("giveNewCoin", coinIndex);
-        scene.remove(coinMeshes[coinIndex]);
     }
     /*if (otherPlayer !== '') {
      var colX = Math.abs(newX - cubes[otherPlayer].position.x);
@@ -84,6 +88,8 @@ var collision = function (obj) {
 
      }
      return false;*/
+
+
 };
 socket.on("joined", function () {
     setTimeout(function () {
@@ -227,6 +233,10 @@ socket.on('new', function (msg) {
 
         document.querySelector(".on-the-top-right").textContent += thisRoom;
         document.querySelector(".chat").style.top = window.innerHeight / 4 + "px";
+        document.querySelector(".points-container").style.right = window.innerWidth / 20 + "px";
+        document.querySelector(".your-points").style.right = window.innerWidth / 120 + "px";
+        //document.querySelector(".points").style.right = window.innerWidth / 2000 + "px";
+        document.querySelector(".points").textContent = thisPoints;
 
 
         thisSocket = msg.sid;
@@ -326,8 +336,8 @@ socket.on('new', function (msg) {
     //})
 });
 
-var getCoin = function(){
-        //var circleMaterial = new THREE.MeshBasicMaterial({color: "rgb(255, 255, 102)"});
+var getCoin = function () {
+    //var circleMaterial = new THREE.MeshBasicMaterial({color: "rgb(255, 255, 102)"});
     var coinTexture = new THREE.TextureLoader().load("pics/coin.jpg");
     var circleMaterial = new THREE.MeshBasicMaterial({map: coinTexture});
     var circleGeometry = new THREE.Geometry();
@@ -468,14 +478,13 @@ socket.on('update', function (msg) {
     }
 });
 
-
 // *** functions ***
-var changeScene = function () {
+var changeScene = function (type) {
     ///&& !collision(obj.socketCube.x, obj.socketCube.z)
     if (socket.id !== undefined && socket.id !== null) {
 
         //cubes[obj.sid].position.y = obj.pos.y;
-        collision(obj.socketCube);
+
         socket.emit('move', {
             sid: thisSocket,
             pos: obj.socketCube,
