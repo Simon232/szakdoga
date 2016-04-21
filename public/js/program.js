@@ -31,14 +31,21 @@ var timer = function (time) {
             this.time--;
             time--;
             timer(time);
-            document.querySelector(".time").textContent = Math.floor(time / 60) + ":"+ (time % 60 < 10 ? "0" + time % 60: time % 60);
+            document.querySelector(".time").textContent = Math.floor(time / 60) + ":" + (time % 60 < 10 ? "0" + time % 60 : time % 60);
         }
-        else if(time == 0){
+        else if (time == 0) {
             document.querySelector(".time").textContent = "Vege";
-            setTimeout(function(){
+            setTimeout(function () {
                 removeCoins();
-            },2000);
+            }, 2000);
             removeCoins();
+
+            setTimeout(function () {
+                document.querySelector('.timer-container').classList.add("doFadeOut");
+                setTimeout(function () {
+                    document.querySelector('.timer-container').style.display = "none";
+                }, 2000);
+            }, 2000);
         }
     }, 1000);
 };
@@ -111,6 +118,7 @@ socket.on("joined", function () {
             document.querySelector(".other-player-joined").style.display = "none";
         }, 2000);
     }, 2000);
+
 });
 
 var init = function () {
@@ -207,7 +215,7 @@ var init = function () {
     var PyramidMesh2 = new THREE.Mesh(pyramidGeometry, pyramidMaterial);
     var PyramidMesh3 = new THREE.Mesh(pyramidGeometry, pyramidMaterial);
 
-    PyramidMesh.position.x = gameWidth -10;
+    PyramidMesh.position.x = gameWidth - 10;
     PyramidMesh2.position.x = gameWidth;
     PyramidMesh3.position.x = gameWidth - 10;
     PyramidMesh.position.z = 16;
@@ -218,9 +226,9 @@ var init = function () {
     PyramidMesh2.rotation.y += 0.20;
     PyramidMesh3.rotation.y += 0.20;
 
-    PyramidMesh.scale.set(4,4,4);
-    PyramidMesh2.scale.set(8,8,8);
-    PyramidMesh3.scale.set(4,4,4);
+    PyramidMesh.scale.set(4, 4, 4);
+    PyramidMesh2.scale.set(8, 8, 8);
+    PyramidMesh3.scale.set(4, 4, 4);
 
     // load a texture, set wrap mode to repeat
     var texture = new THREE.TextureLoader().load("pics/sand3.jpg");
@@ -259,7 +267,8 @@ socket.on('new', function (msg) {
         document.querySelector(".other-player-disconnected").style.display = "none";
         document.querySelector(".on-the-top-right").textContent += thisRoom;
         document.querySelector(".on-the-top-right").style.right = window.innerWidth / 120 + "px";
-        document.querySelector(".timer-container").style.right = (window.innerWidth / 2)+ "px";
+        document.querySelector(".timer-container").style.right = (window.innerWidth / 2) + "px";
+        document.querySelector(".timer-container").style.display = "none";
         document.querySelector(".chat").style.top = window.innerHeight / 4 + "px";
         document.querySelector(".points-container").style.right = window.innerWidth / 20 + "px";
         document.querySelector(".your-points").style.right = window.innerWidth / 120 + "px";
@@ -454,7 +463,7 @@ socket.on('move', function (_obj) {
         cubes[sid].position.x = x;
         //cubes[obj.sid].position.y = obj.pos.y;
         cubes[sid].position.z = z;
-        if(_obj.isReset){
+        if (_obj.isReset) {
             cubes[sid].rotation.y = 0.0;
         }
     }
@@ -488,6 +497,8 @@ socket.on('disconnect', function (msg) {
 });
 
 socket.on('update', function (msg) {
+    document.querySelector('.timer-container').style.display = "";
+    document.querySelector('.timer-container').classList.add("doFadeIn");
 
     console.log("Ezt kaptam: ", msg);
     if (msg.room == thisRoom) {
@@ -518,7 +529,7 @@ socket.on('update', function (msg) {
 
 // *** functions ***
 
-var removeCoins = function(){
+var removeCoins = function () {
     for (var i = 0; i < coinMeshes.length; i++) {
         scene.remove(coinMeshes[i]);
     }
