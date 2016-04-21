@@ -9,6 +9,10 @@ app.use(express.static('public'));
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
+app.get('/aloldal', function (req, res) {
+    res.sendFile(__dirname + '/jatek.html');
+});
+
 /* codes for me, to better understanding:
  *
  * socket.on - amit a kliens kuld
@@ -29,76 +33,9 @@ var cointNumber = 10;
 
 io.on('connection', function (socket) {
 
-    // *** connection section ***
-    ++joinedUsers;
-    if (joinedUsers % 2 != 0) {
-        ++roomSize;
+    init(socket);
 
-        //checking unused roomId-s to avoid id-collision (for example: 0,1,3,4 id's next value: 2, then 5)
-        var usedRoomId = false;
-        for (var i = 0; i < roomManager.length; i++) {
-            if (roomManager[i].id == roomSize) {
-                usedRoomId = true;
-            }
-        }
-        if (usedRoomId) {
-            //calculate correct id
-            for (var i = 0; i < roomManager.length; i++) {
-                var resultIsBad = false;
-                for (var j = 0; j < roomManager.length; j++) {
-                    if (roomManager[j].id == i) {
-                        resultIsBad = true;
-                    }
-                }
-                if (!resultIsBad) {
-                    roomSize = i;
-                    i = roomManager.length; //break the cycle
-                }
-            }
-            var roomName = 'room#' + roomSize;
-            roomManager.push(addRoom());
-            roomMessages[roomName] = [];
-            socket.join(roomName);
-            socket.room = roomName;
-            roomSize = roomManager.length - 1; //jump to the last known 'good' value
-
-        } else {
-            var roomName = 'room#' + roomSize;
-            roomManager.push(addRoom());
-            roomMessages[roomName] = [];
-            socket.join(roomName);
-            socket.room = roomName; //if everything went well, we don't need to jump
-        }
-
-        var positions = [];
-        for (var i = 0; i < cointNumber; i++) {
-            var x = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
-            var z = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
-            positions.push({x: x, z: z});
-        }
-        coinPositions[roomName] = positions;
-
-
-    } else {
-        var emptyRoom = findOnePlayerRoom(); //enough to find an empty room
-        socket.join(emptyRoom);
-        socket.room = emptyRoom;
-
-        io.to(socket.room).emit("coinPositions", coinPositions[socket.room]);
-    }
-    io.to(socket.room).emit('new', {sid: socket.id, room: socket.room});
-    io.to(socket.room).emit("old messages", {sid: socket.id, historyMessage: roomMessages[socket.room]});
-    //socket.emit("joined");
-
-    addPlayerToRoom(socket.room, socket.id);
-    console.log("user: " + socket.id + ' connected to: ' + socket.room);
-
-    socket.on("joined", function (obj) {
-        socket.username = obj.userName;
-        cubes[socket.id] = obj.cube;
-        console.log(socket.id + " joined with this:  [" + cubes[socket.id].x + ", " + cubes[socket.id].y + ", " + cubes[socket.id].z + "]");
-        socket.to(socket.room).broadcast.emit("joined");
-    });
+    socket.on("joined", onJoined.bind(socket));
 
     socket.on('disconnect', function () {
         if (joinedUsers % 2 != 0) {
@@ -176,6 +113,9 @@ io.on('connection', function (socket) {
         socket.to(socket.room).broadcast.emit('reset', msg);
     });
 
+   
+
+    
 });
 
 var addPlayerToRoom = function (room, player) {
@@ -254,3 +194,79 @@ var isCollision = function (obj) {
 http.listen(port, function () {
     console.log('Server is started, listening on port:', port);
 });
+
+
+
+function init(socket) {
+    // *** connection section ***
+    ++joinedUsers;
+    if (joinedUsers % 2 != 0) {
+        ++roomSize;
+
+        //checking unused roomId-s to avoid id-collision (for example: 0,1,3,4 id's next value: 2, then 5)
+        var usedRoomId = false;
+        for (var i = 0; i < roomManager.length; i++) {
+            if (roomManager[i].id == roomSize) {
+                usedRoomId = true;
+            }
+        }
+        if (usedRoomId) {
+            //calculate correct id
+            for (var i = 0; i < roomManager.length; i++) {
+                var resultIsBad = false;
+                for (var j = 0; j < roomManager.length; j++) {
+                    if (roomManager[j].id == i) {
+                        resultIsBad = true;
+                    }
+                }
+                if (!resultIsBad) {
+                    roomSize = i;
+                    i = roomManager.length; //break the cycle
+                }
+            }
+            var roomName = 'room#' + roomSize;
+            roomManager.push(addRoom());
+            roomMessages[roomName] = [];
+            socket.join(roomName);
+            socket.room = roomName;
+            roomSize = roomManager.length - 1; //jump to the last known 'good' value
+
+        } else {
+            var roomName = 'room#' + roomSize;
+            roomManager.push(addRoom());
+            roomMessages[roomName] = [];
+            socket.join(roomName);
+            socket.room = roomName; //if everything went well, we don't need to jump
+        }
+
+        var positions = [];
+        for (var i = 0; i < cointNumber; i++) {
+            var x = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
+            var z = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
+            positions.push({x: x, z: z});
+        }
+        coinPositions[roomName] = positions;
+
+
+    } else {
+        var emptyRoom = findOnePlayerRoom(); //enough to find an empty room
+        socket.join(emptyRoom);
+        socket.room = emptyRoom;
+
+        io.to(socket.room).emit("coinPositions", coinPositions[socket.room]);
+    }
+    io.to(socket.room).emit('new', {sid: socket.id, room: socket.room});
+    io.to(socket.room).emit("old messages", {sid: socket.id, historyMessage: roomMessages[socket.room]});
+    //socket.emit("joined");
+    
+    addPlayerToRoom(socket.room, socket.id);
+    console.log("user: " + socket.id + ' connected to: ' + socket.room);
+
+}
+
+ function onJoined(obj) {
+    this.username = obj.userName;
+    cubes[this.id] = obj.cube;
+    console.log(this.id + " joined with this:  [" + cubes[this.id].x + ", " + cubes[this.id].y + ", " + cubes[this.id].z + "]");
+    this.to(this.room).broadcast.emit("joined");
+}
