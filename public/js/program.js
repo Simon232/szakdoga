@@ -29,7 +29,7 @@ var timer = function (t) {
         if (t > 0) {
             t--;
             timer(t);
-            console.log(t)
+            document.querySelector(".time").textContent = Math.floor(t / 60) + ":"+ t % 60;
         }
     }, 1000)
 };
@@ -91,21 +91,6 @@ var collision = function (obj) {
     }
 
 
-    /*if (otherPlayer !== '') {
-     var colX = Math.abs(newX - cubes[otherPlayer].position.x);
-     var colZ = Math.abs(newZ - cubes[otherPlayer].position.z);
-     var originalX = Math.abs(cubes[thisSocket].position.x - cubes[otherPlayer].position.x);
-     var originalZ = Math.abs(cubes[thisSocket].position.z - cubes[otherPlayer].position.z);
-     return (colX < 1 && colZ < 1) && (originalX > colX && originalZ > colZ);
-     /*if (colX <= 1 && colZ <= 1 && (colX < (1 + 2 * movingSpeed) || colX < (1 + 2 * movingSpeed))) {
-     return true;
-     }
-     return colX <= 1 && colZ <= 1;
-
-     }
-     return false;*/
-
-
 };
 socket.on("joined", function () {
 
@@ -119,7 +104,6 @@ socket.on("joined", function () {
             document.querySelector(".other-player-joined").style.display = "none";
         }, 2000);
     }, 2000);
-    timer(10);
 });
 
 var init = function () {
@@ -256,7 +240,7 @@ socket.on('new', function (msg) {
         document.querySelector(".other-player-disconnected").style.display = "none";
         document.querySelector(".on-the-top-right").textContent += thisRoom;
         document.querySelector(".on-the-top-right").style.right = window.innerWidth / 120 + "px";
-        document.querySelector(".timer-container").style.right = (window.innerWidth / 2) + 100 + "px";
+        document.querySelector(".timer-container").style.right = (window.innerWidth / 2)+ "px";
         document.querySelector(".chat").style.top = window.innerHeight / 4 + "px";
         document.querySelector(".points-container").style.right = window.innerWidth / 20 + "px";
         document.querySelector(".your-points").style.right = window.innerWidth / 120 + "px";
@@ -447,6 +431,8 @@ socket.on("coinPositions", function (obj) {
         coinMeshes[coinMeshes.length - 1].name = "coin" + i;
         scene.add(coinMeshes[coinMeshes.length - 1]);
     }
+
+    timer(120);
 
 });
 

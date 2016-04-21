@@ -17,14 +17,6 @@
 
 
 <div class=on-the-top>
-    <!--Egyelőre:<br>-->
-    <!--W - kocka mozgása előre (kamerával)<br>-->
-    <!--S - kocka mozgása hátra (kamerával)<br>-->
-    <!--A - kocka mozgása balra (kamerával)<br>-->
-    <!--D - kocka mozgása jobbra (kamerával)<br>-->
-    <!--<br>-->
-
-    <!--<img class="on-the-top-img" src="pics/wasd.png">-->
     <img class="on-the-top-img" src="pics/nyilak.png">
     <br>
     ESC - alaphelyzet<br>
@@ -43,6 +35,9 @@
         <p>
             A player disconnected!
         </p>
+    </div>
+    <div class="timer-container">
+        <div class="time"></div>
     </div>
     <script src="js/three.min.js"></script>
     <script src="js/detector.js"></script>
@@ -96,9 +91,6 @@
         <input id="msg" type="text" name="message" class="message-in">
         <button id="kuldes">Küldés</button>
     </form>
-</div>
-<div class="timer-container">
-    <div class="timer"> Hátralévő idő:</div>
 </div>
 
 <script src="/js/logic.js"></script>

@@ -25,7 +25,7 @@
     <favorites_list name="szakdolgozat" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.36942297">
+    <splitter split-orientation="horizontal" split-proportion="0.42831647">
       <split-first>
         <leaf>
           <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
@@ -51,8 +51,8 @@
           <file leaf-file-name="game.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/public/html/game.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.4917541">
-                  <caret line="45" column="10" selection-start-line="45" selection-start-column="10" selection-end-line="45" selection-end-column="10" />
+                <state vertical-scroll-proportion="0.52473766">
+                  <caret line="38" column="33" selection-start-line="38" selection-start-column="33" selection-end-line="38" selection-end-column="33" />
                   <folding />
                 </state>
               </provider>
@@ -65,8 +65,8 @@
           <file leaf-file-name="template.css" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/css/template.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-11.137931">
-                  <caret line="90" column="17" selection-start-line="90" selection-start-column="17" selection-end-line="90" selection-end-column="17" />
+                <state vertical-scroll-proportion="-18.827587">
+                  <caret line="190" column="5" selection-start-line="190" selection-start-column="5" selection-end-line="190" selection-end-column="5" />
                   <folding />
                 </state>
               </provider>
@@ -86,7 +86,7 @@
             <entry file="file://$PROJECT_DIR$/public/js/program.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.33283132">
-                  <caret line="87" column="18" selection-start-line="87" selection-start-column="8" selection-end-line="87" selection-end-column="18" />
+                  <caret line="242" column="88" selection-start-line="242" selection-start-column="88" selection-end-line="242" selection-end-column="88" />
                   <folding />
                 </state>
               </provider>
@@ -179,9 +179,9 @@
         <option value="$PROJECT_DIR$/public/js/keymapping.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/index.js" />
+        <option value="$PROJECT_DIR$/public/css/template.css" />
         <option value="$PROJECT_DIR$/public/html/game.html" />
         <option value="$PROJECT_DIR$/public/js/program.js" />
-        <option value="$PROJECT_DIR$/public/css/template.css" />
       </list>
     </option>
   </component>
@@ -407,7 +407,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.11433087" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32900432" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -415,7 +415,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1904762" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32900432" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21969697" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21969697" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27380952" sideWeight="0.49791667" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -818,14 +818,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.076923">
-          <caret line="20" column="7" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -834,18 +826,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/html/game.html">
+    <entry file="file://$PROJECT_DIR$/public/css/template.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4917541">
-          <caret line="45" column="10" selection-start-line="45" selection-start-column="10" selection-end-line="45" selection-end-column="10" />
+        <state vertical-scroll-proportion="-18.827587">
+          <caret line="190" column="5" selection-start-line="190" selection-start-column="5" selection-end-line="190" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/template.css">
+    <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.137931">
-          <caret line="90" column="17" selection-start-line="90" selection-start-column="17" selection-end-line="90" selection-end-column="17" />
+        <state vertical-scroll-proportion="-13.076923">
+          <caret line="20" column="7" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/html/game.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.52473766">
+          <caret line="38" column="33" selection-start-line="38" selection-start-column="33" selection-end-line="38" selection-end-column="33" />
           <folding />
         </state>
       </provider>
@@ -853,7 +853,7 @@
     <entry file="file://$PROJECT_DIR$/public/js/program.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33283132">
-          <caret line="87" column="18" selection-start-line="87" selection-start-column="8" selection-end-line="87" selection-end-column="18" />
+          <caret line="242" column="88" selection-start-line="242" selection-start-column="88" selection-end-line="242" selection-end-column="88" />
           <folding />
         </state>
       </provider>

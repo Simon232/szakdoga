@@ -185,3 +185,9 @@ li {
     top: 20px;
     font-size: 30px;
 }
+.timer{
+    display: inline-block;
+}
+.time{
+    display: inline-block;
+}
