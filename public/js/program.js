@@ -24,14 +24,24 @@ var getRandomPosition = function () {
     return pos;
 };
 
-var timer = function (t) {
+var time = 10;
+var timer = function (time) {
     setTimeout(function () {
-        if (t > 0) {
-            t--;
-            timer(t);
-            document.querySelector(".time").textContent = Math.floor(t / 60) + ":"+ t % 60;
+        var time = this.time;
+        if (time > 0) {
+            this.time--;
+            time--;
+            timer(time);
+            document.querySelector(".time").textContent = Math.floor(time / 60) + ":"+ (time % 60 < 10 ? "0" + time % 60: time % 60);
         }
-    }, 1000)
+        else if(time == 0){
+            document.querySelector(".time").textContent = "Vege";
+            setTimeout(function(){
+                removeCoins();
+            },1000);
+            removeCoins();
+        }
+    }, 1000);
 };
 
 var cubes = {};
@@ -73,7 +83,7 @@ socket.on("giveNewCoin", function (obj) {
 });
 
 var collision = function (obj) {
-    var coinBoxWidth = 0.55;
+    var coinBoxWidth = 1.05;
     var coinIndex = -1;
 
 
@@ -197,8 +207,23 @@ var init = function () {
     pyramidGeometry.faceVertexUvs[0].push([pyramidUvs[1], pyramidUvs[2], pyramidUvs[0]]);
 
     var PyramidMesh = new THREE.Mesh(pyramidGeometry, pyramidMaterial);
-    PyramidMesh.position.x = 10;
-    PyramidMesh.position.z = -5;
+    var PyramidMesh2 = new THREE.Mesh(pyramidGeometry, pyramidMaterial);
+    var PyramidMesh3 = new THREE.Mesh(pyramidGeometry, pyramidMaterial);
+
+    PyramidMesh.position.x = gameWidth -10;
+    PyramidMesh2.position.x = gameWidth;
+    PyramidMesh3.position.x = gameWidth - 10;
+    PyramidMesh.position.z = 16;
+    PyramidMesh2.position.z = -15;
+    PyramidMesh3.position.z = -28;
+
+    PyramidMesh.rotation.y += 0.20;
+    PyramidMesh2.rotation.y += 0.20;
+    PyramidMesh3.rotation.y += 0.20;
+
+    PyramidMesh.scale.set(4,4,4);
+    PyramidMesh2.scale.set(8,8,8);
+    PyramidMesh3.scale.set(4,4,4);
 
     // load a texture, set wrap mode to repeat
     var texture = new THREE.TextureLoader().load("pics/sand3.jpg");
@@ -220,6 +245,8 @@ var init = function () {
     scene.add(y_line); //piros
     scene.add(z_line); //kek
     scene.add(PyramidMesh);
+    scene.add(PyramidMesh2);
+    scene.add(PyramidMesh3);
 
 
 };
@@ -432,8 +459,8 @@ socket.on("coinPositions", function (obj) {
         scene.add(coinMeshes[coinMeshes.length - 1]);
     }
 
-    timer(120);
-
+    time = 10;
+    timer(time);
 });
 
 socket.on('move', function (_obj) {
@@ -484,10 +511,9 @@ socket.on('disconnect', function (msg) {
     //    }, 3000);
     //}, 1000);
 
-    for (var i = 0; i < coinMeshes.length; i++) {
-        scene.remove(coinMeshes[i]);
-    }
+    removeCoins();
 
+    time = 0;
 });
 
 socket.on('update', function (msg) {
@@ -520,6 +546,13 @@ socket.on('update', function (msg) {
 });
 
 // *** functions ***
+
+var removeCoins = function(){
+    for (var i = 0; i < coinMeshes.length; i++) {
+        scene.remove(coinMeshes[i]);
+    }
+};
+
 var changeScene = function (type) {
     ///&& !collision(obj.socketCube.x, obj.socketCube.z)
     if (socket.id !== undefined && socket.id !== null) {
