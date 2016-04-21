@@ -179,10 +179,12 @@ function gameLogic() {
             obj.rotY = 0.0;
             cubes[thisSocket].rotation.y = 0.0;
 
-            socket.emit('reset', {
+            socket.emit('move', {
                 sid: thisSocket,
-                rotY: 0.0,
-                room: thisRoom
+                pos: 0.0,
+                rotY: obj.socketCube.rotY,
+                room: thisRoom,
+                isReset: true
             });
 
             changeScene();

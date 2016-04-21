@@ -28,7 +28,7 @@ var cubes = {};
 var roomMessages = {};
 var gameWidth = 100;
 var coinPositions = {};
-var cointNumber = 10;
+var coinNumber = 10;
 
 
 io.on('connection', function (socket) {
@@ -49,10 +49,10 @@ io.on('connection', function (socket) {
             if (roomManager[i].player1 == socket.id) {
                 roomManager[i].player1 = '';
             }
-            if (roomManager[i].player2 == socket.id) {
+            else if (roomManager[i].player2 == socket.id) {
                 roomManager[i].player2 = '';
             }
-            if (roomManager[i].player1 == '' && roomManager[i].player2 == '') {
+            else if (roomManager[i].player1 == '' && roomManager[i].player2 == '') {
                 var roomName = roomManager[i].name;
                 delete roomMessages[roomName];
                 roomManager.splice(i, 1);
@@ -69,12 +69,8 @@ io.on('connection', function (socket) {
 
     // *** movements section ***
     socket.on('move', function (msg) {
-        //if (!isCollision(msg)) {
         cubes[msg.sid] = msg.pos;
         socket.broadcast.to(socket.room).emit('move', msg);
-        //io.to(socket.room).emit('move', msg);
-        //}
-        //socket.broadcast.emit('move', msg);
     });
 
     socket.on("isCollision", function (obj) {
@@ -102,20 +98,16 @@ io.on('connection', function (socket) {
     });
 
     socket.on("giveNewCoin", function (index) {
-        coinPositions[socket.room][index] = "";
+        console.log("debuuug "  + socket.room);
+        console.log("debuuug "  + coinPositions[socket.room]);
+
+        coinPositions[socket.room].splice(index, 1);
         var x = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
         var z = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
-        coinPositions[socket.room][index] = {x: x, z: z};
+        coinPositions[socket.room].push( {x: x, z: z});
         io.to(socket.room).emit("giveNewCoin", {sid: socket.id, index: index, x: x, z: z});
     });
 
-    socket.on('reset', function (msg) {
-        socket.to(socket.room).broadcast.emit('reset', msg);
-    });
-
-   
-
-    
 });
 
 var addPlayerToRoom = function (room, player) {
@@ -152,7 +144,7 @@ var findOnePlayerRoom = function () {
             return roomManager[i].name;
         }
     }
-    return "HAHAHAHA";
+    return "Something went wrong";
 };
 
 var getEnemyPlayerName = function (playerName, playerRoom) {
@@ -199,7 +191,6 @@ http.listen(port, function () {
 
 function init(socket) {
     // *** connection section ***
-    console.log("asd");
     ++joinedUsers;
     if (joinedUsers % 2 != 0) {
         ++roomSize;
@@ -240,21 +231,23 @@ function init(socket) {
             socket.room = roomName; //if everything went well, we don't need to jump
         }
 
-        var positions = [];
-        for (var i = 0; i < cointNumber; i++) {
-            var x = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
-            var z = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
-            positions.push({x: x, z: z});
-        }
-        coinPositions[roomName] = positions;
-
-
     } else {
         var emptyRoom = findOnePlayerRoom(); //enough to find an empty room
         socket.join(emptyRoom);
         socket.room = emptyRoom;
 
+        coinPositions[socket.room] = [];
+        var positions = [];
+        for (var i = 0; i < coinNumber; i++) {
+            var x = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
+            var z = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
+            positions.push({x: x, z: z});
+        }
+        coinPositions[socket.room] = positions;
+
+        console.log("DEBUG "+ coinPositions[socket.room].length);
         io.to(socket.room).emit("coinPositions", coinPositions[socket.room]);
+
     }
     io.to(socket.room).emit('new', {sid: socket.id, room: socket.room});
     io.to(socket.room).emit("old messages", {sid: socket.id, historyMessage: roomMessages[socket.room]});

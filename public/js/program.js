@@ -1,7 +1,6 @@
 var socket = io();
 var scene, camera, light, renderer;
 var thisSocket = undefined;
-var thisColor = undefined;
 var thisRoom = undefined;
 var thisTexture = undefined;
 var otherPlayer = undefined;
@@ -38,7 +37,7 @@ var timer = function (time) {
             document.querySelector(".time").textContent = "Vege";
             setTimeout(function(){
                 removeCoins();
-            },1000);
+            },2000);
             removeCoins();
         }
     }, 1000);
@@ -86,7 +85,6 @@ var collision = function (obj) {
     var coinBoxWidth = 1.05;
     var coinIndex = -1;
 
-
     for (var i = 0; i < coinMeshes.length; i++) {
         if (Math.abs(coinMeshes[i].position.x - obj.x) < coinBoxWidth && Math.abs(coinMeshes[i].position.z - obj.z) < coinBoxWidth) {
             coinIndex = i;
@@ -96,7 +94,6 @@ var collision = function (obj) {
         scene.remove(coinMeshes[coinIndex]);
         coinMeshes.splice(coinIndex, 1);
         thisPoints += 10;
-        console.log("my point: " + thisPoints);
         socket.emit("giveNewCoin", coinIndex);
     }
 
@@ -248,17 +245,12 @@ var init = function () {
     scene.add(PyramidMesh2);
     scene.add(PyramidMesh3);
 
-
 };
 
 // *** server calls ***
 socket.on('new', function (msg) {
 
     if (thisSocket == undefined) { //sajat kocka
-
-        var R = Math.floor(Math.random() * 256);
-        var G = Math.floor(Math.random() * 256);
-        var B = Math.floor(Math.random() * 256);
 
         socket.room = msg.room;
         thisRoom = msg.room;
@@ -274,9 +266,7 @@ socket.on('new', function (msg) {
         //document.querySelector(".points").style.right = window.innerWidth / 2000 + "px";
         document.querySelector(".points").textContent = thisPoints;
 
-
         thisSocket = msg.sid;
-        thisColor = "rgb(" + R + "," + G + "," + B + ")";
         otherPlayer = '';
 
         var boxTexture = "";
@@ -352,7 +342,6 @@ socket.on('new', function (msg) {
                 y: cubes[thisSocket].position.y,
                 z: cubes[thisSocket].position.z,
                 rotationY: cubes[thisSocket].rotation.y,
-                color: thisColor,
                 room: thisRoom,
                 texture: thisTexture
             });
@@ -362,14 +351,6 @@ socket.on('new', function (msg) {
         }
     }
 
-    //socket.emit("joined", {
-    //    userName: "not implemented yet",
-    //    cube: {
-    //        x: cubes[thisSocket].position.x,
-    //        y: cubes[thisSocket].position.y,
-    //        z: cubes[thisSocket].position.z
-    //    }
-    //})
 });
 
 var getCoin = function () {
@@ -473,12 +454,9 @@ socket.on('move', function (_obj) {
         cubes[sid].position.x = x;
         //cubes[obj.sid].position.y = obj.pos.y;
         cubes[sid].position.z = z;
-    }
-});
-
-socket.on('reset', function (msg) { //set rotation to default when reset
-    if (msg.room == thisRoom) {
-        cubes[msg.sid].rotation.y = 0.0;
+        if(_obj.isReset){
+            cubes[sid].rotation.y = 0.0;
+        }
     }
 });
 
@@ -503,13 +481,6 @@ socket.on('disconnect', function (msg) {
             document.querySelector(".other-player-disconnected").style.display = "none";
         }, 2000);
     }, 2000);
-    //setTimeout(function () {
-    //    document.querySelector(".other-player-disconnected").style.display = true;
-    //    $('.other-player-disconnected').toggle(1000);
-    //    setTimeout(function () {
-    //        $('.other-player-disconnected').toggle(3000);
-    //    }, 3000);
-    //}, 1000);
 
     removeCoins();
 
@@ -551,6 +522,7 @@ var removeCoins = function(){
     for (var i = 0; i < coinMeshes.length; i++) {
         scene.remove(coinMeshes[i]);
     }
+    coinMeshes = [];
 };
 
 var changeScene = function (type) {
@@ -564,7 +536,7 @@ var changeScene = function (type) {
             pos: obj.socketCube,
             rotY: obj.socketCube.rotY,
             room: thisRoom,
-            camera: {x: obj.camera.x, y: obj.camera.y, z: obj.camera.z}
+            isReset: false
         });
 
         cubes[thisSocket].position.x = obj.socketCube.x;
