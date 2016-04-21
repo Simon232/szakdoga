@@ -9,8 +9,8 @@ app.use(express.static('public'));
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
-app.get('/aloldal', function (req, res) {
-    res.sendFile(__dirname + '/jatek.html');
+app.get('/game', function (req, res) {
+    res.sendFile(__dirname + '/public/html/game.html');
 });
 
 /* codes for me, to better understanding:

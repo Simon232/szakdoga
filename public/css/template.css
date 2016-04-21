@@ -65,6 +65,7 @@ li {
     color: blue;
     width: 240px;
 }
+
 .other-player-disconnected {
     display: none;
     position: absolute;
@@ -75,24 +76,33 @@ li {
     width: 300px;
 }
 
-.points-container{
+.points-container {
     position: absolute;
     top: 50px;
     color: rgba(255, 0, 0, 1);
     font-size: 30px;
     display: inline-block;
 }
-.your-points{
+
+.your-points {
     position: absolute;
     top: 50px;
     color: rgba(255, 0, 0, 1);
     font-size: 30px;
     display: inline-block;
 }
-.points{
+
+.points {
     position: absolute;
     top: 50px;
     color: rgba(255, 0, 0, 1);
     font-size: 30px;
     display: inline-block;
+}
+
+.link {
+
+    text-align: center;
+    top: 30px;
+    font-size: 30px;
 }
