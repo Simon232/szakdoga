@@ -34,6 +34,16 @@
     Szoba:
 </div>
 <div class="graphic-container">
+    <div class="other-player-joined">
+        <p>
+            A player joined!
+        </p>
+    </div>
+    <div class="other-player-disconnected">
+        <p>
+            A player disconnected!
+        </p>
+    </div>
     <script src="js/three.min.js"></script>
     <script src="js/detector.js"></script>
     <script src="js/tween.js"></script>
@@ -51,6 +61,7 @@
         gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 
         }
+
     </script>
 
     <script type="x-shader/x-fragment" id="fragmentShader">
@@ -69,7 +80,8 @@
 
 			}
 
-		</script>
+
+    </script>
 
     <script src="js/program.js" class="center"></script>
 </div>
@@ -77,16 +89,7 @@
     <div class="your-points">Pontjaid:</div>
     <div class="points"></div>
 </div>
-<div class="other-player-joined">
-    <p>
-        A player joined!
-    </p>
-</div>
-<div class="other-player-disconnected">
-    <p>
-        A player disconnected!
-    </p>
-</div>
+
 <div id="chat" class="chat">
     <ul id="messages" class="messages"></ul>
     <form class="chat-form">
@@ -94,16 +97,9 @@
         <button id="kuldes">Küldés</button>
     </form>
 </div>
-
-
-
-<!--<div class="chat">
-    <ul id="messages"></ul>
-    <form action="">
-        <input id="m" autocomplete="off" class="sub-form"/>
-        <button class="sub-button">Send</button>
-    </form>
-</div>-->
+<div class="timer-container">
+    <div class="timer"> Hátralévő idő:</div>
+</div>
 
 <script src="/js/logic.js"></script>
 </body>

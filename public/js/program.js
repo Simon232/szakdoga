@@ -108,14 +108,17 @@ var collision = function (obj) {
 
 };
 socket.on("joined", function () {
-    setTimeout(function () {
-        document.querySelector(".other-player-joined").style.display = true;
-        $('.other-player-joined').toggle(1000);
-        setTimeout(function () {
-            $('.other-player-joined').toggle(3000);
-        }, 3000);
-    }, 1000);
 
+    document.querySelector(".other-player-joined").style.display = "";
+    document.querySelector(".other-player-joined").classList.add("doFadeIn");
+    setTimeout(function () {
+        document.querySelector(".other-player-joined").classList.remove("doFadeIn");
+        document.querySelector(".other-player-joined").classList.add("doFadeOut");
+        setTimeout(function () {
+            document.querySelector(".other-player-joined").classList.remove("doFadeOut");
+            document.querySelector(".other-player-joined").style.display = "none";
+        }, 2000);
+    }, 2000);
     timer(10);
 });
 
@@ -249,7 +252,11 @@ socket.on('new', function (msg) {
         socket.room = msg.room;
         thisRoom = msg.room;
 
+        document.querySelector(".other-player-joined").style.display = "none";
+        document.querySelector(".other-player-disconnected").style.display = "none";
         document.querySelector(".on-the-top-right").textContent += thisRoom;
+        document.querySelector(".on-the-top-right").style.right = window.innerWidth / 120 + "px";
+        document.querySelector(".timer-container").style.right = (window.innerWidth / 2) + 100 + "px";
         document.querySelector(".chat").style.top = window.innerHeight / 4 + "px";
         document.querySelector(".points-container").style.right = window.innerWidth / 20 + "px";
         document.querySelector(".your-points").style.right = window.innerWidth / 120 + "px";
@@ -473,13 +480,23 @@ socket.on('disconnect', function (msg) {
     scene.remove(cubes[msg]);
     otherPlayer = '';
 
+    document.querySelector(".other-player-disconnected").style.display = "";
+    document.querySelector(".other-player-disconnected").classList.add("doFadeIn");
     setTimeout(function () {
-        document.querySelector(".other-player-disconnected").style.display = true;
-        $('.other-player-disconnected').toggle(1000);
+        document.querySelector(".other-player-disconnected").classList.remove("doFadeIn");
+        document.querySelector(".other-player-disconnected").classList.add("doFadeOut");
         setTimeout(function () {
-            $('.other-player-disconnected').toggle(3000);
-        }, 3000);
-    }, 1000);
+            document.querySelector(".other-player-disconnected").classList.remove("doFadeOut");
+            document.querySelector(".other-player-disconnected").style.display = "none";
+        }, 2000);
+    }, 2000);
+    //setTimeout(function () {
+    //    document.querySelector(".other-player-disconnected").style.display = true;
+    //    $('.other-player-disconnected').toggle(1000);
+    //    setTimeout(function () {
+    //        $('.other-player-disconnected').toggle(3000);
+    //    }, 3000);
+    //}, 1000);
 
     for (var i = 0; i < coinMeshes.length; i++) {
         scene.remove(coinMeshes[i]);
