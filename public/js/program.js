@@ -14,7 +14,6 @@ var movingSpeed = 0.05;
 var rotationSpeed = PI / 180;
 var cameraDistance = 6;
 
-
 var coinMeshes = [];
 
 var getRandomPosition = function () {
@@ -23,6 +22,16 @@ var getRandomPosition = function () {
         pos = Math.floor(Math.random() * 2) % 2 == 0 ? Math.random() * ((gameWidth / 2) - cubeHalf) : -1 * Math.random() * ((gameWidth / 2) - cubeHalf);
     }
     return pos;
+};
+
+var timer = function (t) {
+    setTimeout(function () {
+        if (t > 0) {
+            t--;
+            timer(t);
+            console.log(t)
+        }
+    }, 1000)
 };
 
 var cubes = {};
@@ -49,7 +58,7 @@ var obj = {
 socket.on("giveNewCoin", function (obj) {
     if (obj.sid == thisSocket) {
         document.querySelector(".points").textContent = thisPoints;
-    }else{
+    } else {
         scene.remove(coinMeshes[obj.index]);
         coinMeshes.splice(obj.index, 1);
     }
@@ -59,7 +68,7 @@ socket.on("giveNewCoin", function (obj) {
     coin.position.y = 0.7;
     coin.position.z = obj.z;
     coinMeshes.push(coin);
-    scene.add(coinMeshes[coinMeshes.length-1]);
+    scene.add(coinMeshes[coinMeshes.length - 1]);
 
 });
 
@@ -80,7 +89,6 @@ var collision = function (obj) {
         console.log("my point: " + thisPoints);
         socket.emit("giveNewCoin", coinIndex);
     }
-
 
 
     /*if (otherPlayer !== '') {
@@ -107,6 +115,8 @@ socket.on("joined", function () {
             $('.other-player-joined').toggle(3000);
         }, 3000);
     }, 1000);
+
+    timer(10);
 });
 
 var init = function () {
@@ -365,7 +375,20 @@ var getCoin = function () {
             circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, 0.05));
         }
         circleGeometry.faces.push(new THREE.Face3(0, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
-        circleGeometry.faceVertexUvs[0].push([new THREE.Vector2(1.0, 0, 0), new THREE.Vector2(1.0, 1, 0), new THREE.Vector2(0.0, 0, 0)]);
+
+        //var faceUvs = [[],[],[],[]];
+        //faceUvs[0].push(uvs[0], uvs[2], uvs[1]);
+        //faceUvs[1].push(uvs[0], uvs[1], uvs[3]);
+        //faceUvs[2].push(uvs[0], uvs[3], uvs[2]);
+        //faceUvs[3].push(uvs[1], uvs[2], uvs[3]);
+        //geom.faceVertexUvs[0].push(faceUvs[0]);
+        //geom.faceVertexUvs[0].push(faceUvs[1]);
+        //geom.faceVertexUvs[0].push(faceUvs[2]);
+        //geom.faceVertexUvs[0].push(faceUvs[3]);
+
+        var faceUvs = [[]];
+        faceUvs[0].push(new THREE.Vector2(1.0, 0.0), new THREE.Vector2(1.0, 1.0), new THREE.Vector2(0.0, 0.0));
+        circleGeometry.faceVertexUvs[0].push(faceUvs[0]);
     }
 
 
@@ -381,7 +404,10 @@ var getCoin = function () {
             circleGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, -0.05));
         }
         circleGeometry.faces.push(new THREE.Face3(middle, circleGeometry.vertices.length - 1, circleGeometry.vertices.length - 2));
-        circleGeometry.faceVertexUvs[0].push([new THREE.Vector2(1.0, 0, 0), new THREE.Vector2(1.0, 1, 0), new THREE.Vector2(0.0, 0, 0)]);
+
+        var faceUvs = [[]];
+        faceUvs[0].push(new THREE.Vector2(1.0, 0.0), new THREE.Vector2(1.0, 1.0), new THREE.Vector2(0.0, 0.0));
+        circleGeometry.faceVertexUvs[0].push(faceUvs[0]);
     }
     for (var i = 0; i < (angle * 2); i++) {
         circleGeometry.vertices.push(circleGeometry.vertices[i + 1]);
@@ -392,6 +418,10 @@ var getCoin = function () {
         circleGeometry.vertices.push(circleGeometry.vertices[(i + 1) + (2 * angle + 2)]);
         circleGeometry.vertices.push(circleGeometry.vertices[(i + 2)]);
         circleGeometry.faces.push(new THREE.Face3(circleGeometry.vertices.length - 3, circleGeometry.vertices.length - 2, circleGeometry.vertices.length - 1));
+        var faceUvs = [[]];
+        faceUvs[0].push(new THREE.Vector2(1.0, 0.0), new THREE.Vector2(1.0, 1.0), new THREE.Vector2(0.0, 0.0));
+        circleGeometry.faceVertexUvs[0].push(faceUvs[0]);
+        circleGeometry.faceVertexUvs[0].push(faceUvs[0]);
     }
     circleGeometry.vertices.push(circleGeometry.vertices[middle + 1]);
 

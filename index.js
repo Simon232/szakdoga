@@ -199,6 +199,7 @@ http.listen(port, function () {
 
 function init(socket) {
     // *** connection section ***
+    console.log("asd");
     ++joinedUsers;
     if (joinedUsers % 2 != 0) {
         ++roomSize;
@@ -261,7 +262,6 @@ function init(socket) {
     
     addPlayerToRoom(socket.room, socket.id);
     console.log("user: " + socket.id + ' connected to: ' + socket.room);
-
 }
 
  function onJoined(obj) {
