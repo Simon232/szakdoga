@@ -62,7 +62,7 @@ li {
     right: 20px;
     font-size: 30px;
     color: blue;
-    width: 240px;
+    width: 400px;
 
 }
 
@@ -88,7 +88,7 @@ li {
     right: 20px;
     font-size: 30px;
     color: green;
-    width: 300px;
+    width: 400px;
 }
 
 @keyframes fadein {
@@ -213,4 +213,26 @@ li {
 }
 .time{
     display: inline-block;
+}
+
+.again-container {
+    top: 20px;
+    z-index: 2;
+    position: absolute;
+}
+.module-button {
+    background: rgba(0,255,0,0.1);
+    border: 2px solid rgba(255,255,255,.75);
+    width: 100px;
+    padding: 30px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    font-size: 1.2em;
+    transition: 300ms;
+}
+.module-button:hover {
+    background: rgba(0,255,0,1);
+    cursor: pointer;
+    transition: 300ms;
+    color: #444;
 }

@@ -45,6 +45,10 @@ var timer = function (time) {
                 document.querySelector('.timer-container').classList.add("doFadeOut");
                 setTimeout(function () {
                     document.querySelector('.timer-container').style.display = "none";
+                    setTimeout(function(){
+                        document.querySelector('.again-container').style.display = "";
+                        document.querySelector('.again-container').classList.add('doFadeIn');
+                    }, 2000);
                 }, 2000);
             }, 2000);
         }
@@ -266,6 +270,8 @@ socket.on('new', function (msg) {
         socket.room = msg.room;
         thisRoom = msg.room;
 
+        document.querySelector(".again-container").style.right = (window.innerWidth / 2) + "px";
+        document.querySelector('.again-container').style.display = 'none';
         document.querySelector(".other-player-joined").style.display = "none";
         document.querySelector(".other-player-disconnected").style.display = "none";
         document.querySelector(".on-the-top-right").textContent += thisRoom;
