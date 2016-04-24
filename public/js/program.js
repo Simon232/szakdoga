@@ -5,6 +5,7 @@ var thisRoom = undefined;
 var thisTexture = undefined;
 var otherPlayer = undefined;
 var thisPoints = 0;
+var otherPoints = 0;
 
 var gameWidth = 100;
 var cubeHalf = 0.49;
@@ -77,6 +78,8 @@ socket.on("giveNewCoin", function (obj) {
     } else {
         scene.remove(coinMeshes[obj.index]);
         coinMeshes.splice(obj.index, 1);
+        otherPoints = obj.socketPoints;
+        document.querySelector('.e-points').textContent = otherPoints;
     }
 
     var coin = getCoin();
@@ -101,7 +104,7 @@ var collision = function (obj) {
         scene.remove(coinMeshes[coinIndex]);
         coinMeshes.splice(coinIndex, 1);
         thisPoints += 10;
-        socket.emit("giveNewCoin", coinIndex);
+        socket.emit("giveNewCoin", {index: coinIndex, sid: thisSocket, socketPoints: thisPoints});
     }
 
 
@@ -269,11 +272,14 @@ socket.on('new', function (msg) {
         document.querySelector(".on-the-top-right").style.right = window.innerWidth / 120 + "px";
         document.querySelector(".timer-container").style.right = (window.innerWidth / 2) + "px";
         document.querySelector(".timer-container").style.display = "none";
-        document.querySelector(".chat").style.top = window.innerHeight / 4 + "px";
+        document.querySelector(".chat").style.top = window.innerHeight / 2 + "px";
         document.querySelector(".points-container").style.right = window.innerWidth / 20 + "px";
+        document.querySelector(".other-points-container").style.right = window.innerWidth / 20 + "px";
         document.querySelector(".your-points").style.right = window.innerWidth / 120 + "px";
+        document.querySelector(".enemy-points").style.right = window.innerWidth / 120 + "px";
         //document.querySelector(".points").style.right = window.innerWidth / 2000 + "px";
         document.querySelector(".points").textContent = thisPoints;
+        document.querySelector(".e-points").textContent = otherPoints;
 
         thisSocket = msg.sid;
         otherPlayer = '';
@@ -476,6 +482,11 @@ socket.on('rotation', function (msg) {
 });
 
 socket.on('disconnect', function (msg) {
+    thisPoints = 0;
+    otherPoints = 0;
+    document.querySelector(".points").textContent = thisPoints;
+    document.querySelector(".e-points").textContent = otherPoints;
+
     console.log(msg + " user disconnected: ");
     scene.remove(cubes[msg]);
     otherPlayer = '';

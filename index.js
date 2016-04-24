@@ -97,15 +97,21 @@ io.on('connection', function (socket) {
         io.to(obj.room).emit('chat message', obj);
     });
 
-    socket.on("giveNewCoin", function (index) {
-        console.log("debuuug "  + socket.room);
-        console.log("debuuug "  + coinPositions[socket.room]);
+    socket.on("giveNewCoin", function (obj) {
+        console.log("debuuug " + socket.room);
+        console.log("debuuug " + coinPositions[socket.room]);
 
-        coinPositions[socket.room].splice(index, 1);
+        coinPositions[socket.room].splice(obj.index, 1);
         var x = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
         var z = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
-        coinPositions[socket.room].push( {x: x, z: z});
-        io.to(socket.room).emit("giveNewCoin", {sid: socket.id, index: index, x: x, z: z});
+        coinPositions[socket.room].push({x: x, z: z});
+        io.to(socket.room).emit("giveNewCoin", {
+            sid: socket.id,
+            socketPoints: obj.socketPoints,
+            index: obj.index,
+            x: x,
+            z: z
+        });
     });
 
 });
@@ -188,7 +194,6 @@ http.listen(port, function () {
 });
 
 
-
 function init(socket) {
     // *** connection section ***
     ++joinedUsers;
@@ -245,19 +250,19 @@ function init(socket) {
         }
         coinPositions[socket.room] = positions;
 
-        console.log("DEBUG "+ coinPositions[socket.room].length);
+        console.log("DEBUG " + coinPositions[socket.room].length);
         io.to(socket.room).emit("coinPositions", coinPositions[socket.room]);
 
     }
     io.to(socket.room).emit('new', {sid: socket.id, room: socket.room});
     io.to(socket.room).emit("old messages", {sid: socket.id, historyMessage: roomMessages[socket.room]});
     //socket.emit("joined");
-    
+
     addPlayerToRoom(socket.room, socket.id);
     console.log("user: " + socket.id + ' connected to: ' + socket.room);
 }
 
- function onJoined(obj) {
+function onJoined(obj) {
     this.username = obj.userName;
     cubes[this.id] = obj.cube;
     console.log(this.id + " joined with this:  [" + cubes[this.id].x + ", " + cubes[this.id].y + ", " + cubes[this.id].z + "]");
