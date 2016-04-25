@@ -28,7 +28,9 @@ var cubes = {};
 var roomMessages = {};
 var gameWidth = 100;
 var coinPositions = {};
+var trapPositions = {};
 var coinNumber = 10;
+var trapNumber = 4;
 var cubeHalf = 0.49;
 
 
@@ -59,6 +61,7 @@ io.on('connection', function (socket) {
                 delete roomMessages[roomName];
                 //roomManager.splice(i, 1);
                 delete coinPositions[roomName];
+                delete trapPositions[roomName];
 
                 console.log("Tarolt szoba uzenetek merete torles utan: " + Object.keys(roomMessages).length)
             }
@@ -135,11 +138,14 @@ io.on('connection', function (socket) {
                 if(roomManager[room].ready.p1 && roomManager[room].ready.p2){
                     io.to(obj.room).emit("readyAgain");
                     coinPositions[socket.room] = [];
+                    trapPositions[socket.room] = [];
 
                     generateNewCoinPositions(socket.room);
+                    generateNewTrapPositions(socket.room);
 
                     console.log("DEBUG " + coinPositions[socket.room].length);
-                    io.to(socket.room).emit("coinPositions", coinPositions[socket.room]);
+                    io.to(socket.room).emit("objectPositions", { coinPositions: coinPositions[socket.room], trapPositions: trapPositions[socket.room]});
+                    io.to(socket.room).emit("objectPositions", { coinPositions: coinPositions[socket.room], trapPositions: trapPositions[socket.room]});
 
                     roomManager[room].ready.p1 = false;
                     roomManager[room].ready.p2 = false;
@@ -152,10 +158,6 @@ io.on('connection', function (socket) {
 });
 
 var addPlayerToRoom = function (room, player) {
-    console.log("DOOM " + room);
-    console.log("DOOM " + roomManager[room].player1);
-    console.log("DOOM " + roomManager[room].player2);
-
     if (roomManager[room].player1 == '') {
         roomManager[room].player1 = player;
     }
@@ -210,6 +212,20 @@ var generateNewCoinPositions = function(room){
         positions.push({x: x, z: z});
     }
     coinPositions[room] = positions;
+};
+
+var generateNewTrapPositions = function(room){
+    var positions = [];
+    for (var i = 0; i < trapNumber; i++) {
+        var x = getRandomPosition();
+        var z = getRandomPosition();
+        positions.push({x: x, z: z});
+    }
+    //positions.push({x: 25, z: 25});
+    //positions.push({x: -25, z: 25});
+    //positions.push({x: 25, z: -25});
+    //positions.push({x: -25, z: -25});
+    trapPositions[room] = positions;
 };
 
 var isCollision = function (obj) {
@@ -276,7 +292,6 @@ function init(socket) {
             }
 
             var roomName = 'room#' + roomSize;
-            console.log("DOOM " + roomName);
             roomManager[roomName] = addRoom();
             roomMessages[roomName] = [];
             socket.join(roomName);
@@ -297,9 +312,10 @@ function init(socket) {
         socket.room = emptyRoom;
 
         generateNewCoinPositions(emptyRoom);
+        generateNewTrapPositions(emptyRoom);
 
         console.log("DEBUG " + coinPositions[socket.room].length);
-        io.to(socket.room).emit("coinPositions", coinPositions[socket.room]);
+        io.to(socket.room).emit("objectPositions", { coinPositions: coinPositions[socket.room], trapPositions: trapPositions[socket.room]});
 
     }
     io.to(socket.room).emit('new', {sid: socket.id, room: socket.room, positions: {x: getRandomPosition(), z: getRandomPosition()}});

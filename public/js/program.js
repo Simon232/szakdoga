@@ -15,6 +15,7 @@ var rotationSpeed = PI / 180;
 var cameraDistance = 6;
 
 var coinMeshes = [];
+var trapMeshes = [];
 
 var time = 0;
 var cubes = {};
@@ -203,8 +204,9 @@ socket.on('new', function (msg) {
 
 });
 
-socket.on("coinPositions", function (obj) {
-    var coinPositions = obj;
+socket.on("objectPositions", function (obj) {
+    var coinPositions = obj.coinPositions;
+    var trapPositions = obj.trapPositions;
 
     for (var i = 0; i < coinPositions.length; i++) {
         coinMeshes.push(getCoin());
@@ -215,10 +217,19 @@ socket.on("coinPositions", function (obj) {
         scene.add(coinMeshes[coinMeshes.length - 1]);
     }
 
+    for (var i = 0; i < trapPositions.length; i++) {
+        trapMeshes.push(getTrap());
+        trapMeshes[trapMeshes.length - 1].position.x = trapPositions[i].x;
+        trapMeshes[trapMeshes.length - 1].position.y = 0.0;
+        trapMeshes[trapMeshes.length - 1].position.z = trapPositions[i].z;
+        trapMeshes[trapMeshes.length - 1].name = "trap" + i;
+        scene.add(trapMeshes[trapMeshes.length - 1]);
+    }
+
     doFadeIn(".timer-container");
-    if(time != 0) {
+    if (time != 0) {
         time = 30;
-    }else{
+    } else {
         time = 30;
         timer();
     }
@@ -263,6 +274,7 @@ socket.on('disconnect', function (msg) {
     }, 1000);
 
     removeCoins();
+    removeTraps();
 
     //time = 0;
 });
@@ -425,14 +437,12 @@ var init = function () {
     ground.position.z = 0;
     scene.add(ground);
 
-
-    scene.add(x_line); //zold
-    scene.add(y_line); //piros
+    scene.add(x_line); //piros
+    //scene.add(y_line); //zold
     scene.add(z_line); //kek
     scene.add(PyramidMesh);
     scene.add(PyramidMesh2);
     scene.add(PyramidMesh3);
-
 };
 
 var collision = function (obj) {
@@ -463,9 +473,9 @@ var doFadeIn = function (className) {
 var doFadeOut = function (className) {
     document.querySelector(className).classList.remove("doFadeIn");
     document.querySelector(className).classList.add("doFadeOut");
-    setTimeout(function(){
+    setTimeout(function () {
         document.querySelector(className).style.display = "none";
-    },1000);
+    }, 1000);
 };
 
 var again = function () {
@@ -537,11 +547,52 @@ var getCoin = function () {
     return coinMesh;
 };
 
+var getTrap = function(){
+    var trapTexture = new THREE.TextureLoader().load("pics/coin.jpg");
+    var trapMaterial = new THREE.MeshBasicMaterial({color: "rgb(0,0,0)"}); //map: trapTexture
+    var trapGeometry = new THREE.Geometry();
+    var rate = 0.0;
+    var angle = 30;
+    var rating = (2 * PI) / (angle);
+    var radius = 0.5;
+
+    for (var i = 0; i < angle; i++) {
+        trapGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, 0.0, radius * Math.sin(rate) + 0));
+        rate += rating;
+        trapGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, 0.0, radius * Math.sin(rate) + 0));
+        trapGeometry.vertices.push(new THREE.Vector3(
+            (trapGeometry.vertices[trapGeometry.vertices.length - 2].x + trapGeometry.vertices[trapGeometry.vertices.length - 1].x / 2),
+            0.3,
+            (trapGeometry.vertices[trapGeometry.vertices.length - 2].z + trapGeometry.vertices[trapGeometry.vertices.length - 1].z / 2)
+        ));
+
+        /*if (i === angle - 1) {
+         trapGeometry.vertices.push(circleGeometry.vertices[1]);
+         } else {
+         trapGeometry.vertices.push(new THREE.Vector3(radius * Math.cos(rate) + 0, radius * Math.sin(rate) + 0, 0.05));
+         }*/
+        trapGeometry.faces.push(new THREE.Face3(trapGeometry.vertices.length - 2, trapGeometry.vertices.length - 3, trapGeometry.vertices.length - 1));
+        trapGeometry.faces.push(new THREE.Face3(trapGeometry.vertices.length - 3, trapGeometry.vertices.length - 2, trapGeometry.vertices.length - 1));
+        //var faceUvs = [[]];
+        //faceUvs[0].push(new THREE.Vector2(1.0, 0.0), new THREE.Vector2(1.0, 1.0), new THREE.Vector2(0.0, 0.0));
+        //circleGeometry.faceVertexUvs[0].push(faceUvs[0]);
+    }
+
+    var trapMesh = new THREE.Mesh(trapGeometry, trapMaterial);
+    return trapMesh;
+};
+
 var removeCoins = function () {
     for (var i = 0; i < coinMeshes.length; i++) {
         scene.remove(coinMeshes[i]);
     }
     coinMeshes = [];
+};
+var removeTraps = function () {
+    for (var i = 0; i < trapMeshes.length; i++) {
+        scene.remove(trapMeshes[i]);
+    }
+    trapMeshes = [];
 };
 
 var changeScene = function (type) {
@@ -582,8 +633,10 @@ var timer = function () {
             document.querySelector(".time").textContent = "Vege";
             setTimeout(function () {
                 removeCoins();
+                removeTraps();
             }, 2000);
             removeCoins();
+            removeTraps();
 
             setTimeout(function () {
                 document.querySelector('.timer-container').classList.add("doFadeOut");
@@ -601,7 +654,6 @@ var timer = function () {
         }
     }, 1000);
 };
-
 
 
 var animate = function () {
