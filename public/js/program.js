@@ -16,6 +16,7 @@ var cameraDistance = 6;
 
 var coinMeshes = [];
 var trapMeshes = [];
+var stepIntoTrap = false;
 
 var time = 0;
 var cubes = {};
@@ -45,6 +46,10 @@ var obj = {
 // ********************
 // *** server calls ***
 // ********************
+
+socket.on("getDamage", function(obj){
+    document.querySelector(".e-points").textContent = obj.point;
+});
 
 socket.on("giveNewCoin", function (obj) {
     if (obj.sid == thisSocket) {
@@ -447,18 +452,42 @@ var init = function () {
 
 var collision = function (obj) {
     var coinBoxWidth = 1.05;
+    var trapBoxWidth = 1.00;
     var coinIndex = -1;
+    var getTrapDamage = false;
 
     for (var i = 0; i < coinMeshes.length; i++) {
         if (Math.abs(coinMeshes[i].position.x - obj.x) < coinBoxWidth && Math.abs(coinMeshes[i].position.z - obj.z) < coinBoxWidth) {
             coinIndex = i;
         }
     }
+    for (var i = 0; i < trapMeshes.length; i++) {
+        if (Math.abs(trapMeshes[i].position.x - obj.x) < trapBoxWidth && Math.abs(trapMeshes[i].position.z - obj.z) < trapBoxWidth) {
+            getTrapDamage = true;
+        }
+    }
+
     if (coinIndex != -1) {
         scene.remove(coinMeshes[coinIndex]);
         coinMeshes.splice(coinIndex, 1);
         thisPoints += 10;
         socket.emit("giveNewCoin", {index: coinIndex, sid: thisSocket, socketPoints: thisPoints});
+    }
+
+    if(getTrapDamage){
+        if(!stepIntoTrap) {
+            if (thisPoints > 50) {
+                thisPoints -= 50;
+            } else {
+                thisPoints = 0;
+            }
+            stepIntoTrap = true;
+        }
+
+        document.querySelector(".points").textContent = thisPoints;
+        socket.emit("getDamage", {room: thisRoom, point: thisPoints, sid: thisSocket});
+    }else{
+        stepIntoTrap = false;
     }
 
 
@@ -596,7 +625,6 @@ var removeTraps = function () {
 };
 
 var changeScene = function (type) {
-    ///&& !collision(obj.socketCube.x, obj.socketCube.z)
     if (socket.id !== undefined && socket.id !== null) {
 
         socket.emit('move', {

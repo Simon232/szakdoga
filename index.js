@@ -122,6 +122,10 @@ io.on('connection', function (socket) {
         });
     });
 
+    socket.on("getDamage", function(obj){
+        socket.to(obj.room).broadcast.emit("getDamage", obj);
+    });
+
     socket.on("readyAgain", function(obj){
         for(var room in roomManager){
             if(roomManager[room].name == obj.room){
