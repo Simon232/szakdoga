@@ -24,14 +24,15 @@ var getRandomPosition = function () {
     return pos;
 };
 
-var time = 10;
-var timer = function (time) {
+var time = 0;
+var timerStartOnce = false;
+
+var timer = function () {
+    console.log("*****************");
     setTimeout(function () {
-        var time = this.time;
         if (time > 0) {
-            this.time--;
             time--;
-            timer(time);
+            timer();
             document.querySelector(".time").textContent = Math.floor(time / 60) + ":" + (time % 60 < 10 ? "0" + time % 60 : time % 60);
         }
         else if (time == 0) {
@@ -45,12 +46,15 @@ var timer = function (time) {
                 document.querySelector('.timer-container').classList.add("doFadeOut");
                 setTimeout(function () {
                     document.querySelector('.timer-container').style.display = "none";
-                    setTimeout(function(){
-                        document.querySelector('.again-container').style.display = "";
-                        document.querySelector('.again-container').classList.add('doFadeIn');
-                    }, 2000);
-                }, 2000);
-            }, 2000);
+                    setTimeout(function () {
+                        if (otherPlayer != '') {
+                            doFadeIn(".again-container");
+                        } else {
+                            doFadeOut(".again-container");
+                        }
+                    }, 1000);
+                }, 1000);
+            }, 1000);
         }
     }, 1000);
 };
@@ -95,22 +99,13 @@ socket.on("giveNewCoin", function (obj) {
 
 });
 
-socket.on("readyAgain", function(){
-    if(time == 0) {
-        document.querySelector('.again-container').classList.remove('doFadeIn');
-        document.querySelector('.again-container').classList.add('doFadeOut');
+socket.on("readyAgain", function () {
+    if (time == 0) {
+        doFadeOut(".again-container");
         setTimeout(function () {
-            document.querySelector('.again-container').style.display = "none";
-            document.querySelector('.timer-container').classList.remove("doFadeOut");
+            doFadeIn(".timer-container");
             document.querySelector('.time').textContent = "";
-            document.querySelector('.timer-container').style.display = "";
-            document.querySelector('.timer-container').classList.add("doFadeIn");
-            time = 10;
-            //timer(time);
-            document.querySelector('.again-container').classList.remove('doFadeOut');
-        }, 2000);
-
-
+        }, 1000);
     }
 });
 
@@ -133,21 +128,17 @@ var collision = function (obj) {
 
 };
 socket.on("joined", function () {
-    if(document.querySelector(".other-player-joined").classList.contains("doFadeIn")){
-        document.querySelector(".other-player-joined").classList.remove("doFadeIn");
-    }
 
-    document.querySelector(".other-player-joined").style.display = "";
-    document.querySelector(".other-player-joined").classList.add("doFadeIn");
+
+
+    //document.querySelector(".timer-container").classList.remove("doFadeOut");
+    //document.querySelector(".timer-container").style.display = "";
+    //document.querySelector(".timer-container").classList.add("doFadeIn");
+
+    doFadeIn(".other-player-joined");
     setTimeout(function () {
-        document.querySelector(".other-player-joined").classList.remove("doFadeIn");
-        document.querySelector(".other-player-joined").classList.add("doFadeOut");
-        setTimeout(function () {
-            document.querySelector(".other-player-joined").classList.remove("doFadeOut");
-            document.querySelector(".other-player-joined").style.display = "none";
-        }, 2000);
-    }, 2000);
-
+        doFadeOut(".other-player-joined");
+    }, 1000);
 });
 
 var init = function () {
@@ -292,13 +283,13 @@ socket.on('new', function (msg) {
         socket.room = msg.room;
         thisRoom = msg.room;
 
-        document.querySelector(".again-container").style.right = (window.innerWidth / 2) + "px";
+        document.querySelector(".again-container").style.right = ((window.innerWidth / 2) - 55) + "px";
         document.querySelector('.again-container').style.display = 'none';
         document.querySelector(".other-player-joined").style.display = "none";
         document.querySelector(".other-player-disconnected").style.display = "none";
         document.querySelector(".on-the-top-right").textContent += thisRoom;
         document.querySelector(".on-the-top-right").style.right = window.innerWidth / 120 + "px";
-        document.querySelector(".timer-container").style.right = (window.innerWidth / 2) + "px";
+        document.querySelector(".timer-container").style.right = ((window.innerWidth / 2) - 55) + "px";
         document.querySelector(".timer-container").style.display = "none";
         document.querySelector(".chat").style.top = window.innerHeight / 2 + "px";
         document.querySelector(".points-container").style.right = window.innerWidth / 20 + "px";
@@ -483,8 +474,13 @@ socket.on("coinPositions", function (obj) {
         scene.add(coinMeshes[coinMeshes.length - 1]);
     }
 
-    time = 10;
-    timer(time);
+    doFadeIn(".timer-container");
+    if(time != 0) {
+        time = 10;
+    }else{
+        time = 10;
+        timer();
+    }
 });
 
 socket.on('move', function (_obj) {
@@ -519,28 +515,18 @@ socket.on('disconnect', function (msg) {
     scene.remove(cubes[msg]);
     otherPlayer = '';
 
-    document.querySelector(".other-player-disconnected").style.display = "";
-    document.querySelector(".other-player-disconnected").classList.add("doFadeIn");
+    doFadeOut(".again-container");
+    doFadeIn(".other-player-disconnected");
     setTimeout(function () {
-        document.querySelector(".other-player-disconnected").classList.remove("doFadeIn");
-        document.querySelector(".other-player-disconnected").classList.add("doFadeOut");
-        setTimeout(function () {
-            document.querySelector(".other-player-disconnected").classList.remove("doFadeOut");
-            document.querySelector(".other-player-disconnected").style.display = "none";
-        }, 2000);
-    }, 2000);
+        doFadeOut(".other-player-disconnected");
+    }, 1000);
 
     removeCoins();
 
-    time = 0;
-    document.querySelector('.again-container').style.display = "none";
-    document.querySelector('.again-container').classList.remove("doFadeOut");
-    document.querySelector('.again-container').classList.remove("doFadeIn");
 });
 
 socket.on('update', function (msg) {
-    document.querySelector('.timer-container').style.display = "";
-    document.querySelector('.timer-container').classList.add("doFadeIn");
+    doFadeIn(".timer-container");
 
     console.log("Ezt kaptam: ", msg);
     if (msg.room == thisRoom) {
@@ -571,8 +557,25 @@ socket.on('update', function (msg) {
 
 // *** functions ***
 
-var again = function(){
-    socket.emit("readyAgain",{sid: thisSocket, room: thisRoom});
+
+var doFadeIn = function (className) {
+    document.querySelector(className).classList.remove("doFadeOut");
+    document.querySelector(className).style.display = "";
+    document.querySelector(className).classList.add("doFadeIn");
+};
+
+var doFadeOut = function (className) {
+    document.querySelector(className).classList.remove("doFadeIn");
+    document.querySelector(className).classList.add("doFadeOut");
+    setTimeout(function(){
+        document.querySelector(className).style.display = "none";
+    },1000);
+};
+
+
+
+var again = function () {
+    socket.emit("readyAgain", {sid: thisSocket, room: thisRoom});
 };
 
 var removeCoins = function () {

@@ -58,28 +58,28 @@ li {
 
 .other-player-joined {
     position: absolute;
-    TOP: 35px;
+    top: 35px;
     right: 20px;
     font-size: 30px;
     color: blue;
-    width: 400px;
+    width: 310px;
 
 }
 
 .doFadeIn{
-    -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
-    -moz-animation: fadein 2s; /* Firefox < 16 */
-    -ms-animation: fadein 2s; /* Internet Explorer */
-    -o-animation: fadein 2s; /* Opera < 12.1 */
-    animation: fadein 2s;
+    -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadein 1s; /* Firefox < 16 */
+    -ms-animation: fadein 1s; /* Internet Explorer */
+    -o-animation: fadein 1s; /* Opera < 12.1 */
+    animation: fadein 1s;
 }
 
 .doFadeOut{
-    -webkit-animation: fadeout 2s; /* Safari, Chrome and Opera > 12.1 */
-    -moz-animation: fadeout 2s; /* Firefox < 16 */
-    -ms-animation: fadeout 2s; /* Internet Explorer */
-    -o-animation: fadeout 2s; /* Opera < 12.1 */
-    animation: fadeout 2s;
+    -webkit-animation: fadeout 1s; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadeout 1s; /* Firefox < 16 */
+    -ms-animation: fadeout 1s; /* Internet Explorer */
+    -o-animation: fadeout 1s; /* Opera < 12.1 */
+    animation: fadeout 1s;
 }
 
 .other-player-disconnected {
@@ -88,7 +88,7 @@ li {
     right: 20px;
     font-size: 30px;
     color: green;
-    width: 400px;
+    width: 310px;
 }
 
 @keyframes fadein {
@@ -159,6 +159,7 @@ li {
 .other-points-container {
     position: absolute;
     top: 80px;
+    right: 20px;
     color: rgba(255, 0, 0, 1);
     font-size: 30px;
     display: block;
@@ -224,7 +225,7 @@ li {
     background: rgba(0,255,0,0.1);
     border: 2px solid rgba(255,255,255,.75);
     width: 110px;
-    padding: 30px;
+    padding: 15px;
     text-transform: uppercase;
     border-radius: 4px;
     font-size: 1.2em;
