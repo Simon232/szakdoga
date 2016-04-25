@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab917d04-1d80-4abe-90df-9ea5364f55dc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.js" afterPath="$PROJECT_DIR$/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/program.js" afterPath="$PROJECT_DIR$/public/js/program.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="szakdolgozat.iws" />
@@ -50,7 +48,7 @@
           <file leaf-file-name="game.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/public/html/game.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.44481054">
+                <state vertical-scroll-proportion="0.68078667">
                   <caret line="94" column="30" selection-start-line="94" selection-start-column="30" selection-end-line="94" selection-end-column="30" />
                   <folding />
                 </state>
@@ -84,8 +82,8 @@
           <file leaf-file-name="program.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/public/js/program.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.33333334">
-                  <caret line="483" column="32" selection-start-line="483" selection-start-column="32" selection-end-line="483" selection-end-column="32" />
+                <state vertical-scroll-proportion="-0.16157205">
+                  <caret line="471" column="40" selection-start-line="471" selection-start-column="40" selection-end-line="471" selection-end-column="40" />
                   <folding />
                 </state>
               </provider>
@@ -104,8 +102,8 @@
           <file leaf-file-name="keymapping.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/js/keymapping.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-7.8965516">
-                  <caret line="27" column="21" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="21" />
+                <state vertical-scroll-proportion="13.206897">
+                  <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -413,9 +411,9 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21436115" sideWeight="0.50208336" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32900432" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25324675" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25324675" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19480519" sideWeight="0.49791667" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19480519" sideWeight="0.49791667" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3982684" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -805,14 +803,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/keymapping.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.8965516">
-          <caret line="27" column="21" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-13.75862">
@@ -823,16 +813,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/html/game.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44481054">
+        <state vertical-scroll-proportion="0.68078667">
           <caret line="94" column="30" selection-start-line="94" selection-start-column="30" selection-end-line="94" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/keymapping.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="13.206897">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/program.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="483" column="32" selection-start-line="483" selection-start-column="32" selection-end-line="483" selection-end-column="32" />
+        <state vertical-scroll-proportion="-0.16157205">
+          <caret line="471" column="40" selection-start-line="471" selection-start-column="40" selection-end-line="471" selection-end-column="40" />
           <folding />
         </state>
       </provider>
