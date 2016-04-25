@@ -133,6 +133,13 @@ io.on('connection', function (socket) {
                 }
                 if(roomManager[room].ready.p1 && roomManager[room].ready.p2){
                     io.to(obj.room).emit("readyAgain");
+                    coinPositions[socket.room] = [];
+
+                    generateNewCoinPositions(socket.room);
+
+                    console.log("DEBUG " + coinPositions[socket.room].length);
+                    io.to(socket.room).emit("coinPositions", coinPositions[socket.room]);
+
                     roomManager[room].ready.p1 = false;
                     roomManager[room].ready.p2 = false;
                 }
@@ -191,6 +198,17 @@ var getEnemyPlayerName = function (playerName, playerRoom) {
         }
     }
     return enemyName;
+};
+
+var generateNewCoinPositions = function(room){
+    coinPositions[room] = [];
+    var positions = [];
+    for (var i = 0; i < coinNumber; i++) {
+        var x = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
+        var z = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
+        positions.push({x: x, z: z});
+    }
+    coinPositions[room] = positions;
 };
 
 var isCollision = function (obj) {
@@ -277,14 +295,7 @@ function init(socket) {
         socket.join(emptyRoom);
         socket.room = emptyRoom;
 
-        coinPositions[socket.room] = [];
-        var positions = [];
-        for (var i = 0; i < coinNumber; i++) {
-            var x = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
-            var z = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
-            positions.push({x: x, z: z});
-        }
-        coinPositions[socket.room] = positions;
+        generateNewCoinPositions(emptyRoom);
 
         console.log("DEBUG " + coinPositions[socket.room].length);
         io.to(socket.room).emit("coinPositions", coinPositions[socket.room]);

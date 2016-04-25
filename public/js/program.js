@@ -106,9 +106,11 @@ socket.on("readyAgain", function(){
             document.querySelector('.timer-container').style.display = "";
             document.querySelector('.timer-container').classList.add("doFadeIn");
             time = 10;
-            timer(time);
+            //timer(time);
             document.querySelector('.again-container').classList.remove('doFadeOut');
         }, 2000);
+
+
     }
 });
 
