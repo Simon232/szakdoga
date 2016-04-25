@@ -95,6 +95,23 @@ socket.on("giveNewCoin", function (obj) {
 
 });
 
+socket.on("readyAgain", function(){
+    if(time == 0) {
+        document.querySelector('.again-container').classList.remove('doFadeIn');
+        document.querySelector('.again-container').classList.add('doFadeOut');
+        setTimeout(function () {
+            document.querySelector('.again-container').style.display = "none";
+            document.querySelector('.timer-container').classList.remove("doFadeOut");
+            document.querySelector('.time').textContent = "";
+            document.querySelector('.timer-container').style.display = "";
+            document.querySelector('.timer-container').classList.add("doFadeIn");
+            time = 10;
+            timer(time);
+            document.querySelector('.again-container').classList.remove('doFadeOut');
+        }, 2000);
+    }
+});
+
 var collision = function (obj) {
     var coinBoxWidth = 1.05;
     var coinIndex = -1;
@@ -114,6 +131,9 @@ var collision = function (obj) {
 
 };
 socket.on("joined", function () {
+    if(document.querySelector(".other-player-joined").classList.contains("doFadeIn")){
+        document.querySelector(".other-player-joined").classList.remove("doFadeIn");
+    }
 
     document.querySelector(".other-player-joined").style.display = "";
     document.querySelector(".other-player-joined").classList.add("doFadeIn");
@@ -511,6 +531,9 @@ socket.on('disconnect', function (msg) {
     removeCoins();
 
     time = 0;
+    document.querySelector('.again-container').style.display = "none";
+    document.querySelector('.again-container').classList.remove("doFadeOut");
+    document.querySelector('.again-container').classList.remove("doFadeIn");
 });
 
 socket.on('update', function (msg) {
@@ -545,6 +568,10 @@ socket.on('update', function (msg) {
 });
 
 // *** functions ***
+
+var again = function(){
+    socket.emit("readyAgain",{sid: thisSocket, room: thisRoom});
+};
 
 var removeCoins = function () {
     for (var i = 0; i < coinMeshes.length; i++) {

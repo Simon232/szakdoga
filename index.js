@@ -22,7 +22,7 @@ app.get('/game', function (req, res) {
  * */
 
 var joinedUsers = 0;
-var roomManager = [];
+var roomManager = {};
 var roomSize = -1;
 var cubes = {};
 var roomMessages = {};
@@ -45,26 +45,30 @@ io.on('connection', function (socket) {
         console.log("user: " + socket.id + ' disconnect from: ' + socket.room);
 
         //removeEmptyRoom
-        for (var i = 0; i < roomManager.length; i++) {
-            if (roomManager[i].player1 == socket.id) {
-                roomManager[i].player1 = '';
+        for (var room in roomManager) {
+            if (roomManager[room].player1 == socket.id) {
+                roomManager[room].player1 = '';
             }
-            else if (roomManager[i].player2 == socket.id) {
-                roomManager[i].player2 = '';
+            if (roomManager[room].player2 == socket.id) {
+                roomManager[room].player2 = '';
             }
-            else if (roomManager[i].player1 == '' && roomManager[i].player2 == '') {
-                var roomName = roomManager[i].name;
+            if (roomManager[room].player1 == '' && roomManager[room].player2 == '') {
+                var roomName = roomManager[room].name;
+                delete roomManager[roomName];
                 delete roomMessages[roomName];
-                roomManager.splice(i, 1);
+                //roomManager.splice(i, 1);
+                delete coinPositions[roomName];
 
                 console.log("Tarolt szoba uzenetek merete torles utan: " + Object.keys(roomMessages).length)
-                delete coinPositions[roomName];
             }
         }
         --joinedUsers;
         io.to(socket.room).emit('disconnect', socket.id);
         socket.leave(socket.room);
 
+
+        console.log("csatlakozott jatekosok szama: " + joinedUsers);
+        console.log("szobak szama: " + Object.keys(roomManager).length);
     });
 
     // *** movements section ***
@@ -114,21 +118,41 @@ io.on('connection', function (socket) {
         });
     });
 
+    socket.on("readyAgain", function(obj){
+        for(var room in roomManager){
+            if(roomManager[room].name == obj.room){
+                if(roomManager[room].player1 == obj.sid){
+                    if(!roomManager[room].ready.p1){
+                        roomManager[room].ready.p1 = true;
+                    }
+                }
+                if(roomManager[room].player2 == obj.sid){
+                    if(!roomManager[room].ready.p2){
+                        roomManager[room].ready.p2 = true;
+                    }
+                }
+                if(roomManager[room].ready.p1 && roomManager[room].ready.p2){
+                    io.to(obj.room).emit("readyAgain");
+                    roomManager[room].ready.p1 = false;
+                    roomManager[room].ready.p2 = false;
+                }
+            }
+        }
+
+    });
+
 });
 
 var addPlayerToRoom = function (room, player) {
-    var id = 0;
-    for (var i = 0; i < roomManager.length; i++) {
-        if (roomManager[i].name == room) {
-            id = i;
-        }
-    }
+    console.log("DOOM " + room);
+    console.log("DOOM " + roomManager[room].player1);
+    console.log("DOOM " + roomManager[room].player2);
 
-    if (roomManager[id].player1 == '') {
-        roomManager[id].player1 = player;
+    if (roomManager[room].player1 == '') {
+        roomManager[room].player1 = player;
     }
-    else if (roomManager[id].player2 == '') {
-        roomManager[id].player2 = player;
+    else if (roomManager[room].player2 == '') {
+        roomManager[room].player2 = player;
     }
 };
 
@@ -137,17 +161,18 @@ var addRoom = function () {
         id: roomSize,
         name: 'room#' + roomSize,
         player1: '',
-        player2: ''
+        player2: '',
+        ready: {p1: false, p2: false}
     };
 };
 
 var findOnePlayerRoom = function () {
-    for (var i = 0; i < roomManager.length; i++) {
-        if (roomManager[i].player1 == '') {
-            return roomManager[i].name;
+    for (var room in roomManager) {
+        if (roomManager[room].player1 != '' && roomManager[room].player2 == '') {
+            return roomManager[room].name;
         }
-        if (roomManager[i].player2 == '') {
-            return roomManager[i].name;
+        else if (roomManager[room].player1 == '' && roomManager[room].player2 != '') {
+            return roomManager[room].name;
         }
     }
     return "Something went wrong";
@@ -155,13 +180,13 @@ var findOnePlayerRoom = function () {
 
 var getEnemyPlayerName = function (playerName, playerRoom) {
     var enemyName = '';
-    for (var i = 0; i < roomManager.length; i++) {
-        if (roomManager[i].name == playerRoom) {
-            if (roomManager[i].player1 == playerName) {
-                enemyName = roomManager[i].player2;
+    for (var room in roomManager) {
+        if (roomManager[room].name == playerRoom) {
+            if (roomManager[room].player1 == playerName) {
+                enemyName = roomManager[room].player2;
             }
-            else if (roomManager[i].player2 == playerName) {
-                enemyName = roomManager[i].player1;
+            else if (roomManager[room].player2 == playerName) {
+                enemyName = roomManager[room].player1;
             }
         }
     }
@@ -198,39 +223,50 @@ function init(socket) {
     // *** connection section ***
     ++joinedUsers;
     if (joinedUsers % 2 != 0) {
-        ++roomSize;
+        roomSize = Object.keys(roomManager).length;
 
         //checking unused roomId-s to avoid id-collision (for example: 0,1,3,4 id's next value: 2, then 5)
         var usedRoomId = false;
-        for (var i = 0; i < roomManager.length; i++) {
-            if (roomManager[i].id == roomSize) {
+        for (var room in roomManager) {
+            if (roomManager[room].id == roomSize) {
                 usedRoomId = true;
             }
         }
         if (usedRoomId) {
             //calculate correct id
-            for (var i = 0; i < roomManager.length; i++) {
-                var resultIsBad = false;
-                for (var j = 0; j < roomManager.length; j++) {
-                    if (roomManager[j].id == i) {
-                        resultIsBad = true;
+
+            var goodId = 0;
+            for (var room in roomManager) {
+                if(roomManager[room].id == goodId){
+                    ++goodId;
+                }else{
+                    var newIdIsGood = true;
+                    for(var subroom in roomManager){
+                        if(roomManager[subroom].id == goodId){
+                            newIdIsGood = false;
+                        }
+                    }
+                    if(newIdIsGood) {
+                        roomSize = goodId;
+                        break; //break the cycle
+                    }else{
+                        ++goodId;
                     }
                 }
-                if (!resultIsBad) {
-                    roomSize = i;
-                    i = roomManager.length; //break the cycle
-                }
+
             }
+
             var roomName = 'room#' + roomSize;
-            roomManager.push(addRoom());
+            console.log("DOOM " + roomName);
+            roomManager[roomName] = addRoom();
             roomMessages[roomName] = [];
             socket.join(roomName);
             socket.room = roomName;
-            roomSize = roomManager.length - 1; //jump to the last known 'good' value
+            roomSize = Object.keys(roomManager).length - 1; //jump to the last known 'good' value
 
         } else {
             var roomName = 'room#' + roomSize;
-            roomManager.push(addRoom());
+            roomManager[roomName] = addRoom();
             roomMessages[roomName] = [];
             socket.join(roomName);
             socket.room = roomName; //if everything went well, we don't need to jump
