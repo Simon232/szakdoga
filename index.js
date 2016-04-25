@@ -29,6 +29,7 @@ var roomMessages = {};
 var gameWidth = 100;
 var coinPositions = {};
 var coinNumber = 10;
+var cubeHalf = 0.49;
 
 
 io.on('connection', function (socket) {
@@ -301,7 +302,7 @@ function init(socket) {
         io.to(socket.room).emit("coinPositions", coinPositions[socket.room]);
 
     }
-    io.to(socket.room).emit('new', {sid: socket.id, room: socket.room});
+    io.to(socket.room).emit('new', {sid: socket.id, room: socket.room, positions: {x: getRandomPosition(), z: getRandomPosition()}});
     io.to(socket.room).emit("old messages", {sid: socket.id, historyMessage: roomMessages[socket.room]});
     //socket.emit("joined");
 
@@ -315,3 +316,11 @@ function onJoined(obj) {
     console.log(this.id + " joined with this:  [" + cubes[this.id].x + ", " + cubes[this.id].y + ", " + cubes[this.id].z + "]");
     this.to(this.room).broadcast.emit("joined");
 }
+
+function getRandomPosition() {
+    var pos = 0;
+    while (pos <= 1 && pos >= -1) {
+        pos = Math.floor(Math.random() * 2) % 2 == 0 ? Math.random() * ((gameWidth / 2) - cubeHalf -6) : -1 * Math.random() * ((gameWidth / 2) - cubeHalf - 2);
+    }
+    return pos;
+};
