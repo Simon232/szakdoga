@@ -25,7 +25,6 @@ var getRandomPosition = function () {
 };
 
 var time = 0;
-var timerStartOnce = false;
 
 var timer = function () {
     console.log("*****************");
@@ -476,9 +475,9 @@ socket.on("coinPositions", function (obj) {
 
     doFadeIn(".timer-container");
     if(time != 0) {
-        time = 10;
+        time = 30;
     }else{
-        time = 10;
+        time = 30;
         timer();
     }
 });
