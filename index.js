@@ -39,41 +39,7 @@ io.on('connection', function (socket) {
     init(socket);
 
     socket.on("joined", onJoined.bind(socket));
-
-    socket.on('disconnect', function () {
-        if (joinedUsers % 2 != 0) {
-            --roomSize;
-        }
-
-        console.log("user: " + socket.id + ' disconnect from: ' + socket.room);
-
-        //removeEmptyRoom
-        for (var room in roomManager) {
-            if (roomManager[room].player1 == socket.id) {
-                roomManager[room].player1 = '';
-            }
-            if (roomManager[room].player2 == socket.id) {
-                roomManager[room].player2 = '';
-            }
-            if (roomManager[room].player1 == '' && roomManager[room].player2 == '') {
-                var roomName = roomManager[room].name;
-                delete roomManager[roomName];
-                delete roomMessages[roomName];
-                //roomManager.splice(i, 1);
-                delete coinPositions[roomName];
-                delete trapPositions[roomName];
-
-                console.log("Tarolt szoba uzenetek merete torles utan: " + Object.keys(roomMessages).length)
-            }
-        }
-        --joinedUsers;
-        io.to(socket.room).emit('disconnect', socket.id);
-        socket.leave(socket.room);
-
-
-        console.log("csatlakozott jatekosok szama: " + joinedUsers);
-        console.log("szobak szama: " + Object.keys(roomManager).length);
-    });
+    socket.on('disconnect', onLeave.bind(socket));
 
     // *** movements section ***
     socket.on('move', function (msg) {
@@ -95,82 +61,32 @@ io.on('connection', function (socket) {
     });
 
     // *** page functions section ***
-    socket.on('chat message', function (obj) {
-        if (roomMessages[obj.room].length == 5) {
-            roomMessages[obj.room].shift();
-        }
-        roomMessages[obj.room].push(obj.msg);
+    socket.on('chat message', chatMessages);
 
-
-        io.to(obj.room).emit('chat message', obj);
-    });
-
-    socket.on("giveNewCoin", function (obj) {
-        console.log("debuuug " + socket.room);
-        console.log("debuuug " + coinPositions[socket.room]);
-
-        coinPositions[socket.room].splice(obj.index, 1);
-        var x = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
-        var z = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
-        coinPositions[socket.room].push({x: x, z: z});
-        io.to(socket.room).emit("giveNewCoin", {
-            sid: socket.id,
-            socketPoints: obj.socketPoints,
-            index: obj.index,
-            x: x,
-            z: z
-        });
-    });
+    socket.on("giveNewCoin", giveNewCoin.bind(socket));
 
     socket.on("getDamage", function(obj){
         socket.to(obj.room).broadcast.emit("getDamage", obj);
     });
 
-    socket.on("readyAgain", function(obj){
-        for(var room in roomManager){
-            if(roomManager[room].name == obj.room){
-                if(roomManager[room].player1 == obj.sid){
-                    if(!roomManager[room].ready.p1){
-                        roomManager[room].ready.p1 = true;
-                    }
-                }
-                if(roomManager[room].player2 == obj.sid){
-                    if(!roomManager[room].ready.p2){
-                        roomManager[room].ready.p2 = true;
-                    }
-                }
-                if(roomManager[room].ready.p1 && roomManager[room].ready.p2){
-                    io.to(obj.room).emit("readyAgain");
-                    coinPositions[socket.room] = [];
-                    trapPositions[socket.room] = [];
-
-                    generateNewCoinPositions(socket.room);
-                    generateNewTrapPositions(socket.room);
-
-                    console.log("DEBUG " + coinPositions[socket.room].length);
-                    io.to(socket.room).emit("objectPositions", { coinPositions: coinPositions[socket.room], trapPositions: trapPositions[socket.room]});
-                    io.to(socket.room).emit("objectPositions", { coinPositions: coinPositions[socket.room], trapPositions: trapPositions[socket.room]});
-
-                    roomManager[room].ready.p1 = false;
-                    roomManager[room].ready.p2 = false;
-                }
-            }
-        }
-
-    });
+    socket.on("readyAgain", readyAgain.bind(socket));
 
 });
 
-var addPlayerToRoom = function (room, player) {
+//******************************
+//********** functions *********
+//******************************
+
+function addPlayerToRoom(room, player) {
     if (roomManager[room].player1 == '') {
         roomManager[room].player1 = player;
     }
     else if (roomManager[room].player2 == '') {
         roomManager[room].player2 = player;
     }
-};
+}
 
-var addRoom = function () {
+function addRoom(){
     return {
         id: roomSize,
         name: 'room#' + roomSize,
@@ -178,9 +94,9 @@ var addRoom = function () {
         player2: '',
         ready: {p1: false, p2: false}
     };
-};
+}
 
-var findOnePlayerRoom = function () {
+function findOnePlayerRoom() {
     for (var room in roomManager) {
         if (roomManager[room].player1 != '' && roomManager[room].player2 == '') {
             return roomManager[room].name;
@@ -190,9 +106,9 @@ var findOnePlayerRoom = function () {
         }
     }
     return "Something went wrong";
-};
+}
 
-var getEnemyPlayerName = function (playerName, playerRoom) {
+function getEnemyPlayerName(playerName, playerRoom) {
     var enemyName = '';
     for (var room in roomManager) {
         if (roomManager[room].name == playerRoom) {
@@ -205,9 +121,9 @@ var getEnemyPlayerName = function (playerName, playerRoom) {
         }
     }
     return enemyName;
-};
+}
 
-var generateNewCoinPositions = function(room){
+function generateNewCoinPositions(room){
     coinPositions[room] = [];
     var positions = [];
     for (var i = 0; i < coinNumber; i++) {
@@ -216,23 +132,20 @@ var generateNewCoinPositions = function(room){
         positions.push({x: x, z: z});
     }
     coinPositions[room] = positions;
-};
+}
 
-var generateNewTrapPositions = function(room){
+function generateNewTrapPositions(room){
+    trapPositions[room] = [];
     var positions = [];
     for (var i = 0; i < trapNumber; i++) {
         var x = getRandomPosition();
         var z = getRandomPosition();
         positions.push({x: x, z: z});
     }
-    //positions.push({x: 25, z: 25});
-    //positions.push({x: -25, z: 25});
-    //positions.push({x: 25, z: -25});
-    //positions.push({x: -25, z: -25});
     trapPositions[room] = positions;
-};
+}
 
-var isCollision = function (obj) {
+function isCollision(obj) {
     var otherPlayer = getEnemyPlayerName(obj.sid, obj.room);
     var thisSocket = obj.sid;
     var newX = obj.pos.x;
@@ -245,18 +158,9 @@ var isCollision = function (obj) {
         var originalX = Math.abs(cubes[thisSocket].x - cubes[otherPlayer].x);
         var originalZ = Math.abs(cubes[thisSocket].z - cubes[otherPlayer].z);
         return (colX < 1 && colZ < 1) && (originalX > colX && originalZ > colZ);
-        /*if (colX <= 1 && colZ <= 1 && (colX < (1 + 2 * movingSpeed) || colX < (1 + 2 * movingSpeed))) {
-         return true;
-         }
-         return colX <= 1 && colZ <= 1;*/
     }
     return false;
-};
-
-http.listen(port, function () {
-    console.log('Server is started, listening on port:', port);
-});
-
+}
 
 function init(socket) {
     // *** connection section ***
@@ -337,10 +241,106 @@ function onJoined(obj) {
     this.to(this.room).broadcast.emit("joined");
 }
 
+function onLeave(){
+    if (joinedUsers % 2 != 0) {
+        --roomSize;
+    }
+
+    console.log("user: " + this.id + ' disconnect from: ' + this.room);
+
+    //removeEmptyRoom
+    for (var room in roomManager) {
+        if (roomManager[room].player1 == this.id) {
+            roomManager[room].player1 = '';
+        }
+        if (roomManager[room].player2 == this.id) {
+            roomManager[room].player2 = '';
+        }
+        if (roomManager[room].player1 == '' && roomManager[room].player2 == '') {
+            var roomName = roomManager[room].name;
+            delete roomManager[roomName];
+            delete roomMessages[roomName];
+            //roomManager.splice(i, 1);
+            delete coinPositions[roomName];
+            delete trapPositions[roomName];
+
+            console.log("Tarolt szoba uzenetek merete torles utan: " + Object.keys(roomMessages).length)
+        }
+    }
+    --joinedUsers;
+    io.to(this.room).emit('disconnect', this.id);
+    this.leave(this.room);
+
+    console.log("csatlakozott jatekosok szama: " + joinedUsers);
+    console.log("szobak szama: " + Object.keys(roomManager).length);
+}
+
 function getRandomPosition() {
     var pos = 0;
     while (pos <= 1 && pos >= -1) {
         pos = Math.floor(Math.random() * 2) % 2 == 0 ? Math.random() * ((gameWidth / 2) - cubeHalf -6) : -1 * Math.random() * ((gameWidth / 2) - cubeHalf - 2);
     }
     return pos;
-};
+}
+
+function giveNewCoin(obj){
+    coinPositions[this.room].splice(obj.index, 1);
+    var x = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
+    var z = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
+    coinPositions[this.room].push({x: x, z: z});
+    io.to(this.room).emit("giveNewCoin", {
+        sid: this.id,
+        socketPoints: obj.socketPoints,
+        index: obj.index,
+        x: x,
+        z: z
+    });
+}
+
+function readyAgain(obj){
+    for(var room in roomManager){
+        if(roomManager[room].name == obj.room){
+            if(roomManager[room].player1 == obj.sid){
+                if(!roomManager[room].ready.p1){
+                    roomManager[room].ready.p1 = true;
+                }
+            }
+            if(roomManager[room].player2 == obj.sid){
+                if(!roomManager[room].ready.p2){
+                    roomManager[room].ready.p2 = true;
+                }
+            }
+            if(roomManager[room].ready.p1 && roomManager[room].ready.p2){
+                io.to(obj.room).emit("readyAgain");
+                coinPositions[this.room] = [];
+                trapPositions[this.room] = [];
+
+                generateNewCoinPositions(this.room);
+                generateNewTrapPositions(this.room);
+
+                io.to(this.room).emit("objectPositions", { coinPositions: coinPositions[this.room], trapPositions: trapPositions[this.room]});
+                io.to(this.room).emit("objectPositions", { coinPositions: coinPositions[this.room], trapPositions: trapPositions[this.room]});
+
+                roomManager[room].ready.p1 = false;
+                roomManager[room].ready.p2 = false;
+            }
+        }
+    }
+}
+
+function chatMessages(obj){
+    if (roomMessages[obj.room].length == 5) {
+        roomMessages[obj.room].shift();
+    }
+    roomMessages[obj.room].push(obj.msg);
+
+    io.to(obj.room).emit('chat message', obj);
+}
+
+//*****************************
+//***** server start **********
+//*****************************
+
+http.listen(port, function () {
+    console.log('Server is started, listening on port:', port);
+});
