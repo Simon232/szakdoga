@@ -1,25 +1,9 @@
 var express = require('express');
+var router = express.Router();
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
-
-app.use(express.static('public'));
-
-app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
-});
-app.get('/game', function (req, res) {
-    res.sendFile(__dirname + '/public/html/game.html');
-});
-
-/* codes for me, to better understanding:
- *
- * socket.on - amit a kliens kuld
- * io.emit - amit a kliensnek kuldunk
- * socket.broadcast.to('room' + roomSize).emit("roomIsFull");
- * io.sockets.in('room' + roomSize).emit('roomIsFull');
- * */
 
 var joinedUsers = 0;
 var roomManager = {};
@@ -33,6 +17,25 @@ var coinNumber = 10;
 var trapNumber = 4;
 var cubeHalf = 0.49;
 
+app.use(express.static('public'));
+
+app.get('/', function (req, res) {
+    res.sendFile(__dirname + '/index.html');
+});
+app.get('/game', function (req, res) {
+    res.sendFile(__dirname + '/public/html/game.html');
+});
+app.get('/registration', function(req, res){
+    res.sendFile(__dirname + '/public/html/registration.html') ;
+});
+
+/* codes for me, to better understanding:
+ *
+ * socket.on - amit a kliens kuld
+ * io.emit - amit a kliensnek kuldunk
+ * socket.broadcast.to('room' + roomSize).emit("roomIsFull");
+ * io.sockets.in('room' + roomSize).emit('roomIsFull');
+ * */
 
 io.on('connection', function (socket) {
 

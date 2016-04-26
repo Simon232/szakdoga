@@ -442,9 +442,9 @@ var init = function () {
     ground.position.z = 0;
     scene.add(ground);
 
-    scene.add(x_line); //piros
+    //scene.add(x_line); //piros
     //scene.add(y_line); //zold
-    scene.add(z_line); //kek
+    //scene.add(z_line); //kek
     scene.add(PyramidMesh);
     scene.add(PyramidMesh2);
     scene.add(PyramidMesh3);

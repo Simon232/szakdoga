@@ -1,0 +1,42 @@
+.menu-container {
+    top: 0px;
+    background-color: black;
+}
+
+.menu-container > .menu-pic {
+    margin: auto;
+}
+
+.menu-container > .menu-pic > .pic {
+    display: block;
+    margin: auto;
+}
+
+.menu-container > .container > .title {
+    color: #800000;
+}
+
+.menu-container > .container > .navbar-nav > .nav-item > .nav-link {
+    color: #bfbfbf;
+}
+
+.menu-container > .container > .navbar-nav > .nav-item > .nav-link:hover {
+    background-color: #4d4d4d;
+}
+
+.menu-container > .container > .navbar-nav > .active {
+    background-color: #4d0000;
+}
+
+.menu-container > .container {
+    padding-left: 200px;
+}
+
+.main-text {
+    margin: 30px;
+}
+
+.main-text > .reg-title {
+    margin: auto;
+    text-align:center;
+}
