@@ -54,8 +54,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on("isCollision", function (obj) {
-        var isCol = isCollision(obj);
-        socket.emit("isCollision", {respond: isCol});
+        socket.emit("isCollision", {respond: isCollision(obj)});
     });
 
     socket.on('update', function (msg) {
