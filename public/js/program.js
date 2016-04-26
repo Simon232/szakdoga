@@ -121,7 +121,7 @@ socket.on('new', function (msg) {
         otherPlayer = '';
 
         var boxTexture = "";
-        var randomNumber = Math.floor(Math.random() * 5);
+        var randomNumber = Math.floor(Math.random() * 6);
         if (randomNumber == 0) {
             boxTexture = "pics/box.jpg";
         }
@@ -135,7 +135,10 @@ socket.on('new', function (msg) {
             boxTexture = "pics/box4.png";
         }
         if (randomNumber == 4) {
-            boxTexture = "pics/box5.jpg";
+            boxTexture = "pics/box5.png";
+        }
+        if (randomNumber == 5) {
+            boxTexture = "pics/transparent.png";
         }
         //if (randomNumber == 5) {
         //    boxTexture = "pics/transparent.jpg";
@@ -158,7 +161,7 @@ socket.on('new', function (msg) {
          specular: 0x555555,
          shininess: 30
          });*/
-        var socketCubeMaterial = new THREE.MeshPhongMaterial({map: textureBox});
+        var socketCubeMaterial = new THREE.MeshPhongMaterial({map: textureBox, transparent: true}); //{map: textureBox, transparent: true, opacity: 0.5, color: "rgb(255,0,0)"}
 
         cubes[thisSocket] = new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
 
@@ -392,11 +395,32 @@ var init = function () {
     ground.position.x = 0;
     ground.position.y = 0;
     ground.position.z = 0;
+
+
+
+    var wallMesh = getWall();
+    var wallMesh2 = getWall();
+    var wallMesh3 = getWall();
+    var wallMesh4 = getWall();
+
+    wallMesh.position.x = gameWidth/2;
+    wallMesh2.position.z = -gameWidth/2;
+    wallMesh2.rotation.y += PI/2;
+    wallMesh3.position.x = -gameWidth/2;
+    wallMesh3.rotation.y += PI;
+    wallMesh4.position.z = gameWidth/2;
+    wallMesh4.rotation.y -= PI/2;
+
+
     scene.add(ground);
 
     scene.add(PyramidMesh);
     scene.add(PyramidMesh2);
     scene.add(PyramidMesh3);
+    scene.add(wallMesh);
+    scene.add(wallMesh2);
+    scene.add(wallMesh3);
+    scene.add(wallMesh4);
 };
 
 var collision = function (obj) {
@@ -458,6 +482,25 @@ var doFadeOut = function (className) {
 
 var again = function () {
     socket.emit("readyAgain", {sid: thisSocket, room: thisRoom});
+};
+
+var getWall = function(){
+    var wallTexture = new THREE.TextureLoader().load("pics/sandwall.png");
+    wallTexture.wrapS = THREE.RepeatWrapping;
+    wallTexture.wrapT = THREE.RepeatWrapping;
+    wallTexture.repeat.set(gameWidth / 10, gameWidth / 100);
+    var wallMaterial = new THREE.MeshBasicMaterial({map: wallTexture, transparent: true});
+    var wallGeometry = new THREE.Geometry();
+    wallGeometry.vertices.push(new THREE.Vector3(0.0,0.0,-gameWidth/2));
+    wallGeometry.vertices.push(new THREE.Vector3(0.0,0.0,gameWidth/2));
+    wallGeometry.vertices.push(new THREE.Vector3(0.0,5.0,gameWidth/2));
+    wallGeometry.vertices.push(new THREE.Vector3(0.0,5.0,-gameWidth/2));
+    wallGeometry.faces.push(new THREE.Face3(0,1,2));
+    wallGeometry.faces.push(new THREE.Face3(0,2,3));
+    wallGeometry.faceVertexUvs[0].push([new THREE.Vector2(0.0,0.0),new THREE.Vector2(1.0,0,0), new THREE.Vector2(1.0,1.0)]);
+    wallGeometry.faceVertexUvs[0].push([new THREE.Vector2(0.0,0.0),new THREE.Vector2(1.0,1,0), new THREE.Vector2(0.0,1.0)]);
+
+    return new THREE.Mesh(wallGeometry, wallMaterial);
 };
 
 var getPyramid = function(){
