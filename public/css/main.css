@@ -38,5 +38,47 @@
 
 .main-text > .reg-title {
     margin: auto;
-    text-align:center;
+    text-align: center;
+}
+
+.main-text > .form-horizontal > fieldset {
+    margin-top: 20px;
+}
+
+.main-text > .form-horizontal > fieldset > .field-container {
+    display: block;
+    width: 500px;
+    margin: auto;
+    margin-top: 10px;
+}
+
+.main-text > .form-horizontal > fieldset > .field-container > .username {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.main-text > .form-horizontal > fieldset > .field-container > .email {
+    display: inline-block;
+    margin-right: 76px;
+}
+
+.main-text > .form-horizontal > fieldset > .field-container > .pwd {
+    display: inline-block;
+    margin-right: 74px;
+}
+
+.main-text > .form-horizontal > fieldset > .field-container > .pwda {
+    display: inline-block;
+    margin-right: 33px;
+}
+
+.main-text > .form-horizontal > fieldset > .field-container > .input-fields {
+    display: inline-block;
+    width: 300px;
+}
+
+.main-text > .form-horizontal > fieldset > .button-container {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
 }

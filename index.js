@@ -28,6 +28,9 @@ app.get('/game', function (req, res) {
 app.get('/registration', function(req, res){
     res.sendFile(__dirname + '/public/html/registration.html') ;
 });
+app.post('/registration', function(req, res){
+    res.sendFile(__dirname + '/index.html') ;
+});
 
 /* codes for me, to better understanding:
  *
