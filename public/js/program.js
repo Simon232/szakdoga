@@ -321,16 +321,7 @@ socket.on('update', function (msg) {
 var init = function () {
 
     scene = new THREE.Scene();
-
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-
-    skylight = new THREE.DirectionalLight(0x99FFFF, 1)
-    light = new THREE.DirectionalLight(0xFFCC99, 1);
-    light.position.x = -5;
-    light.position.y = 5;
-    light.position.z = 5;
-    scene.add(light);
-
     renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
     renderer.setClearColor(0x000000, 0);
     //renderer.setPixelRatio(window.devicePixelRatio);
@@ -339,6 +330,12 @@ var init = function () {
     renderer.gammaInput = true;
     renderer.gammaOutput = true;
 
+    skylight = new THREE.DirectionalLight(0x99FFFF, 1);
+    light = new THREE.DirectionalLight(0xFFCC99, 1);
+    light.position.x = -5;
+    light.position.y = 5;
+    light.position.z = 5;
+    scene.add(light);
 
     var vertexShader = document.getElementById('vertexShader').textContent;
     var fragmentShader = document.getElementById('fragmentShader').textContent;
@@ -361,60 +358,14 @@ var init = function () {
     var sky = new THREE.Mesh(skyGeo, skyMat);
     scene.add(sky);
 
-    var PI = 3.14;
-
-    var line_geo = new THREE.BoxGeometry(gameWidth, 0.1, 0.1);
-    var line_geo2 = new THREE.BoxGeometry(0.1, gameWidth, 0.1);
-    var line_geo3 = new THREE.BoxGeometry(0.1, 0.1, gameWidth);
-    //var line_material = new THREE.MeshBasicMaterial({color: 0x00006633}); //zold
-    //var line2_material = new THREE.MeshBasicMaterial({color: 0x00990000}); //piros
-    //var line3_material = new THREE.MeshBasicMaterial({color: 0x00003399}); //kek
-    var line_material = new THREE.MeshBasicMaterial({color: 0x00990000}); //piros
-    var line2_material = new THREE.MeshBasicMaterial({color: 0x00006633}); //zold
-    var line3_material = new THREE.MeshBasicMaterial({color: 0x00003399}); //kek
-    var x_line = new THREE.Mesh(line_geo, line_material);
-    var y_line = new THREE.Mesh(line_geo2, line2_material);
-    var z_line = new THREE.Mesh(line_geo3, line3_material);
-
-
-    var pyramidTexture = new THREE.TextureLoader().load("pics/pyramid.jpg");
-    pyramidTexture.wrapS = THREE.RepeatWrapping;
-    pyramidTexture.wrapT = THREE.RepeatWrapping;
-    pyramidTexture.repeat.set(4, 4);
-    var pyramidMaterial = new THREE.MeshBasicMaterial({map: pyramidTexture});
-    //define a geometry
-    var pyramidGeometry = new THREE.Geometry();
-    //verticles
-    pyramidGeometry.vertices.push(new THREE.Vector3(0, 0, 0));
-    pyramidGeometry.vertices.push(new THREE.Vector3(4, 0, 0));
-    pyramidGeometry.vertices.push(new THREE.Vector3(4, 0, 4));
-    pyramidGeometry.vertices.push(new THREE.Vector3(0, 0, 4));
-    pyramidGeometry.vertices.push(new THREE.Vector3(2, 2, 2));
-    //face
-    pyramidGeometry.faces.push(new THREE.Face3(1, 0, 4));
-    pyramidGeometry.faces.push(new THREE.Face3(2, 1, 4));
-    pyramidGeometry.faces.push(new THREE.Face3(3, 2, 4));
-    pyramidGeometry.faces.push(new THREE.Face3(0, 3, 4));
-    //pyramidGeometry.faces.push(new THREE.Face3(2, 3, 4));
-    //pyramidGeometry.faces.push(new THREE.Face3(3, 0, 4));
-    //pyramidGeometry.faceVertexUvs[0][0] = [ new THREE.Vector2(0.5, 0.5), new THREE.Vector2(0.5, 0.5), new THREE.Vector2(0.5, 0.5)]; // for textures
-
-    var pyramidUvs = [];
-    pyramidUvs.push(new THREE.Vector2(0.0, 0.0));
-    pyramidUvs.push(new THREE.Vector2(0.0, 1.0));
-    pyramidUvs.push(new THREE.Vector2(1.0, 1.0));
-    pyramidGeometry.faceVertexUvs[0].push([pyramidUvs[1], pyramidUvs[2], pyramidUvs[0]]);
-    pyramidGeometry.faceVertexUvs[0].push([pyramidUvs[1], pyramidUvs[2], pyramidUvs[0]]);
-    pyramidGeometry.faceVertexUvs[0].push([pyramidUvs[1], pyramidUvs[2], pyramidUvs[0]]);
-    pyramidGeometry.faceVertexUvs[0].push([pyramidUvs[1], pyramidUvs[2], pyramidUvs[0]]);
-
-    var PyramidMesh = new THREE.Mesh(pyramidGeometry, pyramidMaterial);
-    var PyramidMesh2 = new THREE.Mesh(pyramidGeometry, pyramidMaterial);
-    var PyramidMesh3 = new THREE.Mesh(pyramidGeometry, pyramidMaterial);
+    var PyramidMesh = getPyramid();
+    var PyramidMesh2 = getPyramid();
+    var PyramidMesh3 = getPyramid();
 
     PyramidMesh.position.x = gameWidth - 10;
     PyramidMesh2.position.x = gameWidth;
     PyramidMesh3.position.x = gameWidth - 10;
+
     PyramidMesh.position.z = 16;
     PyramidMesh2.position.z = -15;
     PyramidMesh3.position.z = -28;
@@ -426,6 +377,7 @@ var init = function () {
     PyramidMesh.scale.set(4, 4, 4);
     PyramidMesh2.scale.set(8, 8, 8);
     PyramidMesh3.scale.set(4, 4, 4);
+
 
     // load a texture, set wrap mode to repeat
     var texture = new THREE.TextureLoader().load("pics/sand3.jpg");
@@ -442,9 +394,6 @@ var init = function () {
     ground.position.z = 0;
     scene.add(ground);
 
-    //scene.add(x_line); //piros
-    //scene.add(y_line); //zold
-    //scene.add(z_line); //kek
     scene.add(PyramidMesh);
     scene.add(PyramidMesh2);
     scene.add(PyramidMesh3);
@@ -509,6 +458,44 @@ var doFadeOut = function (className) {
 
 var again = function () {
     socket.emit("readyAgain", {sid: thisSocket, room: thisRoom});
+};
+
+var getPyramid = function(){
+    var pyramidTexture = new THREE.TextureLoader().load("pics/pyramid.jpg");
+    pyramidTexture.wrapS = THREE.RepeatWrapping;
+    pyramidTexture.wrapT = THREE.RepeatWrapping;
+    pyramidTexture.repeat.set(4, 4);
+
+    var pyramidMaterial = new THREE.MeshBasicMaterial({map: pyramidTexture});
+    //define a geometry
+
+    var pyramidGeometry = new THREE.Geometry();
+    //verticles
+
+    pyramidGeometry.vertices.push(new THREE.Vector3(0, 0, 0));
+    pyramidGeometry.vertices.push(new THREE.Vector3(4, 0, 0));
+    pyramidGeometry.vertices.push(new THREE.Vector3(4, 0, 4));
+    pyramidGeometry.vertices.push(new THREE.Vector3(0, 0, 4));
+    pyramidGeometry.vertices.push(new THREE.Vector3(2, 2, 2));
+    //face
+    pyramidGeometry.faces.push(new THREE.Face3(1, 0, 4));
+    pyramidGeometry.faces.push(new THREE.Face3(2, 1, 4));
+    pyramidGeometry.faces.push(new THREE.Face3(3, 2, 4));
+    pyramidGeometry.faces.push(new THREE.Face3(0, 3, 4));
+    //pyramidGeometry.faces.push(new THREE.Face3(2, 3, 4));
+    //pyramidGeometry.faces.push(new THREE.Face3(3, 0, 4));
+    //pyramidGeometry.faceVertexUvs[0][0] = [ new THREE.Vector2(0.5, 0.5), new THREE.Vector2(0.5, 0.5), new THREE.Vector2(0.5, 0.5)]; // for textures
+
+    var pyramidUvs = [];
+    pyramidUvs.push(new THREE.Vector2(0.0, 0.0));
+    pyramidUvs.push(new THREE.Vector2(0.0, 1.0));
+    pyramidUvs.push(new THREE.Vector2(1.0, 1.0));
+    pyramidGeometry.faceVertexUvs[0].push([pyramidUvs[1], pyramidUvs[2], pyramidUvs[0]]);
+    pyramidGeometry.faceVertexUvs[0].push([pyramidUvs[1], pyramidUvs[2], pyramidUvs[0]]);
+    pyramidGeometry.faceVertexUvs[0].push([pyramidUvs[1], pyramidUvs[2], pyramidUvs[0]]);
+    pyramidGeometry.faceVertexUvs[0].push([pyramidUvs[1], pyramidUvs[2], pyramidUvs[0]]);
+
+    return new THREE.Mesh(pyramidGeometry, pyramidMaterial);
 };
 
 var getCoin = function () {

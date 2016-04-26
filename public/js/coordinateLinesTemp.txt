@@ -1,0 +1,13 @@
+ var line_geo = new THREE.BoxGeometry(gameWidth, 0.1, 0.1);
+    var line_geo2 = new THREE.BoxGeometry(0.1, gameWidth, 0.1);
+    var line_geo3 = new THREE.BoxGeometry(0.1, 0.1, gameWidth);
+    var line_material = new THREE.MeshBasicMaterial({color: "rgb(255,0,0)"}); //piros
+    var line2_material = new THREE.MeshBasicMaterial({color: "rgb(0,255,0)"}); //zold
+    var line3_material = new THREE.MeshBasicMaterial({color: "rgb(0,0,255)"}); //kek
+    var x_line = new THREE.Mesh(line_geo, line_material);
+    var y_line = new THREE.Mesh(line_geo2, line2_material);
+    var z_line = new THREE.Mesh(line_geo3, line3_material);
+
+    //scene.add(x_line); //piros
+    //scene.add(y_line); //zold
+    //scene.add(z_line); //kek
