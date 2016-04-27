@@ -592,7 +592,7 @@ orm.loadCollection(Waterline.Collection.extend(userCollection));
 
 orm.initialize(waterlineConfig, function (err, models) {
     if (err) {
-        throw err;
+        console.log(" such error");
     }
 
     app.models = models.collections;
