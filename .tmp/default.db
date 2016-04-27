@@ -1,6 +1,17 @@
 {
   "data": {
-    "user": []
+    "user": [
+      {
+        "username": "asd",
+        "email": "asd@asd.hu",
+        "password": "$2a$10$.mxOEz6Aq5sdrLm3gdhvv.3b1.Q6NemzUWOYEszme63QWHxnKORtu",
+        "passwordagain": "asd",
+        "date": "2016-04-27T21:41:21.752Z",
+        "createdAt": "2016-04-27T21:41:22.195Z",
+        "updatedAt": "2016-04-27T21:41:22.195Z",
+        "id": 1
+      }
+    ]
   },
   "schema": {
     "user": {
@@ -29,6 +40,8 @@
     }
   },
   "counters": {
-    "user": {}
+    "user": {
+      "id": 1
+    }
   }
 }
