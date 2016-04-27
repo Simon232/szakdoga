@@ -47,7 +47,7 @@ passport.use('registration', new LocalStrategy({
                 return done(err);
             }
             if (user) {
-                return done(null, false, {message: 'Létezõ username.'});
+                return done(null, false, {message: 'Letezo username.'});
             }
             req.app.models.user.create(req.body)
                 .then(function (user) {
@@ -149,7 +149,6 @@ app.get('/registration', function (req, res) {
     //var validationErrors = (req.flash('validationErrors') || [{}]).pop();
     //var data = (req.flash('data') || [{}]).pop(); //req.flash() tömböt ad vissza
     //console.log(req.flash('error'));
-    console.log(req);
     res.render('registration', {
         //validationErrors: validationErrors,
         validationErrors: req.flash('error')
@@ -583,9 +582,9 @@ function chatMessages(obj) {
 //***** server start **********
 //*****************************
 
-// http.listen(port, function () {
-//     console.log('Server is started, listening on port:', port);
-// });
+ //http.listen(port, function () {
+ //    console.log('Server is started, listening on port:', port);
+ //});
 
 // **** ORM instance ****
 var orm = new Waterline();
@@ -600,7 +599,7 @@ orm.initialize(waterlineConfig, function (err, models) {
     app.connections = models.connections;
 
     // Start Server
-    app.listen(port, function () {
+    http.listen(port, function () {
         console.log('Server is started, listening on port:' + port);
     });
 

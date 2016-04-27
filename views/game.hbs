@@ -1,5 +1,8 @@
 <div class="menu-container navbar-dark">
     <div class="container">
+        {{#if loggedIn}}
+            <p class="navbar-text hello">Bel&eacutepve, mint {{user.username}}!</p>
+        {{/if}}
         <div class="navbar-brand title">Szakdolgozat</div>
         <ul class="nav navbar-nav">
             <li class="nav-item"><a class="nav-link" href="/">Főoldal</a></li>
