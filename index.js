@@ -1,9 +1,24 @@
-//*** front-end's stuffs start ***
+
 var express = require('express');
+
+//*** server's stuffs start ***
+//var router = express.Router();
+var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+var port = process.env.PORT || 3000;
+//*** server's stuffs end ***
+
+
+//*** front-end's stuffs start ***
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var session = require('express-session');
 var flash = require('connect-flash');
+
+
+
+
 var Waterline = require('waterline');
 var waterlineConfig = require('./configs/waterline');
 var userCollection = require('./models/user.js');
@@ -68,13 +83,7 @@ passport.use('login', new LocalStrategy({
 //*** front-end's stuffs end ***
 
 
-//*** server's stuffs start ***
-var router = express.Router();
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var port = process.env.PORT || 3000;
-//*** server's stuffs end ***
+
 
 //*** game logic's stuffs start ***
 var joinedUsers = 0;
@@ -110,6 +119,7 @@ app.use(passport.session());
 
 app.use(function (req, res, next) {
     res.locals.loggedIn = req.isAuthenticated();
+    res.locals.notLoggedIn = !req.isAuthenticated();
     res.locals.user = req.user;
     next();
 });
@@ -132,15 +142,24 @@ app.get('/', function (req, res) {
 app.get('/game', function (req, res) {
     //res.sendFile(__dirname + '/public/html/game.html');
     res.render('game');
+
 });
 app.get('/registration', function (req, res) {
     //res.sendFile(__dirname + '/public/html/registration.html') ;
+
     var validationErrors = (req.flash('validationErrors') || [{}]).pop();
     var data = (req.flash('data') || [{}]).pop(); //req.flash() tömböt ad vissza
 
+
+    //var validationErrors = (req.flash('validationErrors') || [{}]).pop();
+    //var data = (req.flash('data') || [{}]).pop(); //req.flash() t�mb�t ad vissza
+    //console.log(req.flash('error'));
+    console.log(req);
+
     res.render('registration', {
-        validationErrors: validationErrors,
-        data: data
+        //validationErrors: validationErrors,
+        validationErrors: req.flash('error')
+        //data: data
     });
 });
 //app.post('/registration', function (req, res) {
@@ -207,11 +226,12 @@ app.get('/registration', function (req, res) {
 //});
 
 app.post('/registration', passport.authenticate('registration', {
+
     successRedirect:    '/',
     failureRedirect:    '/registration',
     failureFlash:       true,
     badRequestMessage:  'Hiányzó adatok'
-    //validationErrors:  'pasztmek'
+
 }));
 
 app.get('/login', function (req, res) {
@@ -230,7 +250,7 @@ app.post('/login', passport.authenticate('login', {
 }));
 
 
-app.get('/logout', function(req, res) {
+app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
 });
@@ -570,26 +590,26 @@ function chatMessages(obj) {
 //***** server start **********
 //*****************************
 
-// http.listen(port, function () {
-//     console.log('Server is started, listening on port:', port);
-// });
+http.listen(port, function () {
+    console.log('Server is started, listening on port:', port);
+});
 
 // **** ORM instance ****
-var orm = new Waterline();
-orm.loadCollection(Waterline.Collection.extend(userCollection));
+// var orm = new Waterline();
+// orm.loadCollection(Waterline.Collection.extend(userCollection));
 
-orm.initialize(waterlineConfig, function (err, models) {
-    if (err) {
-        throw err;
-    }
+// orm.initialize(waterlineConfig, function (err, models) {
+//     if (err) {
+//         throw err;
+//     }
 
-    app.models = models.collections;
-    app.connections = models.connections;
+//     app.models = models.collections;
+//     app.connections = models.connections;
 
-    // Start Server
-    app.listen(port, function () {
-        console.log('Server is started, listening on port:' + port);
-    });
+//     // Start Server
+//     app.listen(port, function () {
+//         console.log('Server is started, listening on port:' + port);
+//     });
 
-    console.log("ORM is started.");
-});
+//     console.log("ORM is started.");
+// });
