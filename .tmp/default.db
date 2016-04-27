@@ -1,37 +1,6 @@
 {
   "data": {
-    "user": [
-      {
-        "username": "asd",
-        "email": "asd@asd.hu",
-        "password": "asd",
-        "passwordagain": "asd",
-        "date": "2016-04-27T21:00:44.793Z",
-        "createdAt": "2016-04-27T21:00:44.798Z",
-        "updatedAt": "2016-04-27T21:00:44.798Z",
-        "id": 1
-      },
-      {
-        "username": "qwe",
-        "email": "qwe@qwe.hu",
-        "password": "$2a$10$I7/kEeRBy.NTjg0UFgquEeLucXhjfGzcUnTiNI6aSq4IGhCU8Rkge",
-        "passwordagain": "qwe",
-        "date": "2016-04-27T21:04:26.180Z",
-        "createdAt": "2016-04-27T21:04:26.617Z",
-        "updatedAt": "2016-04-27T21:04:26.617Z",
-        "id": 2
-      },
-      {
-        "username": "eee",
-        "email": "asd@asd.hu",
-        "password": "$2a$10$nNzofDvMeHb7EUGFJ7kPPeDcFgg7PYbUEMrqPuBUk0yiL2.dkUUga",
-        "passwordagain": "eee",
-        "date": "2016-04-27T21:11:56.882Z",
-        "createdAt": "2016-04-27T21:11:59.072Z",
-        "updatedAt": "2016-04-27T21:11:59.072Z",
-        "id": 3
-      }
-    ]
+    "user": []
   },
   "schema": {
     "user": {
@@ -60,8 +29,6 @@
     }
   },
   "counters": {
-    "user": {
-      "id": 3
-    }
+    "user": {}
   }
 }
