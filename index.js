@@ -4,63 +4,11 @@ var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var session = require('express-session');
 var flash = require('connect-flash');
-var Waterline = require('waterline');
-var waterlineConfig = require('./configs/waterline');
+
 var userCollection = require('./models/user.js');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
 
-//passport
-passport.serializeUser(function (user, done) {
-    done(null, user);
-});
-
-passport.deserializeUser(function (obj, done) {
-    done(null, obj);
-});
-
-// Local Strategy for sign-up
-passport.use('local-signup', new LocalStrategy({
-        usernameField: 'username',
-        passwordField: 'password',
-        passReqToCallback: true
-    },
-    function(req, username, password, done) {
-        req.app.models.user.findOne({ username: username }, function(err, user) {
-            if (err) { return done(err); }
-            if (user) {
-                return done(null, false, { message: 'Létezõ username.' });
-            }
-            req.app.models.user.create(req.body)
-                .then(function (user) {
-                    return done(null, user);
-                })
-                .catch(function (err) {
-                    return done(null, false, { message: err.details });
-                })
-        });
-    }
-));
-
-// strategy for log-in
-passport.use('local', new LocalStrategy({
-        usernameField: 'username',
-        passwordField: 'password',
-        passReqToCallback: true
-    },
-    function(req, neptun, password, done) {
-        req.app.models.user.findOne({ username: username }, function(err, user) {
-            if (err) { return done(err); }
-            if (!user || !user.validPassword(password)) {
-                return done(null, false, { message: 'Helytelen adatok.' });
-            }
-            return done(null, user);
-        });
-    }
-));
-
-
-
+// var passport = require('passport');
+// var LocalStrategy = require('passport-local').Strategy;
 
 
 
@@ -102,6 +50,15 @@ app.use(session({
 }));
 app.use(flash());
 
+
+//app.use(function() {
+//    return function (req, res, next) {
+//        res.locals.loggedIn = req.isAuthenticated();
+//        res.locals.user = req.user;
+//        next();
+//    }
+//});
+
 app.set('views', './views');
 app.set('view engine', 'hbs');
 
@@ -116,7 +73,7 @@ app.get('/game', function (req, res) {
 app.get('/registration', function (req, res) {
     //res.sendFile(__dirname + '/public/html/registration.html') ;
     var validationErrors = (req.flash('validationErrors') || [{}]).pop();
-    var data = (req.flash('data') || [{}]).pop(); //req.flash() tömböt ad vissza
+    var data = (req.flash('data') || [{}]).pop(); //req.flash() tï¿½mbï¿½t ad vissza
 
     res.render('registration', {
         validationErrors: validationErrors,
@@ -186,13 +143,14 @@ app.post('/registration', function (req, res) {
     }
 });
 
+
 app.get('/login', function (req, res) {
     //res.sendFile(__dirname + '/public/html/login.html') ;
     res.render('login');
 });
 app.post('/login', function (req, res) {
     console.log(req);
-    res.sendFile('/');
+    res.render('/');
 });
 //*** end points end ***
 
@@ -529,26 +487,26 @@ function chatMessages(obj) {
 //***** server start **********
 //*****************************
 
-//http.listen(port, function () {
-//    console.log('Server is started, listening on port:', port);
-//});
+http.listen(port, function () {
+    console.log('Server is started, listening on port:', port);
+});
 
 // **** ORM instance ****
-var orm = new Waterline();
-orm.loadCollection(Waterline.Collection.extend(userCollection));
-
-orm.initialize(waterlineConfig, function (err, models) {
-    if (err) {
-        throw err;
-    }
-
-    app.models = models.collections;
-    app.connections = models.connections;
-
-    // Start Server
-    app.listen(port, function () {
-        console.log('Server is started, listening on port:' + port);
-    });
-
-    console.log("ORM is started.");
-});
+//var orm = new Waterline();
+//orm.loadCollection(Waterline.Collection.extend(userCollection));
+//
+//orm.initialize(waterlineConfig, function (err, models) {
+//    if (err) {
+//        throw err;
+//    }
+//
+//    app.models = models.collections;
+//    app.connections = models.connections;
+//
+//    // Start Server
+//    app.listen(port, function () {
+//        console.log('Server is started, listening on port:' + port);
+//    });
+//
+//    console.log("ORM is started.");
+//});
