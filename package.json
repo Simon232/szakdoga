@@ -11,7 +11,12 @@
     "git": "^0.1.5",
     "handlebars": "^4.0.5",
     "hbs": "^4.0.0",
-    "socket.io": "^1.4.5"
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "sails-disk": "^0.10.9",
+    "sails-memory": "^0.10.6",
+    "socket.io": "^1.4.5",
+    "waterline": "^0.12.1"
   },
   "main": "index.js",
   "devDependencies": {},

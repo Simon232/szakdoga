@@ -1,17 +1,82 @@
+//*** front-end's stuffs start ***
 var express = require('express');
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var session = require('express-session');
 var flash = require('connect-flash');
+var Waterline = require('waterline');
+var waterlineConfig = require('./configs/waterline');
+var userCollection = require('./models/user.js');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
+//passport
+passport.serializeUser(function (user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function (obj, done) {
+    done(null, obj);
+});
+
+// Local Strategy for sign-up
+passport.use('local-signup', new LocalStrategy({
+        usernameField: 'username',
+        passwordField: 'password',
+        passReqToCallback: true
+    },
+    function(req, username, password, done) {
+        req.app.models.user.findOne({ username: username }, function(err, user) {
+            if (err) { return done(err); }
+            if (user) {
+                return done(null, false, { message: 'Létezõ username.' });
+            }
+            req.app.models.user.create(req.body)
+                .then(function (user) {
+                    return done(null, user);
+                })
+                .catch(function (err) {
+                    return done(null, false, { message: err.details });
+                })
+        });
+    }
+));
+
+// strategy for log-in
+passport.use('local', new LocalStrategy({
+        usernameField: 'username',
+        passwordField: 'password',
+        passReqToCallback: true
+    },
+    function(req, neptun, password, done) {
+        req.app.models.user.findOne({ username: username }, function(err, user) {
+            if (err) { return done(err); }
+            if (!user || !user.validPassword(password)) {
+                return done(null, false, { message: 'Helytelen adatok.' });
+            }
+            return done(null, user);
+        });
+    }
+));
+
+
+
+
+
+
+
+//*** front-end's stuffs end ***
+
+
+//*** server's stuffs start ***
 var router = express.Router();
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
+//*** server's stuffs end ***
 
-var registerUsers = [];
-
+//*** game logic's stuffs start ***
 var joinedUsers = 0;
 var roomManager = {};
 var roomSize = -1;
@@ -23,7 +88,9 @@ var trapPositions = {};
 var coinNumber = 10;
 var trapNumber = 4;
 var cubeHalf = 0.49;
+//*** game logic's stuffs end ***
 
+//** endpoints start
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(expressValidator());
@@ -127,6 +194,8 @@ app.post('/login', function (req, res) {
     console.log(req);
     res.sendFile('/');
 });
+//*** end points end ***
+
 
 /* codes for me, to better understanding:
  *
@@ -460,6 +529,26 @@ function chatMessages(obj) {
 //***** server start **********
 //*****************************
 
-http.listen(port, function () {
-    console.log('Server is started, listening on port:', port);
+//http.listen(port, function () {
+//    console.log('Server is started, listening on port:', port);
+//});
+
+// **** ORM instance ****
+var orm = new Waterline();
+orm.loadCollection(Waterline.Collection.extend(userCollection));
+
+orm.initialize(waterlineConfig, function (err, models) {
+    if (err) {
+        throw err;
+    }
+
+    app.models = models.collections;
+    app.connections = models.connections;
+
+    // Start Server
+    app.listen(port, function () {
+        console.log('Server is started, listening on port:' + port);
+    });
+
+    console.log("ORM is started.");
 });
