@@ -228,6 +228,13 @@ app.post('/login', passport.authenticate('login', {
     failureFlash: true,
     badRequestMessage: 'Hiányzó adatok'
 }));
+
+
+app.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
+});
+
 //*** end points end ***
 
 
