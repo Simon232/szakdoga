@@ -32,7 +32,11 @@ passport.use('registration', new LocalStrategy({
                 return done(err);
             }
             if (user) {
+<<<<<<< HEAD
                 return done(null, false, {message: 'LÃ©tezÅ‘ username.'});
+=======
+                return done(null, false, {message: 'Létezõ username.'});
+>>>>>>> 97b55fb17cdcdbe5b4b0f06484de8be33036616d
             }
             req.app.models.user.create(req.body)
                 .then(function (user) {
@@ -105,7 +109,11 @@ app.use(flash());
 //Passport middlewares
 app.use(passport.initialize());
 
+<<<<<<< HEAD
 //Session esetÃ©n (opcionÃ¡lis)
+=======
+//Session esetén (opcionális)
+>>>>>>> 97b55fb17cdcdbe5b4b0f06484de8be33036616d
 app.use(passport.session());
 
 app.use(function (req, res, next) {
@@ -210,7 +218,11 @@ app.post('/registration', passport.authenticate('registration', {
     successRedirect:    '/',
     failureRedirect:    '/registration',
     failureFlash:       true,
+<<<<<<< HEAD
     badRequestMessage:  'HiÃ¡nyzÃ³ adatok'
+=======
+    badRequestMessage:  'Hiányzó adatok'
+>>>>>>> 97b55fb17cdcdbe5b4b0f06484de8be33036616d
     //validationErrors:  'pasztmek'
 }));
 
@@ -226,7 +238,11 @@ app.post('/login', passport.authenticate('login', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true,
+<<<<<<< HEAD
     badRequestMessage: 'HiÃ¡nyzÃ³ adatok'
+=======
+    badRequestMessage: 'Hiányzó adatok'
+>>>>>>> 97b55fb17cdcdbe5b4b0f06484de8be33036616d
 }));
 //*** end points end ***
 

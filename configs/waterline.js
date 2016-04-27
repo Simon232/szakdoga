@@ -9,7 +9,7 @@ module.exports = {
     },
     connections: {
         default: {
-            adapter: 'disk',
+            adapter: 'disk'
         },
         memory: {
             adapter: 'memory'

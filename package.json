@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "my first socket.io app",
   "dependencies": {
+    "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.0",
     "connect-flash": "^0.1.1",
     "express": "^4.10.2",

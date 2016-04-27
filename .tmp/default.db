@@ -6,10 +6,27 @@
         "email": "asd@asd.hu",
         "password": "asd",
         "passwordagain": "asd",
+<<<<<<< HEAD
         "date": "2016-04-27T20:48:24.899Z",
         "createdAt": "2016-04-27T20:48:24.908Z",
         "updatedAt": "2016-04-27T20:48:24.908Z",
         "id": 1
+=======
+        "date": "2016-04-27T21:00:44.793Z",
+        "createdAt": "2016-04-27T21:00:44.798Z",
+        "updatedAt": "2016-04-27T21:00:44.798Z",
+        "id": 1
+      },
+      {
+        "username": "qwe",
+        "email": "qwe@qwe.hu",
+        "password": "$2a$10$I7/kEeRBy.NTjg0UFgquEeLucXhjfGzcUnTiNI6aSq4IGhCU8Rkge",
+        "passwordagain": "qwe",
+        "date": "2016-04-27T21:04:26.180Z",
+        "createdAt": "2016-04-27T21:04:26.617Z",
+        "updatedAt": "2016-04-27T21:04:26.617Z",
+        "id": 2
+>>>>>>> 97b55fb17cdcdbe5b4b0f06484de8be33036616d
       }
     ]
   },
@@ -41,7 +58,11 @@
   },
   "counters": {
     "user": {
+<<<<<<< HEAD
       "id": 1
+=======
+      "id": 2
+>>>>>>> 97b55fb17cdcdbe5b4b0f06484de8be33036616d
     }
   }
 }
