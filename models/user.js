@@ -4,14 +4,15 @@ module.exports = {
     attributes: {
         username: {
             type: 'string',
+            unique: true,
             required: true
         },
-        friendlist: {
-            type: [],
-            required: false
-        },
+        // friendlist: {
+        //     type: "[]",
+        //     required: false
+        // },
         highscore: {
-            type: 'int',
+            type: 'number',
             required: false
         },
         date: {
