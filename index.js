@@ -1,17 +1,82 @@
+//*** front-end's stuffs start ***
 var express = require('express');
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var session = require('express-session');
 var flash = require('connect-flash');
+var Waterline = require('waterline');
+var waterlineConfig = require('./configs/waterline');
+var userCollection = require('./models/user.js');
 
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+//passport
+passport.serializeUser(function (user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function (obj, done) {
+    done(null, obj);
+});
+
+// Local Strategy for sign-up
+passport.use('registration', new LocalStrategy({
+        usernameField: 'username',
+        passwordField: 'password',
+        passReqToCallback: true
+    },
+    function (req, username, password, done) {
+        req.app.models.user.findOne({username: username}, function (err, user) {
+            if (err) {
+                return done(err);
+            }
+            if (user) {
+                return done(null, false, {message: 'Létezõ username.'});
+            }
+            req.app.models.user.create(req.body)
+                .then(function (user) {
+                    return done(null, user);
+                })
+                .catch(function (err) {
+                    return done(null, false, {message: err.details});
+                })
+        });
+    }
+));
+
+// strategy for log-in
+passport.use('login', new LocalStrategy({
+        usernameField: 'username',
+        passwordField: 'password',
+        passReqToCallback: true
+    },
+    function (req, username, password, done) {
+        req.app.models.user.findOne({username: username}, function (err, user) {
+            if (err) {
+                return done(err);
+            }
+            if (!user || !user.validPassword(password)) {
+                return done(null, false, {message: 'Helytelen adatok.'});
+            }
+            return done(null, user);
+        });
+    }
+));
+
+
+//*** front-end's stuffs end ***
+
+
+//*** server's stuffs start ***
 var router = express.Router();
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
+//*** server's stuffs end ***
 
-var registerUsers = [];
-
+//*** game logic's stuffs start ***
 var joinedUsers = 0;
 var roomManager = {};
 var roomSize = -1;
@@ -23,7 +88,9 @@ var trapPositions = {};
 var coinNumber = 10;
 var trapNumber = 4;
 var cubeHalf = 0.49;
+//*** game logic's stuffs end ***
 
+//** endpoints start
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(expressValidator());
@@ -34,6 +101,26 @@ app.use(session({
     saveUninitialized: false
 }));
 app.use(flash());
+
+//Passport middlewares
+app.use(passport.initialize());
+
+//Session esetén (opcionális)
+app.use(passport.session());
+
+app.use(function (req, res, next) {
+    res.locals.loggedIn = req.isAuthenticated();
+    res.locals.user = req.user;
+    next();
+});
+
+//app.use(function() {
+//    return function (req, res, next) {
+//        res.locals.loggedIn = req.isAuthenticated();
+//        res.locals.user = req.user;
+//        next();
+//    }
+//});
 
 app.set('views', './views');
 app.set('view engine', 'hbs');
@@ -56,77 +143,93 @@ app.get('/registration', function (req, res) {
         data: data
     });
 });
-app.post('/registration', function (req, res) {
-    req.checkBody('username', 'Hibas felhasznalonev').notEmpty().withMessage('Kotelezo megadni!');
-    req.checkBody('email', ' Hibas email').notEmpty().withMessage('Kotelezo megadni!');
-    req.checkBody('password', ' Hibas jelszo').notEmpty().withMessage('Kotelezo megadni!');
-    req.checkBody('passwordagain', 'hibas jelszo').notEmpty().withMessage('Kotelezo megadni!');
-    var emailIsCorrect = validateEmail(req.checkBody('email').value);
-    var passwordsAreMatching = req.checkBody('password').value == req.checkBody('passwordagain').value;
+//app.post('/registration', function (req, res) {
+//    req.checkBody('username', 'Hibas felhasznalonev').notEmpty().withMessage('Kotelezo megadni!');
+//    req.checkBody('email', ' Hibas email').notEmpty().withMessage('Kotelezo megadni!');
+//    req.checkBody('password', ' Hibas jelszo').notEmpty().withMessage('Kotelezo megadni!');
+//    req.checkBody('passwordagain', 'hibas jelszo').notEmpty().withMessage('Kotelezo megadni!');
+//    var emailIsCorrect = validateEmail(req.checkBody('email').value);
+//    var passwordsAreMatching = req.checkBody('password').value == req.checkBody('passwordagain').value;
+//
+//    var validationErrors = (req.validationErrors(true));// || !emailIsCorrect || !passwordsAreMatching);
+//    console.log(validationErrors);
+//    console.log(req.body);
+//
+//    if (validationErrors) {
+//        console.log("hiba");
+//        req.flash('validationErrors', validationErrors);
+//        req.flash('data', req.body);
+//        res.redirect('/registration');
+//    } else {
+//        if (!emailIsCorrect || !passwordsAreMatching) {
+//            if (!emailIsCorrect) {
+//                req.flash('validationErrors', {
+//                    email: {
+//                        param: 'password',
+//                        msg: 'Az email cim nem megfelelo',
+//                        value: req.checkBody('password').value
+//                    }
+//                });
+//                req.flash('data', {
+//                    username: req.checkBody('username').value,
+//                    email: req.checkBody('email').value,
+//                    password: req.checkBody('password').value,
+//                    passwordagain: req.checkBody('passwordagain').value
+//                });
+//                res.redirect('registration');
+//            }
+//            if (!passwordsAreMatching) {
+//                req.flash('validationErrors', {
+//                    password: {
+//                        param: 'password',
+//                        msg: 'A jelszavak nem egyeznek',
+//                        value: req.checkBody('password').value
+//                    },
+//                    passwordagain: {
+//                        param: 'passwordagain',
+//                        msg: 'A jelszavak nem egyeznek',
+//                        value: req.checkBody('passwordagain').value
+//                    }
+//                });
+//                req.flash('data', {
+//                    username: req.checkBody('username').value,
+//                    email: req.checkBody('email').value,
+//                    password: req.checkBody('password').value,
+//                    passwordagain: req.checkBody('passwordagain').value
+//                });
+//                res.redirect('registration');
+//            }
+//        } else {
+//            console.log("nincs hiba");
+//            res.redirect('/');
+//        }
+//    }
+//});
 
-    var validationErrors = (req.validationErrors(true));// || !emailIsCorrect || !passwordsAreMatching);
-    console.log(validationErrors);
-    console.log(req.body);
-
-    if (validationErrors) {
-        console.log("hiba");
-        req.flash('validationErrors', validationErrors);
-        req.flash('data', req.body);
-        res.redirect('/registration');
-    } else {
-        if (!emailIsCorrect || !passwordsAreMatching) {
-            if (!emailIsCorrect) {
-                req.flash('validationErrors', {
-                    email: {
-                        param: 'password',
-                        msg: 'Az email cim nem megfelelo',
-                        value: req.checkBody('password').value
-                    }
-                });
-                req.flash('data', {
-                    username: req.checkBody('username').value,
-                    email: req.checkBody('email').value,
-                    password: req.checkBody('password').value,
-                    passwordagain: req.checkBody('passwordagain').value
-                });
-                res.redirect('registration');
-            }
-            if (!passwordsAreMatching) {
-                req.flash('validationErrors', {
-                    password: {
-                        param: 'password',
-                        msg: 'A jelszavak nem egyeznek',
-                        value: req.checkBody('password').value
-                    },
-                    passwordagain: {
-                        param: 'passwordagain',
-                        msg: 'A jelszavak nem egyeznek',
-                        value: req.checkBody('passwordagain').value
-                    }
-                });
-                req.flash('data', {
-                    username: req.checkBody('username').value,
-                    email: req.checkBody('email').value,
-                    password: req.checkBody('password').value,
-                    passwordagain: req.checkBody('passwordagain').value
-                });
-                res.redirect('registration');
-            }
-        } else {
-            console.log("nincs hiba");
-            res.redirect('/');
-        }
-    }
-});
+app.post('/registration', passport.authenticate('registration', {
+    successRedirect:    '/',
+    failureRedirect:    '/registration',
+    failureFlash:       true,
+    badRequestMessage:  'Hiányzó adatok'
+    //validationErrors:  'pasztmek'
+}));
 
 app.get('/login', function (req, res) {
     //res.sendFile(__dirname + '/public/html/login.html') ;
     res.render('login');
 });
-app.post('/login', function (req, res) {
-    console.log(req);
-    res.render('index');
-});
+//app.post('/login', function (req, res) {
+//    console.log(req);
+//    res.render('index');
+//});
+app.post('/login', passport.authenticate('login', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true,
+    badRequestMessage: 'Hiányzó adatok'
+}));
+//*** end points end ***
+
 
 /* codes for me, to better understanding:
  *
@@ -460,6 +563,26 @@ function chatMessages(obj) {
 //***** server start **********
 //*****************************
 
-http.listen(port, function () {
-    console.log('Server is started, listening on port:', port);
+// http.listen(port, function () {
+//     console.log('Server is started, listening on port:', port);
+// });
+
+// **** ORM instance ****
+var orm = new Waterline();
+orm.loadCollection(Waterline.Collection.extend(userCollection));
+
+orm.initialize(waterlineConfig, function (err, models) {
+    if (err) {
+        throw err;
+    }
+
+    app.models = models.collections;
+    app.connections = models.connections;
+
+    // Start Server
+    app.listen(port, function () {
+        console.log('Server is started, listening on port:' + port);
+    });
+
+    console.log("ORM is started.");
 });
