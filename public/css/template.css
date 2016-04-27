@@ -58,11 +58,11 @@ li {
 
 .other-player-joined {
     position: absolute;
-    top: 35px;
-    right: 20px;
+    top: 50px;
+    right: 0px;
     font-size: 30px;
     color: blue;
-    width: 310px;
+    width: 340px;
 
 }
 
@@ -84,11 +84,11 @@ li {
 
 .other-player-disconnected {
     position: absolute;
-    TOP: 35px;
-    right: 20px;
+    TOP: 50px;
+    right: 0px;
     font-size: 30px;
     color: green;
-    width: 310px;
+    width: 300px;
 }
 
 @keyframes fadein {
@@ -151,14 +151,14 @@ li {
 
 .points-container {
     position: absolute;
-    top: 50px;
+    top: 100px;
     color: rgba(255, 0, 0, 1);
     font-size: 30px;
     display: block;
 }
 .other-points-container {
     position: absolute;
-    top: 80px;
+    top: 130px;
     right: 20px;
     color: rgba(255, 0, 0, 1);
     font-size: 30px;
@@ -186,7 +186,7 @@ li {
     color: rgba(255, 0, 0, 1);
     font-size: 30px;
     display: inline-block;
-    width: 200px;
+    width: 220px;
 }
 
 .e-points {
@@ -217,7 +217,7 @@ li {
 }
 
 .again-container {
-    top: 20px;
+    top: 50px;
     z-index: 2;
     position: absolute;
 }

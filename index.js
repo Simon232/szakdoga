@@ -29,6 +29,15 @@ app.get('/registration', function(req, res){
     res.sendFile(__dirname + '/public/html/registration.html') ;
 });
 app.post('/registration', function(req, res){
+    console.log(req);
+    res.sendFile(__dirname + '/index.html') ;
+});
+
+app.get('/login', function(req, res){
+    res.sendFile(__dirname + '/public/html/login.html') ;
+});
+app.post('/login', function(req, res){
+    console.log(req);
     res.sendFile(__dirname + '/index.html') ;
 });
 

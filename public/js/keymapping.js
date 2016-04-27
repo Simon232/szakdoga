@@ -7,6 +7,13 @@ document.addEventListener('keyup', function (e) {
     keyPressed[e.keyCode] = false;
 }, false);
 
+window.addEventListener("keydown", function(e) {
+    // space and arrow keys
+    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        e.preventDefault();
+    }
+}, false);
+
 function gameLogic() {
 
     if (/*keyPressed[87] || */keyPressed[38]) { // W
@@ -167,30 +174,30 @@ function gameLogic() {
             changeScene();
         }
     }
-    if (keyPressed[27]) { // ESC
-        if (!pause) {
-            obj.camera.x = 0;
-            obj.camera.y = 4;
-            obj.camera.z = 6;
-
-            obj.socketCube.x = 0.0;
-            obj.socketCube.y = 0.5;
-            obj.socketCube.z = 1.0;
-            obj.rotY = 0.0;
-            cubes[thisSocket].rotation.y = 0.0;
-
-            socket.emit('move', {
-                sid: thisSocket,
-                pos: 0.0,
-                rotY: obj.socketCube.rotY,
-                room: thisRoom,
-                isReset: true
-            });
-
-            changeScene();
-        }
-
-    }
+    //if (keyPressed[27]) { // ESC
+    //    if (!pause) {
+    //        obj.camera.x = 0;
+    //        obj.camera.y = 4;
+    //        obj.camera.z = 6;
+    //
+    //        obj.socketCube.x = 0.0;
+    //        obj.socketCube.y = 0.5;
+    //        obj.socketCube.z = 1.0;
+    //        obj.rotY = 0.0;
+    //        cubes[thisSocket].rotation.y = 0.0;
+    //
+    //        socket.emit('move', {
+    //            sid: thisSocket,
+    //            pos: 0.0,
+    //            rotY: obj.socketCube.rotY,
+    //            room: thisRoom,
+    //            isReset: true
+    //        });
+    //
+    //        changeScene();
+    //    }
+    //
+    //}
     if (keyPressed[80]) {
         pause = !pause;
     } else {
