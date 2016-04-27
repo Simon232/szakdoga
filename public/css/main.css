@@ -45,6 +45,13 @@
     margin-top: 20px;
 }
 
+.main-text > .form-horizontal > fieldset >.form-group {
+    display: block;
+    width: 500px;
+    margin: auto;
+    margin-top: 10px;
+}
+
 .main-text > .form-horizontal > fieldset > .field-container {
     display: block;
     width: 500px;
@@ -52,27 +59,27 @@
     margin-top: 10px;
 }
 
-.main-text > .form-horizontal > fieldset > .field-container > .username {
+.main-text > .form-horizontal > fieldset > .username {
     display: inline-block;
     margin-right: 10px;
 }
 
-.main-text > .form-horizontal > fieldset > .field-container > .email {
+.main-text > .form-horizontal > fieldset > .email {
     display: inline-block;
     margin-right: 76px;
 }
 
-.main-text > .form-horizontal > fieldset > .field-container > .pwd {
+.main-text > .form-horizontal > fieldset >  .pwd {
     display: inline-block;
     margin-right: 74px;
 }
 
-.main-text > .form-horizontal > fieldset > .field-container > .pwda {
+.main-text > .form-horizontal > fieldset >  .pwda {
     display: inline-block;
     margin-right: 33px;
 }
 
-.main-text > .form-horizontal > fieldset > .field-container > .input-fields {
+.main-text > .form-horizontal > fieldset > .input-fields {
     display: inline-block;
     width: 300px;
 }

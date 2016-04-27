@@ -23,36 +23,47 @@
             <div class="form-group {{#if validationErrors.username}}
                     has-error
                 {{/if}}">
-
-                <div class="field-container">
-
-
                     <label class="username">Felhaszn&aacutel&oacuten&eacutev: </label>
                     <input class="form-control input-fields" id="username" name="username"
-                           placeholder="username, pl.: user" type="text"> <!--value="ertek"-->
-                    {{!--{{#if validationErrors.username}}--}}
-                        <span class="help-block">{{validationErrors.username}}</span>
-                    {{!--{{/if}}--}}
-                </div>
+                           placeholder="username, pl.: user" type="text" value="{{data.username}}">
+                    {{#if validationErrors.username}}
+                        <span class="help-block">{{validationErrors.username.msg}}</span>
+                    {{/if}}
             </div>
-            <div class="field-container">
+
+            <div class="form-group {{#if validationErrors.email}}
+                    has-error
+                {{/if}}">
                 <label class="email">E-mail: </label>
-                <input required class="form-control input-fields" id="email" name="email"
-                       placeholder="e-mail, pl.: user@gmail.com" type="text"
-                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"> <!--value="ertek"-->
+                <input class="form-control input-fields" id="email" name="email"
+                       placeholder="e-mail, pl.: user@gmail.com" type="email"
+                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" value="{{data.email}}">
+                {{#if validationErrors.email}}
+                    <span class="help-block">{{validationErrors.email.msg}}</span>
+                {{/if}}
             </div>
-            <div class="field-container">
+            <div class="form-group {{#if validationErrors.password}}
+                    has-error
+                {{/if}}">
                 <label class="pwd">Jelsz&oacute: </label>
-                <input required class="form-control input-fields" id="password" name="password"
-                       placeholder="password, pl.: 1234" type="password"> <!--value="ertek"-->
+                <input class="form-control input-fields" id="password" name="password"
+                       placeholder="password, pl.: 1234" type="password" value="{{data.password}}">
+                {{#if validationErrors.password}}
+                    <span class="help-block">{{validationErrors.password.msg}}</span>
+                {{/if}}
             </div>
-            <div class="field-container">
+            <div class="form-group {{#if validationErrors.passwordagain}}
+                    has-error
+                {{/if}}">
                 <label class="pwda">Jelsz&oacute ism&eacutet: </label>
-                <input required class="form-control input-fields" id="passwordagain" name="passwordagain"
-                       placeholder="password, pl.: 1234" type="password"> <!--value="ertek"-->
+                <input class="form-control input-fields" id="passwordagain" name="passwordagain"
+                       placeholder="password, pl.: 1234" type="password" value="{{data.passwordagain}}"> <!--value="ertek"-->
+                {{#if validationErrors.passwordagain}}
+                    <span class="help-block">{{validationErrors.passwordagain.msg}}</span>
+                {{/if}}
             </div>
             <div class="button-container">
-                <button type="reset" class="btn btn-default">Mez&otildek t&oumlrl&eacutese</button>
+                <button type="reset" class="btn btn-default" >Mez&otildek t&oumlrl&eacutese</button>
                 <button type="submit" class="btn btn-primary">Regisztr&aacutelok</button>
             </div>
         </fieldset>

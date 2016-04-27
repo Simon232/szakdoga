@@ -25,10 +25,10 @@ var trapNumber = 4;
 var cubeHalf = 0.49;
 
 app.use(express.static('public'));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(expressValidator());
 app.use(session({
-    cookie: { maxAge: 60000 },
+    cookie: {maxAge: 60000},
     secret: 'titkos szoveg',
     resave: false,
     saveUninitialized: false
@@ -46,38 +46,86 @@ app.get('/game', function (req, res) {
     //res.sendFile(__dirname + '/public/html/game.html');
     res.render('game');
 });
-app.get('/registration', function(req, res){
+app.get('/registration', function (req, res) {
     //res.sendFile(__dirname + '/public/html/registration.html') ;
-    res.render('registration');
+    var validationErrors = (req.flash('validationErrors') || [{}]).pop();
+    var data = (req.flash('data') || [{}]).pop(); //req.flash() tömböt ad vissza
+
+    res.render('registration', {
+        validationErrors: validationErrors,
+        data: data
+    });
 });
-app.post('/registration', function(req, res){
-    req.checkBody('username', 'Hibás felhasznalonev').notEmpty().withMessage('Kötelezõ megadni!');
-    req.checkBody('email').notEmpty().withMessage("Kötelezõ megadni!!");
-    req.checkBody('password').notEmpty().withMessage("Kötelezõ megadni!!");
-    req.checkBody('passwordagain').notEmpty().withMessage("Kötelezõ megadni!!");
+app.post('/registration', function (req, res) {
+    req.checkBody('username', 'Hibas felhasznalonev').notEmpty().withMessage('Kotelezo megadni!');
+    req.checkBody('email', ' Hibas email').notEmpty().withMessage('Kotelezo megadni!');
+    req.checkBody('password', ' Hibas jelszo').notEmpty().withMessage('Kotelezo megadni!');
+    req.checkBody('passwordagain', 'hibas jelszo').notEmpty().withMessage('Kotelezo megadni!');
     var emailIsCorrect = validateEmail(req.checkBody('email').value);
     var passwordsAreMatching = req.checkBody('password').value == req.checkBody('passwordagain').value;
 
     var validationErrors = (req.validationErrors(true));// || !emailIsCorrect || !passwordsAreMatching);
-    console.log("."+validationErrors);
-    if(validationErrors){
+    console.log(validationErrors);
+    console.log(req.body);
+
+    if (validationErrors) {
         console.log("hiba");
         req.flash('validationErrors', validationErrors);
         req.flash('data', req.body);
         res.redirect('/registration');
-    }else{
-        console.log("nincs hiba");
-        res.redirect('/');
+    } else {
+        if (!emailIsCorrect || !passwordsAreMatching) {
+            if (!emailIsCorrect) {
+                req.flash('validationErrors', {
+                    email: {
+                        param: 'password',
+                        msg: 'Az email cim nem megfelelo',
+                        value: req.checkBody('password').value
+                    }
+                });
+                req.flash('data', {
+                    username: req.checkBody('username').value,
+                    email: req.checkBody('email').value,
+                    password: req.checkBody('password').value,
+                    passwordagain: req.checkBody('passwordagain').value
+                });
+                res.redirect('registration');
+            }
+            if (!passwordsAreMatching) {
+                req.flash('validationErrors', {
+                    password: {
+                        param: 'password',
+                        msg: 'A jelszavak nem egyeznek',
+                        value: req.checkBody('password').value
+                    },
+                    passwordagain: {
+                        param: 'passwordagain',
+                        msg: 'A jelszavak nem egyeznek',
+                        value: req.checkBody('passwordagain').value
+                    }
+                });
+                req.flash('data', {
+                    username: req.checkBody('username').value,
+                    email: req.checkBody('email').value,
+                    password: req.checkBody('password').value,
+                    passwordagain: req.checkBody('passwordagain').value
+                });
+                res.redirect('registration');
+            }
+        } else {
+            console.log("nincs hiba");
+            res.redirect('/');
+        }
     }
 });
 
-app.get('/login', function(req, res){
+app.get('/login', function (req, res) {
     //res.sendFile(__dirname + '/public/html/login.html') ;
     res.render('login');
 });
-app.post('/login', function(req, res){
+app.post('/login', function (req, res) {
     console.log(req);
-    res.sendFile('/') ;
+    res.sendFile('/');
 });
 
 /* codes for me, to better understanding:
@@ -118,7 +166,7 @@ io.on('connection', function (socket) {
 
     socket.on("giveNewCoin", giveNewCoin.bind(socket));
 
-    socket.on("getDamage", function(obj){
+    socket.on("getDamage", function (obj) {
         socket.to(obj.room).broadcast.emit("getDamage", obj);
     });
 
@@ -144,7 +192,7 @@ function addPlayerToRoom(room, player) {
     }
 }
 
-function addRoom(){
+function addRoom() {
     return {
         id: roomSize,
         name: 'room#' + roomSize,
@@ -181,7 +229,7 @@ function getEnemyPlayerName(playerName, playerRoom) {
     return enemyName;
 }
 
-function generateNewCoinPositions(room){
+function generateNewCoinPositions(room) {
     coinPositions[room] = [];
     var positions = [];
     for (var i = 0; i < coinNumber; i++) {
@@ -192,7 +240,7 @@ function generateNewCoinPositions(room){
     coinPositions[room] = positions;
 }
 
-function generateNewTrapPositions(room){
+function generateNewTrapPositions(room) {
     trapPositions[room] = [];
     var positions = [];
     for (var i = 0; i < trapNumber; i++) {
@@ -238,19 +286,19 @@ function init(socket) {
 
             var goodId = 0;
             for (var room in roomManager) {
-                if(roomManager[room].id == goodId){
+                if (roomManager[room].id == goodId) {
                     ++goodId;
-                }else{
+                } else {
                     var newIdIsGood = true;
-                    for(var subroom in roomManager){
-                        if(roomManager[subroom].id == goodId){
+                    for (var subroom in roomManager) {
+                        if (roomManager[subroom].id == goodId) {
                             newIdIsGood = false;
                         }
                     }
-                    if(newIdIsGood) {
+                    if (newIdIsGood) {
                         roomSize = goodId;
                         break; //break the cycle
-                    }else{
+                    } else {
                         ++goodId;
                     }
                 }
@@ -281,10 +329,17 @@ function init(socket) {
         generateNewTrapPositions(emptyRoom);
 
         console.log("DEBUG " + coinPositions[socket.room].length);
-        io.to(socket.room).emit("objectPositions", { coinPositions: coinPositions[socket.room], trapPositions: trapPositions[socket.room]});
+        io.to(socket.room).emit("objectPositions", {
+            coinPositions: coinPositions[socket.room],
+            trapPositions: trapPositions[socket.room]
+        });
 
     }
-    io.to(socket.room).emit('new', {sid: socket.id, room: socket.room, positions: {x: getRandomPosition(), z: getRandomPosition()}});
+    io.to(socket.room).emit('new', {
+        sid: socket.id,
+        room: socket.room,
+        positions: {x: getRandomPosition(), z: getRandomPosition()}
+    });
     io.to(socket.room).emit("old messages", {sid: socket.id, historyMessage: roomMessages[socket.room]});
     //socket.emit("joined");
 
@@ -299,7 +354,7 @@ function onJoined(obj) {
     this.to(this.room).broadcast.emit("joined");
 }
 
-function onLeave(){
+function onLeave() {
     if (joinedUsers % 2 != 0) {
         --roomSize;
     }
@@ -336,12 +391,12 @@ function onLeave(){
 function getRandomPosition() {
     var pos = 0;
     while (pos <= 1 && pos >= -1) {
-        pos = Math.floor(Math.random() * 2) % 2 == 0 ? Math.random() * ((gameWidth / 2) - cubeHalf -6) : -1 * Math.random() * ((gameWidth / 2) - cubeHalf - 2);
+        pos = Math.floor(Math.random() * 2) % 2 == 0 ? Math.random() * ((gameWidth / 2) - cubeHalf - 6) : -1 * Math.random() * ((gameWidth / 2) - cubeHalf - 2);
     }
     return pos;
 }
 
-function giveNewCoin(obj){
+function giveNewCoin(obj) {
     coinPositions[this.room].splice(obj.index, 1);
     var x = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
     var z = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
@@ -355,20 +410,20 @@ function giveNewCoin(obj){
     });
 }
 
-function readyAgain(obj){
-    for(var room in roomManager){
-        if(roomManager[room].name == obj.room){
-            if(roomManager[room].player1 == obj.sid){
-                if(!roomManager[room].ready.p1){
+function readyAgain(obj) {
+    for (var room in roomManager) {
+        if (roomManager[room].name == obj.room) {
+            if (roomManager[room].player1 == obj.sid) {
+                if (!roomManager[room].ready.p1) {
                     roomManager[room].ready.p1 = true;
                 }
             }
-            if(roomManager[room].player2 == obj.sid){
-                if(!roomManager[room].ready.p2){
+            if (roomManager[room].player2 == obj.sid) {
+                if (!roomManager[room].ready.p2) {
                     roomManager[room].ready.p2 = true;
                 }
             }
-            if(roomManager[room].ready.p1 && roomManager[room].ready.p2){
+            if (roomManager[room].ready.p1 && roomManager[room].ready.p2) {
                 io.to(obj.room).emit("readyAgain");
                 coinPositions[this.room] = [];
                 trapPositions[this.room] = [];
@@ -376,8 +431,14 @@ function readyAgain(obj){
                 generateNewCoinPositions(this.room);
                 generateNewTrapPositions(this.room);
 
-                io.to(this.room).emit("objectPositions", { coinPositions: coinPositions[this.room], trapPositions: trapPositions[this.room]});
-                io.to(this.room).emit("objectPositions", { coinPositions: coinPositions[this.room], trapPositions: trapPositions[this.room]});
+                io.to(this.room).emit("objectPositions", {
+                    coinPositions: coinPositions[this.room],
+                    trapPositions: trapPositions[this.room]
+                });
+                io.to(this.room).emit("objectPositions", {
+                    coinPositions: coinPositions[this.room],
+                    trapPositions: trapPositions[this.room]
+                });
 
                 roomManager[room].ready.p1 = false;
                 roomManager[room].ready.p2 = false;
@@ -386,7 +447,7 @@ function readyAgain(obj){
     }
 }
 
-function chatMessages(obj){
+function chatMessages(obj) {
     if (roomMessages[obj.room].length == 5) {
         roomMessages[obj.room].shift();
     }
