@@ -47,7 +47,11 @@ passport.use('registration', new LocalStrategy({
                 return done(err);
             }
             if (user) {
+<<<<<<< HEAD
                 return done(null, false, {message: 'Létező username.'});
+=======
+                return done(null, false, {message: 'Letezo username.'});
+>>>>>>> 3a1233aa692f9f0d630a22a13f412d73cf821fd9
             }
             req.app.models.user.create(req.body)
                 .then(function (user) {
@@ -154,8 +158,11 @@ app.get('/registration', function (req, res) {
     //var validationErrors = (req.flash('validationErrors') || [{}]).pop();
     //var data = (req.flash('data') || [{}]).pop(); //req.flash() t�mb�t ad vissza
     //console.log(req.flash('error'));
+<<<<<<< HEAD
     console.log(req);
 
+=======
+>>>>>>> 3a1233aa692f9f0d630a22a13f412d73cf821fd9
     res.render('registration', {
         //validationErrors: validationErrors,
         validationErrors: req.flash('error')
@@ -590,9 +597,15 @@ function chatMessages(obj) {
 //***** server start **********
 //*****************************
 
+<<<<<<< HEAD
 http.listen(port, function () {
     console.log('Server is started, listening on port:', port);
 });
+=======
+ //http.listen(port, function () {
+ //    console.log('Server is started, listening on port:', port);
+ //});
+>>>>>>> 3a1233aa692f9f0d630a22a13f412d73cf821fd9
 
 // **** ORM instance ****
 // var orm = new Waterline();
@@ -606,10 +619,17 @@ http.listen(port, function () {
 //     app.models = models.collections;
 //     app.connections = models.connections;
 
+<<<<<<< HEAD
 //     // Start Server
 //     app.listen(port, function () {
 //         console.log('Server is started, listening on port:' + port);
 //     });
+=======
+    // Start Server
+    http.listen(port, function () {
+        console.log('Server is started, listening on port:' + port);
+    });
+>>>>>>> 3a1233aa692f9f0d630a22a13f412d73cf821fd9
 
 //     console.log("ORM is started.");
 // });

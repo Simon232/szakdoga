@@ -11,6 +11,10 @@
     display: block;
     margin: auto;
 }
+.menu-container > .container > .hello{
+    font-size: 18px;
+    color: #bfbfbf;
+}
 
 .menu-container > .container > .title {
     color: #800000;
