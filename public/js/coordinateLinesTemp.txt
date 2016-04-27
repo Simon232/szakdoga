@@ -11,3 +11,9 @@
     //scene.add(x_line); //piros
     //scene.add(y_line); //zold
     //scene.add(z_line); //kek
+
+  á = &aacute
+  é = &eacute
+  ó = &oacute
+  õ = &otilde
+  ö = &ouml

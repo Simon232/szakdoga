@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "description": "my first socket.io app",
   "dependencies": {
+    "body-parser": "^1.15.0",
+    "connect-flash": "^0.1.1",
     "express": "^4.10.2",
+    "express-session": "^1.13.0",
+    "express-validator": "^2.20.3",
     "git": "^0.1.5",
     "handlebars": "^4.0.5",
     "hbs": "^4.0.0",

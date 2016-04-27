@@ -1,0 +1,106 @@
+<div class="menu-container navbar-dark">
+    <div class="container">
+        <div class="navbar-brand title">Szakdolgozat</div>
+        <ul class="nav navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="/">Főoldal</a></li>
+            <li class="nav-item"><a class="nav-link" href="./registration">Regisztráció</a></li>
+            <li class="nav-item "><a class="nav-link" href="./login">Bejelentkezés</a></li>
+            <li class="nav-item active"><a class="nav-link" href="./game">Játék</a></li>
+        </ul>
+    </div>
+</div>
+
+
+<div class=on-the-top>
+    <img class="on-the-top-img" src="pics/nyilak.png">
+    <br>
+    <!--ESC - alaphelyzet<br>-->
+    <!--P - szünet<br>-->
+</div>
+<div class="on-the-top-right">
+    Szoba:
+</div>
+<div class="graphic-container">
+    <div class="other-player-joined">
+        <p>
+            Egy játékos csatlakozott!
+        </p>
+    </div>
+    <div class="other-player-disconnected">
+        <p>
+            Egy játékos kilépett!
+        </p>
+    </div>
+    <div class="timer-container">
+        <div class="time"></div>
+    </div>
+    <script src="js/three.min.js"></script>
+    <script src="js/detector.js"></script>
+    <script src="js/tween.js"></script>
+    <script src="js/trackball.js"></script>
+
+    <script src="js/keymapping.js"></script>
+    <script type="x-shader/x-vertex" id="vertexShader">
+        varying vec3 vWorldPosition;
+
+        void main(){
+
+        vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+        vWorldPosition = worldPosition.xyz;
+
+        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+        }
+
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragmentShader">
+
+			uniform vec3 topColor;
+			uniform vec3 bottomColor;
+			uniform float offset;
+			uniform float exponent;
+
+			varying vec3 vWorldPosition;
+
+			void main() {
+
+				float h = normalize( vWorldPosition + offset ).y;
+				gl_FragColor = vec4( mix( bottomColor, topColor, max( pow( max( h, 0.0 ), exponent ), 0.0 ) ), 1.0 );
+
+			}
+
+
+    </script>
+
+    <script src="js/program.js" class="center"></script>
+</div>
+
+<div class="again-container">
+    <div class="module">
+
+        <button class="module-button" onclick="again()">Újra</button>
+
+    </div>
+</div>
+
+
+<div class="points-container">
+    <div class="your-points">Pontjaid:</div>
+    <div class="points"></div>
+</div>
+<div class="other-points-container">
+    <div class="enemy-points">Ellenfél pontjai:</div>
+    <div class="e-points"></div>
+</div>
+
+<div id="chat" class="chat">
+    <ul id="messages" class="messages"></ul>
+    <form class="chat-form">
+        <input autocomplete="off" id="msg" type="text" name="message" class="message-in">
+        <button id="kuldes">Küldés</button>
+    </form>
+</div>
+
+<script src="/js/logic.js"></script>
+<script src='js/main.js'></script>

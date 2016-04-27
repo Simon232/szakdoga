@@ -1,9 +1,16 @@
 var express = require('express');
+var bodyParser = require('body-parser');
+var expressValidator = require('express-validator');
+var session = require('express-session');
+var flash = require('connect-flash');
+
 var router = express.Router();
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
+
+var registerUsers = [];
 
 var joinedUsers = 0;
 var roomManager = {};
@@ -18,27 +25,59 @@ var trapNumber = 4;
 var cubeHalf = 0.49;
 
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(expressValidator());
+app.use(session({
+    cookie: { maxAge: 60000 },
+    secret: 'titkos szoveg',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(flash());
+
+app.set('views', './views');
+app.set('view engine', 'hbs');
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
+    //res.sendFile(__dirname + '/index.html');
+    res.render('index');
 });
 app.get('/game', function (req, res) {
-    res.sendFile(__dirname + '/public/html/game.html');
+    //res.sendFile(__dirname + '/public/html/game.html');
+    res.render('game');
 });
 app.get('/registration', function(req, res){
-    res.sendFile(__dirname + '/public/html/registration.html') ;
+    //res.sendFile(__dirname + '/public/html/registration.html') ;
+    res.render('registration');
 });
 app.post('/registration', function(req, res){
-    console.log(req);
-    res.sendFile(__dirname + '/index.html') ;
+    req.checkBody('username', 'Hibás felhasznalonev').notEmpty().withMessage('Kötelezõ megadni!');
+    req.checkBody('email').notEmpty().withMessage("Kötelezõ megadni!!");
+    req.checkBody('password').notEmpty().withMessage("Kötelezõ megadni!!");
+    req.checkBody('passwordagain').notEmpty().withMessage("Kötelezõ megadni!!");
+    var emailIsCorrect = validateEmail(req.checkBody('email').value);
+    var passwordsAreMatching = req.checkBody('password').value == req.checkBody('passwordagain').value;
+
+    var validationErrors = (req.validationErrors(true));// || !emailIsCorrect || !passwordsAreMatching);
+    console.log("."+validationErrors);
+    if(validationErrors){
+        console.log("hiba");
+        req.flash('validationErrors', validationErrors);
+        req.flash('data', req.body);
+        res.redirect('/registration');
+    }else{
+        console.log("nincs hiba");
+        res.redirect('/');
+    }
 });
 
 app.get('/login', function(req, res){
-    res.sendFile(__dirname + '/public/html/login.html') ;
+    //res.sendFile(__dirname + '/public/html/login.html') ;
+    res.render('login');
 });
 app.post('/login', function(req, res){
     console.log(req);
-    res.sendFile(__dirname + '/index.html') ;
+    res.sendFile('/') ;
 });
 
 /* codes for me, to better understanding:
@@ -90,6 +129,11 @@ io.on('connection', function (socket) {
 //******************************
 //********** functions *********
 //******************************
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
 
 function addPlayerToRoom(room, player) {
     if (roomManager[room].player1 == '') {
