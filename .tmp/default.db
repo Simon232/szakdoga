@@ -20,6 +20,16 @@
         "createdAt": "2016-04-27T22:44:32.030Z",
         "updatedAt": "2016-04-27T22:44:32.030Z",
         "id": 2
+      },
+      {
+        "username": "w",
+        "email": "w@w.hu",
+        "password": "$2a$10$ItKlJHhSPYlzPz03c2VEo.WE4xYMrKeOYymOnCWD8.7n0EBb39DB2",
+        "highscore": 0,
+        "date": "2016-04-28T18:05:22.863Z",
+        "createdAt": "2016-04-28T18:05:25.346Z",
+        "updatedAt": "2016-04-28T18:05:25.346Z",
+        "id": 3
       }
     ]
   },
@@ -52,7 +62,7 @@
   },
   "counters": {
     "user": {
-      "id": 2
+      "id": 3
     }
   }
 }

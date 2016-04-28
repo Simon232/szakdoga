@@ -63,11 +63,15 @@ passport.use('updateUsersHighScore', new LocalStrategy({
         passReqToCallback: true
     },
     function (req, username, done) {
-        req.app.models.user.findOne({username:username})
-
-
-
-}));
+        req.app.models.user.findOne({username: username}, function (err, user, highscore) {
+            if (err) {
+                return done(err);
+            }
+            user.updateHighScore(highscore);
+            return done(null, user);
+        });
+    }
+));
 
 // strategy for log-in
 passport.use('login', new LocalStrategy({

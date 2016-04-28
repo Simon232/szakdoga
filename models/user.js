@@ -25,6 +25,11 @@ module.exports = {
         },
         validPassword: function (password) {
             return bcrypt.compareSync(password, this.password);
+        },
+        updateHighScore: function(newScore){
+            if(newScore > this.highscore.defaultsTo){
+                this.highscore.defaultsTo = newScore;
+            }
         }
     },
     beforeCreate: function(values, next) {
