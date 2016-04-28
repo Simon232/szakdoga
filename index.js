@@ -95,7 +95,7 @@ var gameWidth = 100;
 var coinPositions = {};
 var trapPositions = {};
 var coinNumber = 10;
-var trapNumber = 4;
+var trapNumber = 20;
 var cubeHalf = 0.49;
 //*** game logic's stuffs end ***
 

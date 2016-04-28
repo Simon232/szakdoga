@@ -217,9 +217,9 @@ li {
 }
 
 .again-container {
-    top: 50px;
-    z-index: 2;
     position: absolute;
+    z-index: 1;
+    top: 50px;
 }
 .module-button {
     background: rgba(0,255,0,0.1);
