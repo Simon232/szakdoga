@@ -12,7 +12,7 @@
     margin: auto;
 }
 .menu-container > .container > .hello{
-    font-size: 18px;
+    font-size: 14px;
     color: #bfbfbf;
 }
 
@@ -39,6 +39,13 @@
 .main-text {
     margin: 30px;
 }
+
+.main-text>.alert{
+    width: 500px;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
 
 .main-text > .reg-title {
     margin: auto;
@@ -92,4 +99,10 @@
     display: block;
     margin-top: 20px;
     text-align: center;
+}
+
+.need-log-in{
+    text-align: center;
+    margin-top: 20px;
+    font-size: 20px;
 }

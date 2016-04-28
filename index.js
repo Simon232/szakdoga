@@ -1,4 +1,3 @@
-
 var express = require('express');
 
 //*** server's stuffs start ***
@@ -15,8 +14,6 @@ var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var session = require('express-session');
 var flash = require('connect-flash');
-
-
 
 
 var Waterline = require('waterline');
@@ -49,7 +46,7 @@ passport.use('registration', new LocalStrategy({
             if (user) {
                 return done(null, false, {message: 'Letezo username.'});
             }
-            req.app.models.user.create(req.body)
+            req.app.models.user.create(req.body) //create new user
                 .then(function (user) {
                     return done(null, user);
                 })
@@ -59,6 +56,18 @@ passport.use('registration', new LocalStrategy({
         });
     }
 ));
+
+passport.use('updateUsersHighScore', new LocalStrategy({
+        usernameField: 'username',
+        highscoreField: 'highscore',
+        passReqToCallback: true
+    },
+    function (req, username, done) {
+        req.app.models.user.findOne({username:username})
+
+
+
+}));
 
 // strategy for log-in
 passport.use('login', new LocalStrategy({
@@ -83,8 +92,6 @@ passport.use('login', new LocalStrategy({
 //*** front-end's stuffs end ***
 
 
-
-
 //*** game logic's stuffs start ***
 var joinedUsers = 0;
 var roomManager = {};
@@ -95,7 +102,7 @@ var gameWidth = 100;
 var coinPositions = {};
 var trapPositions = {};
 var coinNumber = 10;
-var trapNumber = 4;
+var trapNumber = 20;
 var cubeHalf = 0.49;
 //*** game logic's stuffs end ***
 
@@ -137,13 +144,25 @@ app.set('view engine', 'hbs');
 
 app.get('/', function (req, res) {
     //res.sendFile(__dirname + '/index.html');
-    res.render('index');
+    res.render('index', {
+        //validationErrors: validationErrors,
+        validationSuccess: req.flash()
+        //data: data
+    });
 });
 app.get('/game', function (req, res) {
     //res.sendFile(__dirname + '/public/html/game.html');
     res.render('game');
 
 });
+
+app.get('/highscore', function(req, res){
+    //console.log(req.user);
+    res.render('highscore', {
+        highscore: req.user.highscore
+    });
+});
+
 app.get('/registration', function (req, res) {
     //res.sendFile(__dirname + '/public/html/registration.html') ;
     //var validationErrors = (req.flash('validationErrors') || [{}]).pop();
@@ -222,13 +241,18 @@ app.post('/registration', passport.authenticate('registration', {
     successRedirect: '/',
     failureRedirect: '/registration',
     failureFlash: true,
+    successFlash: 'Sikeres regisztracio!',
     badRequestMessage: 'Hianyzo adatok'
     //validationErrors:  'pasztmek'
 }));
 
 app.get('/login', function (req, res) {
     //res.sendFile(__dirname + '/public/html/login.html') ;
-    res.render('login');
+    res.render('login', {
+        //validationErrors: validationErrors,
+        validationErrors: req.flash('error')
+        //data: data
+    });
 });
 //app.post('/login', function (req, res) {
 //    console.log(req);
@@ -238,7 +262,8 @@ app.post('/login', passport.authenticate('login', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true,
-    badRequestMessage: 'Hiányzó adatok'
+    successFlash: 'Sikeres bejelentkezes!',
+    badRequestMessage: 'Hianyzo adatok'
 }));
 
 
@@ -557,10 +582,6 @@ function readyAgain(obj) {
                     coinPositions: coinPositions[this.room],
                     trapPositions: trapPositions[this.room]
                 });
-                io.to(this.room).emit("objectPositions", {
-                    coinPositions: coinPositions[this.room],
-                    trapPositions: trapPositions[this.room]
-                });
 
                 roomManager[room].ready.p1 = false;
                 roomManager[room].ready.p2 = false;
@@ -582,9 +603,9 @@ function chatMessages(obj) {
 //***** server start **********
 //*****************************
 
- //http.listen(port, function () {
- //    console.log('Server is started, listening on port:', port);
- //});
+//http.listen(port, function () {
+//    console.log('Server is started, listening on port:', port);
+//});
 
 // **** ORM instance ****
 var orm = new Waterline();

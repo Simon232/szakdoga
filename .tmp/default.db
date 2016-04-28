@@ -4,11 +4,11 @@
       {
         "username": "asd",
         "email": "asd@asd.hu",
-        "password": "$2a$10$.mxOEz6Aq5sdrLm3gdhvv.3b1.Q6NemzUWOYEszme63QWHxnKORtu",
-        "passwordagain": "asd",
-        "date": "2016-04-27T21:41:21.752Z",
-        "createdAt": "2016-04-27T21:41:22.195Z",
-        "updatedAt": "2016-04-27T21:41:22.195Z",
+        "password": "$2a$10$7oGHzdSmgaC3Q/ascL8I7.rVN6NliUngEqVV4gIO3EPGN7OCWDZTO",
+        "highscore": 0,
+        "date": "2016-04-28T17:04:37.423Z",
+        "createdAt": "2016-04-28T17:04:37.842Z",
+        "updatedAt": "2016-04-28T17:04:37.842Z",
         "id": 1
       },
       {
@@ -30,7 +30,8 @@
         "unique": true
       },
       "highscore": {
-        "type": "string"
+        "type": "integer",
+        "defaultsTo": 0
       },
       "date": {
         "type": "datetime"

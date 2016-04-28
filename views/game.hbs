@@ -10,45 +10,45 @@
                 <li class="nav-item"><a class="nav-link" href="./registration">Regisztr&aacuteci&oacute</a></li>
                 <li class="nav-item"><a class="nav-link" href="./login">Bejelentkez&eacutes</a></li>
             {{/if}}
-            <li class="nav-item"><a class="nav-link" href="./game">J&aacutet&eacutek</a></li>
+            <!--<li class="nav-item"><a class="nav-link" href="./game">J&aacutet&eacutek</a></li>-->
             {{#if loggedIn}}
+                <li class="nav-item"><a class="nav-link" href="./highscore">Eredm&eacutenyek</a></li>
                 <li class="nav-item"><a class="nav-link" href="./logout">Kijelentkez&eacutes</a></li>
             {{/if}}
         </ul>
     </div>
 </div>
-
-
-<div class=on-the-top>
-    <img class="on-the-top-img" src="pics/nyilak.png">
-    <br>
-    <!--ESC - alaphelyzet<br>-->
-    <!--P - szünet<br>-->
-</div>
-<div class="on-the-top-right">
-    Szoba:
-</div>
-<div class="graphic-container">
-    <div class="other-player-joined">
-        <p>
-            Egy játékos csatlakozott!
-        </p>
+{{#if loggedIn}}
+    <div class=on-the-top>
+        <img class="on-the-top-img" src="pics/nyilak.png">
+        <br>
+        <!--ESC - alaphelyzet<br>-->
+        <!--P - szünet<br>-->
     </div>
-    <div class="other-player-disconnected">
-        <p>
-            Egy játékos kilépett!
-        </p>
+    <div class="on-the-top-right">
+        Szoba:
     </div>
-    <div class="timer-container">
-        <div class="time"></div>
-    </div>
-    <script src="js/three.min.js"></script>
-    <script src="js/detector.js"></script>
-    <script src="js/tween.js"></script>
-    <script src="js/trackball.js"></script>
+    <div class="graphic-container">
+        <div class="other-player-joined">
+            <p>
+                Egy játékos csatlakozott!
+            </p>
+        </div>
+        <div class="other-player-disconnected">
+            <p>
+                Egy játékos kilépett!
+            </p>
+        </div>
+        <div class="timer-container">
+            <div class="time"></div>
+        </div>
+        <script src="js/three.min.js"></script>
+        <script src="js/detector.js"></script>
+        <script src="js/tween.js"></script>
+        <script src="js/trackball.js"></script>
 
-    <script src="js/keymapping.js"></script>
-    <script type="x-shader/x-vertex" id="vertexShader">
+        <script src="js/keymapping.js"></script>
+        <script type="x-shader/x-vertex" id="vertexShader">
         varying vec3 vWorldPosition;
 
         void main(){
@@ -60,9 +60,11 @@
 
         }
 
-    </script>
 
-    <script type="x-shader/x-fragment" id="fragmentShader">
+
+        </script>
+
+        <script type="x-shader/x-fragment" id="fragmentShader">
 
 			uniform vec3 topColor;
 			uniform vec3 bottomColor;
@@ -79,36 +81,41 @@
 			}
 
 
-    </script>
 
-    <script src="js/program.js" class="center"></script>
-</div>
 
-<div class="again-container">
-    <div class="module">
+        </script>
 
-        <button class="module-button" onclick="again()">Újra</button>
-
+        <script src="js/program.js" class="center"></script>
     </div>
-</div>
+
+    <div class="again-container">
+        <div class="module">
+
+            <button class="module-button" onclick="again()">Újra</button>
+
+        </div>
+    </div>
 
 
-<div class="points-container">
-    <div class="your-points">Pontjaid:</div>
-    <div class="points"></div>
-</div>
-<div class="other-points-container">
-    <div class="enemy-points">Ellenfél pontjai:</div>
-    <div class="e-points"></div>
-</div>
+    <div class="points-container">
+        <div class="your-points">Pontjaid:</div>
+        <div class="points"></div>
+    </div>
+    <div class="other-points-container">
+        <div class="enemy-points">Ellenfél pontjai:</div>
+        <div class="e-points"></div>
+    </div>
 
-<div id="chat" class="chat">
-    <ul id="messages" class="messages"></ul>
-    <form class="chat-form">
-        <input autocomplete="off" id="msg" type="text" name="message" class="message-in">
-        <button id="kuldes">Küldés</button>
-    </form>
-</div>
+    <div id="chat" class="chat">
+        <ul id="messages" class="messages"></ul>
+        <form class="chat-form">
+            <input autocomplete="off" id="msg" type="text" name="message" class="message-in">
+            <button id="kuldes">Küldés</button>
+        </form>
+    </div>
 
-<script src="/js/logic.js"></script>
-<script src='js/main.js'></script>
+    <script src="/js/logic.js"></script>
+    <script src='js/main.js'></script>
+{{else}}
+    <div class="need-log-in">A játékhoz be kell jelentkezned!</div>
+{{/if}}

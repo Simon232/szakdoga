@@ -72,6 +72,10 @@ socket.on("giveNewCoin", function (obj) {
 
 socket.on("readyAgain", function () {
     if (time == 0) {
+        thisPoints = 0;
+        otherPoints = 0;
+        document.querySelector('.points').textContent = thisPoints;
+        document.querySelector('.e-points').textContent = otherPoints;
         doFadeOut(".again-container");
         setTimeout(function () {
             doFadeIn(".timer-container");
@@ -121,7 +125,7 @@ socket.on('new', function (msg) {
         otherPlayer = '';
 
         var boxTexture = "";
-        var randomNumber = Math.floor(Math.random() * 6);
+        var randomNumber = Math.floor(Math.random() * 5);
         if (randomNumber == 0) {
             boxTexture = "pics/box.jpg";
         }
@@ -137,9 +141,9 @@ socket.on('new', function (msg) {
         if (randomNumber == 4) {
             boxTexture = "pics/box5.png";
         }
-        if (randomNumber == 5) {
-            boxTexture = "pics/transparent.png";
-        }
+        //if (randomNumber == 5) {
+        //    boxTexture = "pics/transparent.png";
+        //}
         //if (randomNumber == 5) {
         //    boxTexture = "pics/transparent.jpg";
         //}
@@ -236,9 +240,9 @@ socket.on("objectPositions", function (obj) {
 
     doFadeIn(".timer-container");
     if (time != 0) {
-        time = 30;
+        time = 120;
     } else {
-        time = 30;
+        time = 120;
         timer();
     }
 });
@@ -283,6 +287,13 @@ socket.on('disconnect', function (msg) {
 
     removeCoins();
     removeTraps();
+
+    setTimeout(function(){
+        if(otherPlayer == ''){
+            doFadeOut(".timer-container");
+        }
+    }, 5000);
+
 
     //time = 0;
 });
@@ -688,7 +699,18 @@ var timer = function () {
             document.querySelector(".time").textContent = Math.floor(time / 60) + ":" + (time % 60 < 10 ? "0" + time % 60 : time % 60);
         }
         else if (time == 0) {
-            document.querySelector(".time").textContent = "Vege";
+
+            var winner = '';
+            if(thisPoints == otherPoints){
+                winner = " Dontetlen";
+            }
+            else if(thisPoints > otherPoints){
+                winner = " Nyertel!";
+            }else{
+                winner = " Vesztettel!";
+            }
+
+            document.querySelector(".time").textContent = "Vege!" + winner;
             setTimeout(function () {
                 removeCoins();
                 removeTraps();
