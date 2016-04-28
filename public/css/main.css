@@ -39,6 +39,20 @@
 .main-text {
     margin: 30px;
 }
+.main-text>.welcome{
+    /*margin-left: 150px;*/
+    margin-left: 0px;
+    font-size: 16px;
+    text-align: center;
+}
+.main-text>.author{
+    position: absolute;
+    bottom: 20px;
+    font-size: 20px;
+    right: 30px;
+    text-align: right;
+}
+
 .main-text>.rule-container{
     margin-left: 100px;
     font-size: 16px;
