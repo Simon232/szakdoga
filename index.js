@@ -160,6 +160,10 @@ app.get('/game', function (req, res) {
 
 });
 
+app.get('/rules', function(req, res){
+    res.render('gameRules');
+});
+
 app.get('/highscore', function(req, res){
     //console.log(req.user);
     res.render('highscore', {

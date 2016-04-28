@@ -33,11 +33,19 @@
 }
 
 .menu-container > .container {
-    padding-left: 200px;
+    padding-left: 0px;
 }
 
 .main-text {
     margin: 30px;
+}
+.main-text>.rule-container{
+    margin-left: 100px;
+    font-size: 16px;
+}
+.main-text>.rule-container>.rule-pics{
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .main-text>.alert{

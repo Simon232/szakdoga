@@ -30,6 +30,16 @@
         "createdAt": "2016-04-28T18:05:25.346Z",
         "updatedAt": "2016-04-28T18:05:25.346Z",
         "id": 3
+      },
+      {
+        "username": "q",
+        "email": "qwe@qwe.hu",
+        "password": "$2a$10$IZi4.oYKAfdOGgUICZIzbuFo97jEnHmHI7k4zLFAnAiy/uP3sFAUS",
+        "highscore": 0,
+        "date": "2016-04-28T18:07:24.533Z",
+        "createdAt": "2016-04-28T18:07:24.954Z",
+        "updatedAt": "2016-04-28T18:07:24.954Z",
+        "id": 4
       }
     ]
   },
@@ -62,7 +72,7 @@
   },
   "counters": {
     "user": {
-      "id": 3
+      "id": 4
     }
   }
 }
