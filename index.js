@@ -155,6 +155,14 @@ app.get('/game', function (req, res) {
     res.render('game');
 
 });
+
+app.get('/highscore', function(req, res){
+    //console.log(req.user);
+    res.render('highscore', {
+        highscore: req.user.highscore
+    });
+});
+
 app.get('/registration', function (req, res) {
     //res.sendFile(__dirname + '/public/html/registration.html') ;
     //var validationErrors = (req.flash('validationErrors') || [{}]).pop();

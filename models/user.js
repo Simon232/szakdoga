@@ -14,8 +14,9 @@ module.exports = {
         //    required: false
         //},
         highscore: {
-            type: 'Number',
-            required: false
+            type: 'integer',
+            required: false,
+            defaultsTo: 0
         },
         date: {
             type: 'datetime',

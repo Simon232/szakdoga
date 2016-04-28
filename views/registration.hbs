@@ -16,6 +16,7 @@
             {{/if}}
             <li class="nav-item"><a class="nav-link" href="./game">J&aacutet&eacutek</a></li>
             {{#if loggedIn}}
+                <li class="nav-item"><a class="nav-link" href="./highscore">Eredm&eacutenyek</a></li>
                 <li class="nav-item"><a class="nav-link" href="./logout">Kijelentkez&eacutes</a></li>
             {{/if}}
         </ul>
@@ -62,15 +63,15 @@
                     <!--<span class="help-block">{{validationErrors}}</span>-->
                 <!--{{/if}}-->
             </div>
-            <div class="form-group">
-                <label class="pwda">Jelsz&oacute ism&eacutet: </label>
-                <input required class="form-control input-fields" id="passwordagain" name="passwordagain"
-                       placeholder="password, pl.: 1234" type="password" value="{{data.passwordagain}}">
-                <!--value="ertek"-->
-                <!--&lt;!&ndash;{{#if validationErrors}}&ndash;&gt;-->
-                    <!--&lt;!&ndash;<span class="help-block">{{validationErrors}}</span>&ndash;&gt;-->
-                <!--&lt;!&ndash;{{/if}}&ndash;&gt;-->
-            </div>
+            <!--<div class="form-group">-->
+                <!--<label class="pwda">Jelsz&oacute ism&eacutet: </label>-->
+                <!--<input required class="form-control input-fields" id="passwordagain" name="passwordagain"-->
+                       <!--placeholder="password, pl.: 1234" type="password" value="{{data.passwordagain}}">-->
+                <!--&lt;!&ndash;value="ertek"&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;!&ndash;{{#if validationErrors}}&ndash;&gt;&ndash;&gt;-->
+                    <!--&lt;!&ndash;&lt;!&ndash;<span class="help-block">{{validationErrors}}</span>&ndash;&gt;&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;!&ndash;{{/if}}&ndash;&gt;&ndash;&gt;-->
+            <!--</div>-->
             <div class="button-container">
                 <button type="reset" class="btn btn-default">Mez&otildek t&oumlrl&eacutese</button>
                 <button type="submit" class="btn btn-primary">Regisztr&aacutelok</button>
