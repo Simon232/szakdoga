@@ -10,6 +10,16 @@
         "createdAt": "2016-04-27T21:41:22.195Z",
         "updatedAt": "2016-04-27T21:41:22.195Z",
         "id": 1
+      },
+      {
+        "username": "w",
+        "email": "w@w.hu",
+        "password": "$2a$10$UHRDaG/Ziy7eRzAIe2fEq.jAsIrnseuuQreu4Ax6pTRVC3glcRjlK",
+        "passwordagain": "w",
+        "date": "2016-04-28T16:39:09.506Z",
+        "createdAt": "2016-04-28T16:39:09.925Z",
+        "updatedAt": "2016-04-28T16:39:09.925Z",
+        "id": 2
       }
     ]
   },
@@ -41,7 +51,7 @@
   },
   "counters": {
     "user": {
-      "id": 1
+      "id": 2
     }
   }
 }

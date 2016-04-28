@@ -23,6 +23,12 @@
 </div>
 <!--menu ends-->
 <div class="main-text">
+    {{#each validationSuccess}}
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            {{this}}
+        </div>
+    {{/each}}
     <p>
         Lorem ipsum dolor sit amet, ea nec numquam accusam detracto. Choro aliquip vim at. Ex delenit mediocrem est.
         Aeterno voluptua has ei. Eos an dolore viderer. Cu pro iuvaret nonumes commune.

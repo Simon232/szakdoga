@@ -1,4 +1,3 @@
-
 var express = require('express');
 
 //*** server's stuffs start ***
@@ -15,8 +14,6 @@ var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var session = require('express-session');
 var flash = require('connect-flash');
-
-
 
 
 var Waterline = require('waterline');
@@ -60,6 +57,18 @@ passport.use('registration', new LocalStrategy({
     }
 ));
 
+passport.use('updateUsersHighScore', new LocalStrategy({
+        usernameField: 'username',
+        highscoreField: 'highscore',
+        passReqToCallback: true
+    },
+    function (req, username, done) {
+        req.app.models.user.findOne({username:username})
+
+
+
+}));
+
 // strategy for log-in
 passport.use('login', new LocalStrategy({
         usernameField: 'username',
@@ -81,8 +90,6 @@ passport.use('login', new LocalStrategy({
 
 
 //*** front-end's stuffs end ***
-
-
 
 
 //*** game logic's stuffs start ***
@@ -137,7 +144,11 @@ app.set('view engine', 'hbs');
 
 app.get('/', function (req, res) {
     //res.sendFile(__dirname + '/index.html');
-    res.render('index');
+    res.render('index', {
+        //validationErrors: validationErrors,
+        validationSuccess: req.flash()
+        //data: data
+    });
 });
 app.get('/game', function (req, res) {
     //res.sendFile(__dirname + '/public/html/game.html');
@@ -222,6 +233,7 @@ app.post('/registration', passport.authenticate('registration', {
     successRedirect: '/',
     failureRedirect: '/registration',
     failureFlash: true,
+    successFlash: 'Sikeres regisztracio!',
     badRequestMessage: 'Hianyzo adatok'
     //validationErrors:  'pasztmek'
 }));
@@ -242,6 +254,7 @@ app.post('/login', passport.authenticate('login', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true,
+    successFlash: 'Sikeres bejelentkezes!',
     badRequestMessage: 'Hianyzo adatok'
 }));
 
@@ -582,9 +595,9 @@ function chatMessages(obj) {
 //***** server start **********
 //*****************************
 
- //http.listen(port, function () {
- //    console.log('Server is started, listening on port:', port);
- //});
+//http.listen(port, function () {
+//    console.log('Server is started, listening on port:', port);
+//});
 
 // **** ORM instance ****
 var orm = new Waterline();
