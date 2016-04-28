@@ -699,7 +699,18 @@ var timer = function () {
             document.querySelector(".time").textContent = Math.floor(time / 60) + ":" + (time % 60 < 10 ? "0" + time % 60 : time % 60);
         }
         else if (time == 0) {
-            document.querySelector(".time").textContent = "Vege";
+
+            var winner = '';
+            if(thisPoints == otherPoints){
+                winner = " Dontetlen";
+            }
+            else if(thisPoints > otherPoints){
+                winner = " Nyertel!";
+            }else{
+                winner = " Vesztettel!";
+            }
+
+            document.querySelector(".time").textContent = "Vege!" + winner;
             setTimeout(function () {
                 removeCoins();
                 removeTraps();
