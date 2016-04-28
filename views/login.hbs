@@ -23,6 +23,13 @@
 </div>
 <!--menu ends-->
 <div class="main-text">
+    {{#each validationErrors}}
+        <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            {{this}}
+        </div>
+
+    {{/each}}
     <div class="reg-title">
         <h1>Bejelentkez&eacutes</h1>
     </div>

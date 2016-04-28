@@ -49,7 +49,7 @@ passport.use('registration', new LocalStrategy({
             if (user) {
                 return done(null, false, {message: 'Letezo username.'});
             }
-            req.app.models.user.create(req.body)
+            req.app.models.user.create(req.body) //create new user
                 .then(function (user) {
                     return done(null, user);
                 })
@@ -228,7 +228,11 @@ app.post('/registration', passport.authenticate('registration', {
 
 app.get('/login', function (req, res) {
     //res.sendFile(__dirname + '/public/html/login.html') ;
-    res.render('login');
+    res.render('login', {
+        //validationErrors: validationErrors,
+        validationErrors: req.flash('error')
+        //data: data
+    });
 });
 //app.post('/login', function (req, res) {
 //    console.log(req);
@@ -238,7 +242,7 @@ app.post('/login', passport.authenticate('login', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true,
-    badRequestMessage: 'Hiányzó adatok'
+    badRequestMessage: 'Hianyzo adatok'
 }));
 
 

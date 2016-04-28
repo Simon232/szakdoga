@@ -25,58 +25,51 @@
 <div class="main-text">
 
     {{#each validationErrors}}
-        <div class="alert alert-dismissible alert-danger">
-            <button type="button" class="close" data-dismiss="alert">X</button>
+        <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             {{this}}
         </div>
+
     {{/each}}
     <div class="reg-title">
         <h1>Regisztr&aacuteci&oacute</h1>
     </div>
     <form class="form-horizontal" method="post">
         <fieldset>
-            <div class="form-group {{#if validationErrors}}
-                    has-error
-                {{/if}}">
+            <div class="form-group ">
                 <label class="username">Felhaszn&aacutel&oacuten&eacutev: </label>
                 <input required class="form-control input-fields" id="username" name="username"
                        placeholder="username, pl.: user" type="text" value="{{data.username}}">
-                {{#if validationErrors}}
-                    <span class="help-block">{{validationErrors}}</span>
-                {{/if}}
+                <!--{{#if validationErrors}}-->
+                    <!--<span class="help-block">{{validationErrors}}</span>-->
+                <!--{{/if}}-->
             </div>
 
-            <div class="form-group {{#if validationErrors}}
-                    has-error
-                {{/if}}">
+            <div class="form-group ">
                 <label class="email">E-mail: </label>
                 <input required class="form-control input-fields" id="email" name="email"
                        placeholder="e-mail, pl.: user@gmail.com" type="email"
                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" value="{{data.email}}">
-                {{#if validationErrors}}
-                    <span class="help-block">{{validationErrors}}</span>
-                {{/if}}
+                <!--{{#if validationErrors}}-->
+                    <!--<span class="help-block">{{validationErrors}}</span>-->
+                <!--{{/if}}-->
             </div>
-            <div class="form-group {{#if validationErrors}}
-                    has-error
-                {{/if}}">
+            <div class="form-group ">
                 <label class="pwd">Jelsz&oacute: </label>
                 <input required class="form-control input-fields" id="password" name="password"
                        placeholder="password, pl.: 1234" type="password" value="{{data.password}}">
-                {{#if validationErrors}}
-                    <span class="help-block">{{validationErrors}}</span>
-                {{/if}}
+                <!--{{#if validationErrors}}-->
+                    <!--<span class="help-block">{{validationErrors}}</span>-->
+                <!--{{/if}}-->
             </div>
-            <div class="form-group {{#if validationErrors}}
-                    has-error
-                {{/if}}">
+            <div class="form-group">
                 <label class="pwda">Jelsz&oacute ism&eacutet: </label>
                 <input required class="form-control input-fields" id="passwordagain" name="passwordagain"
                        placeholder="password, pl.: 1234" type="password" value="{{data.passwordagain}}">
                 <!--value="ertek"-->
-                {{#if validationErrors}}
-                    <span class="help-block">{{validationErrors}}</span>
-                {{/if}}
+                <!--&lt;!&ndash;{{#if validationErrors}}&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span class="help-block">{{validationErrors}}</span>&ndash;&gt;-->
+                <!--&lt;!&ndash;{{/if}}&ndash;&gt;-->
             </div>
             <div class="button-container">
                 <button type="reset" class="btn btn-default">Mez&otildek t&oumlrl&eacutese</button>

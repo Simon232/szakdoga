@@ -12,7 +12,7 @@
     margin: auto;
 }
 .menu-container > .container > .hello{
-    font-size: 18px;
+    font-size: 14px;
     color: #bfbfbf;
 }
 
@@ -38,6 +38,11 @@
 
 .main-text {
     margin: 30px;
+}
+
+.main-text>.alert{
+    width: 500px;
+    margin: auto;
 }
 
 .main-text > .reg-title {
