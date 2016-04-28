@@ -561,10 +561,6 @@ function readyAgain(obj) {
                     coinPositions: coinPositions[this.room],
                     trapPositions: trapPositions[this.room]
                 });
-                io.to(this.room).emit("objectPositions", {
-                    coinPositions: coinPositions[this.room],
-                    trapPositions: trapPositions[this.room]
-                });
 
                 roomManager[room].ready.p1 = false;
                 roomManager[room].ready.p2 = false;

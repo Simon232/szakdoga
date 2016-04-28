@@ -72,6 +72,10 @@ socket.on("giveNewCoin", function (obj) {
 
 socket.on("readyAgain", function () {
     if (time == 0) {
+        thisPoints = 0;
+        otherPoints = 0;
+        document.querySelector('.points').textContent = thisPoints;
+        document.querySelector('.e-points').textContent = otherPoints;
         doFadeOut(".again-container");
         setTimeout(function () {
             doFadeIn(".timer-container");
