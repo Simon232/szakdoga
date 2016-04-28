@@ -196,7 +196,7 @@ socket.on('new', function (msg) {
     }
 
     if (socket.id != undefined) { // elkuldom a kockamat a masiknak
-        console.log("Ez vagyok en: ", thisSocket);
+        //console.log("Ez vagyok en: ", thisSocket);
         try {
 
             socket.emit('update', {
@@ -275,7 +275,7 @@ socket.on('disconnect', function (msg) {
     document.querySelector(".points").textContent = thisPoints;
     document.querySelector(".e-points").textContent = otherPoints;
 
-    console.log(msg + " user disconnected: ");
+    //console.log(msg + " user disconnected: ");
     scene.remove(cubes[msg]);
     otherPlayer = '';
 
@@ -301,7 +301,7 @@ socket.on('disconnect', function (msg) {
 socket.on('update', function (msg) {
     doFadeIn(".timer-container");
 
-    console.log("Ezt kaptam: ", msg);
+    //console.log("Ezt kaptam: ", msg);
     if (msg.room == thisRoom) {
         if (cubes[msg.sid] == undefined) {  // masik jatekos csatlakozasa
 
@@ -691,7 +691,6 @@ var changeScene = function (type) {
 };
 
 var timer = function () {
-    console.log("*****************");
     setTimeout(function () {
         if (time > 0) {
             time--;
