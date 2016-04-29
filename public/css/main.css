@@ -39,6 +39,12 @@
 .main-text {
     margin: 30px;
 }
+.main-text>.best-point-show {
+    text-align: center;
+    font-size: 40px;
+    margin-top: 20px;
+}
+
 .main-text>.welcome{
     /*margin-left: 150px;*/
     margin-left: 0px;
