@@ -237,3 +237,7 @@ li {
     transition: 300ms;
     color: #444;
 }
+
+.your-best-point{
+    display: none;
+}

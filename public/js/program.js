@@ -6,6 +6,7 @@ var thisTexture = undefined;
 var otherPlayer = undefined;
 var thisPoints = 0;
 var otherPoints = 0;
+var yourBestScore = document.querySelector(".your-best-point").textContent;
 
 var gameWidth = 100;
 var cubeHalf = 0.49;
@@ -240,9 +241,9 @@ socket.on("objectPositions", function (obj) {
 
     doFadeIn(".timer-container");
     if (time != 0) {
-        time = 120;
+        time = 10;
     } else {
-        time = 120;
+        time = 10;
         timer();
     }
 });
@@ -698,7 +699,7 @@ var timer = function () {
             document.querySelector(".time").textContent = Math.floor(time / 60) + ":" + (time % 60 < 10 ? "0" + time % 60 : time % 60);
         }
         else if (time == 0) {
-
+            savePoints();
             var winner = '';
             if(thisPoints == otherPoints){
                 winner = " Dontetlen";
@@ -733,6 +734,12 @@ var timer = function () {
         }
     }, 1000);
 };
+
+function savePoints(){
+    if(yourBestScore < thisPoints) {
+        $.post("./savescore", {highscore: thisPoints});
+    }
+}
 
 
 var animate = function () {

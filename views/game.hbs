@@ -1,4 +1,6 @@
 <div class="menu-container navbar-dark">
+
+
     <div class="container">
         {{#if loggedIn}}
             <p class="navbar-text hello">Bel&eacutepve, mint {{user.username}}!</p>
@@ -20,6 +22,7 @@
     </div>
 </div>
 {{#if loggedIn}}
+    <div class="your-best-point">{{highscore}}</div>
     <div class=on-the-top>
         <img class="on-the-top-img" src="pics/nyilak.png">
         <br>

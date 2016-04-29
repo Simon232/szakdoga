@@ -156,18 +156,32 @@ app.get('/', function (req, res) {
 });
 app.get('/game', function (req, res) {
     //res.sendFile(__dirname + '/public/html/game.html');
-    res.render('game');
+    console.log(res.locals.user);
+    res.render('game', {
+        highscore: (req.user ? req.user.highscore : undefined)
+    });
 
 });
 
-app.get('/rules', function(req, res){
+app.post('/savescore', function (req, res) {
+    req.app.models.user.update({username: res.locals.user.username}, {
+        highscore: req.body.highscore
+    })
+        .exec(function (err, user) {
+            if (err) {
+                console.log(err);
+            }
+            res.redirect('/');
+        });
+});
+
+app.get('/rules', function (req, res) {
     res.render('gameRules');
 });
 
-app.get('/highscore', function(req, res){
-    //console.log(req.user);
+app.get('/highscore', function (req, res) {
     res.render('highscore', {
-        highscore: req.user.highscore
+        highscore: (req.user ? req.user.highscore : undefined)
     });
 });
 
@@ -258,7 +272,7 @@ app.get('/login', function (req, res) {
     //res.sendFile(__dirname + '/public/html/login.html') ;
     res.render('login', {
         //validationErrors: validationErrors,
-        validationErrors: req.flash('error')
+        validationErrors: req.flash('error'),
         //data: data
     });
 });
