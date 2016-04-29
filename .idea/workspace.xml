@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab917d04-1d80-4abe-90df-9ea5364f55dc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.tmp/default.db" afterPath="$PROJECT_DIR$/.tmp/default.db" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/program.js" afterPath="$PROJECT_DIR$/public/js/program.js" />
     </list>
     <ignored path="szakdolgozat.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -121,7 +121,7 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="default.db" pinned="false" current-in-tab="true">
+          <file leaf-file-name="default.db" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/.tmp/default.db">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
@@ -161,11 +161,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="program.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="program.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/public/js/program.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-13.24138">
-                  <caret line="245" column="16" selection-start-line="245" selection-start-column="16" selection-end-line="245" selection-end-column="16" />
+                <state vertical-scroll-proportion="0.6541738">
+                  <caret line="245" column="17" selection-start-line="245" selection-start-column="17" selection-end-line="245" selection-end-column="17" />
                   <folding />
                 </state>
               </provider>
@@ -261,11 +261,11 @@
         <option value="$PROJECT_DIR$/views/registration.hbs" />
         <option value="$PROJECT_DIR$/views/login.hbs" />
         <option value="$PROJECT_DIR$/index.js" />
-        <option value="$PROJECT_DIR$/public/js/program.js" />
         <option value="$PROJECT_DIR$/views/gameRules.hbs" />
         <option value="$PROJECT_DIR$/views/highscore.hbs" />
         <option value="$PROJECT_DIR$/public/css/main.css" />
         <option value="$PROJECT_DIR$/.tmp/default.db" />
+        <option value="$PROJECT_DIR$/public/js/program.js" />
       </list>
     </option>
   </component>
@@ -833,14 +833,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/program.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.24138">
-          <caret line="245" column="16" selection-start-line="245" selection-start-column="16" selection-end-line="245" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/gameRules.hbs">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-15.038462">
@@ -887,6 +879,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/program.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6541738">
+          <caret line="245" column="17" selection-start-line="245" selection-start-column="17" selection-end-line="245" selection-end-column="17" />
           <folding />
         </state>
       </provider>

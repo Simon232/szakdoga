@@ -241,9 +241,9 @@ socket.on("objectPositions", function (obj) {
 
     doFadeIn(".timer-container");
     if (time != 0) {
-        time = 10;
+        time = 120;
     } else {
-        time = 10;
+        time = 120;
         timer();
     }
 });
