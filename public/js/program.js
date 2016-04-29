@@ -737,6 +737,7 @@ var timer = function () {
 
 function savePoints(){
     if(yourBestScore < thisPoints) {
+        yourBestScore = thisPoints;
         $.post("./savescore", {highscore: thisPoints});
     }
 }
