@@ -50,7 +50,7 @@ passport.use('registration', new LocalStrategy({
                 return done(err);
             }
             if (user) {
-                return done(null, false, {message: 'Letezo username.'});
+                return done(null, false, {message: 'Letezo felhasznalonev.'});
             }
             req.app.models.user.create(req.body) //create new user
                 .then(function (user) {

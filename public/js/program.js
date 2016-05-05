@@ -14,6 +14,7 @@ var PI = Math.PI;
 var movingSpeed = 0.05;
 var rotationSpeed = PI / 180;
 var cameraDistance = 6;
+var playable_time = 120;
 
 var coinMeshes = [];
 var trapMeshes = [];
@@ -241,9 +242,9 @@ socket.on("objectPositions", function (obj) {
 
     doFadeIn(".timer-container");
     if (time != 0) {
-        time = 20;
+        time = playable_time;
     } else {
-        time = 20;
+        time = playable_time;
         timer();
     }
 });
