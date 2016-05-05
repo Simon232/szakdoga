@@ -23,6 +23,12 @@ var userCollection = require('./models/user.js');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
+var joinLeave = require("./js/join_leave");
+var gameVars = require("./js/globals");
+
+var usersHighScore = {};
+
+
 //passport
 passport.serializeUser(function (user, done) {
     done(null, user);
@@ -57,22 +63,6 @@ passport.use('registration', new LocalStrategy({
     }
 ));
 
-passport.use('updateUsersHighScore', new LocalStrategy({
-        usernameField: 'username',
-        highscoreField: 'highscore',
-        passReqToCallback: true
-    },
-    function (req, username, done) {
-        req.app.models.user.findOne({username: username}, function (err, user, highscore) {
-            if (err) {
-                return done(err);
-            }
-            user.updateHighScore(highscore);
-            return done(null, user);
-        });
-    }
-));
-
 // strategy for log-in
 passport.use('login', new LocalStrategy({
         usernameField: 'username',
@@ -97,17 +87,7 @@ passport.use('login', new LocalStrategy({
 
 
 //*** game logic's stuffs start ***
-var joinedUsers = 0;
-var roomManager = {};
-var roomSize = -1;
-var cubes = {};
-var roomMessages = {};
-var gameWidth = 100;
-var coinPositions = {};
-var trapPositions = {};
-var coinNumber = 10;
-var trapNumber = 20;
-var cubeHalf = 0.49;
+
 //*** game logic's stuffs end ***
 
 //** endpoints start
@@ -134,6 +114,8 @@ app.use(function (req, res, next) {
     res.locals.user = req.user;
     next();
 });
+
+
 
 //app.use(function() {
 //    return function (req, res, next) {
@@ -163,26 +145,29 @@ app.get('/game', function (req, res) {
 
 });
 
-app.post('/savescore', function (req, res) {
-    req.app.models.user.update({username: res.locals.user.username}, {
-        highscore: req.body.highscore
-    })
-        .exec(function (err, user) {
-            if (err) {
-                console.log(err);
-            }
-            res.redirect('/');
-        });
-});
-
 app.get('/rules', function (req, res) {
     res.render('gameRules');
 });
 
-app.get('/highscore', function (req, res) {
-    res.render('highscore', {
-        highscore: (req.user ? req.user.highscore : undefined)
+app.post('/savescore', function (req, res) {
+    req.app.models.user.update({username: res.locals.user.username}, {
+        highscore: req.body.highscore
+        
+    }).then(function(){
+        
     });
+    // usersHighScore[res.locals.user.username] = req.body.highscore;
+});
+
+
+app.get('/highscore', ensureAuthenticated, function (req, res) {
+    req.app.models.user.findOne({username: req.user.username}, function(err, user){
+
+        res.render('highscore', {
+            highscore: (req.user ? user.highscore : undefined)
+        });
+    });
+    
 });
 
 app.get('/registration', function (req, res) {
@@ -196,68 +181,7 @@ app.get('/registration', function (req, res) {
         //data: data
     });
 });
-//app.post('/registration', function (req, res) {
-//    req.checkBody('username', 'Hibas felhasznalonev').notEmpty().withMessage('Kotelezo megadni!');
-//    req.checkBody('email', ' Hibas email').notEmpty().withMessage('Kotelezo megadni!');
-//    req.checkBody('password', ' Hibas jelszo').notEmpty().withMessage('Kotelezo megadni!');
-//    req.checkBody('passwordagain', 'hibas jelszo').notEmpty().withMessage('Kotelezo megadni!');
-//    var emailIsCorrect = validateEmail(req.checkBody('email').value);
-//    var passwordsAreMatching = req.checkBody('password').value == req.checkBody('passwordagain').value;
-//
-//    var validationErrors = (req.validationErrors(true));// || !emailIsCorrect || !passwordsAreMatching);
-//    console.log(validationErrors);
-//    console.log(req.body);
-//
-//    if (validationErrors) {
-//        console.log("hiba");
-//        req.flash('validationErrors', validationErrors);
-//        req.flash('data', req.body);
-//        res.redirect('/registration');
-//    } else {
-//        if (!emailIsCorrect || !passwordsAreMatching) {
-//            if (!emailIsCorrect) {
-//                req.flash('validationErrors', {
-//                    email: {
-//                        param: 'password',
-//                        msg: 'Az email cim nem megfelelo',
-//                        value: req.checkBody('password').value
-//                    }
-//                });
-//                req.flash('data', {
-//                    username: req.checkBody('username').value,
-//                    email: req.checkBody('email').value,
-//                    password: req.checkBody('password').value,
-//                    passwordagain: req.checkBody('passwordagain').value
-//                });
-//                res.redirect('registration');
-//            }
-//            if (!passwordsAreMatching) {
-//                req.flash('validationErrors', {
-//                    password: {
-//                        param: 'password',
-//                        msg: 'A jelszavak nem egyeznek',
-//                        value: req.checkBody('password').value
-//                    },
-//                    passwordagain: {
-//                        param: 'passwordagain',
-//                        msg: 'A jelszavak nem egyeznek',
-//                        value: req.checkBody('passwordagain').value
-//                    }
-//                });
-//                req.flash('data', {
-//                    username: req.checkBody('username').value,
-//                    email: req.checkBody('email').value,
-//                    password: req.checkBody('password').value,
-//                    passwordagain: req.checkBody('passwordagain').value
-//                });
-//                res.redirect('registration');
-//            }
-//        } else {
-//            console.log("nincs hiba");
-//            res.redirect('/');
-//        }
-//    }
-//});
+
 
 app.post('/registration', passport.authenticate('registration', {
     successRedirect: '/',
@@ -301,20 +225,23 @@ app.get('/logout', function (req, res) {
  *
  * socket.on - amit a kliens kuld
  * io.emit - amit a kliensnek kuldunk
- * socket.broadcast.to('room' + roomSize).emit("roomIsFull");
- * io.sockets.in('room' + roomSize).emit('roomIsFull');
+ * socket.broadcast.to('room' + gameVars.roomSize).emit("roomIsFull");
+ * io.sockets.in('room' + gameVars.roomSize).emit('roomIsFull');
  * */
 
 io.on('connection', function (socket) {
 
+    //console.log(io)
+    //console.log(socket)
+
     init(socket);
 
-    socket.on("joined", onJoined.bind(socket));
-    socket.on('disconnect', onLeave.bind(socket));
+    socket.on("joined", joinLeave.onJoined.bind(socket));
+    socket.on('disconnect', joinLeave.onLeave.bind(socket));
 
     // *** movements section ***
     socket.on('move', function (msg) {
-        cubes[msg.sid] = msg.pos;
+        gameVars.cubes[msg.sid] = msg.pos;
         socket.broadcast.to(socket.room).emit('move', msg);
     });
 
@@ -347,24 +274,29 @@ io.on('connection', function (socket) {
 //********** functions *********
 //******************************
 
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) { return next(); }
+    res.redirect('/login');
+}
+
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
 
 function addPlayerToRoom(room, player) {
-    if (roomManager[room].player1 == '') {
-        roomManager[room].player1 = player;
+    if (gameVars.roomManager[room].player1 == '') {
+        gameVars.roomManager[room].player1 = player;
     }
-    else if (roomManager[room].player2 == '') {
-        roomManager[room].player2 = player;
+    else if (gameVars.roomManager[room].player2 == '') {
+        gameVars.roomManager[room].player2 = player;
     }
 }
 
 function addRoom() {
     return {
-        id: roomSize,
-        name: 'room#' + roomSize,
+        id: gameVars.roomSize,
+        name: 'room#' + gameVars.roomSize,
         player1: '',
         player2: '',
         ready: {p1: false, p2: false}
@@ -372,12 +304,12 @@ function addRoom() {
 }
 
 function findOnePlayerRoom() {
-    for (var room in roomManager) {
-        if (roomManager[room].player1 != '' && roomManager[room].player2 == '') {
-            return roomManager[room].name;
+    for (var room in gameVars.roomManager) {
+        if (gameVars.roomManager[room].player1 != '' && gameVars.roomManager[room].player2 == '') {
+            return gameVars.roomManager[room].name;
         }
-        else if (roomManager[room].player1 == '' && roomManager[room].player2 != '') {
-            return roomManager[room].name;
+        else if (gameVars.roomManager[room].player1 == '' && gameVars.roomManager[room].player2 != '') {
+            return gameVars.roomManager[room].name;
         }
     }
     return "Something went wrong";
@@ -385,13 +317,13 @@ function findOnePlayerRoom() {
 
 function getEnemyPlayerName(playerName, playerRoom) {
     var enemyName = '';
-    for (var room in roomManager) {
-        if (roomManager[room].name == playerRoom) {
-            if (roomManager[room].player1 == playerName) {
-                enemyName = roomManager[room].player2;
+    for (var room in gameVars.roomManager) {
+        if (gameVars.roomManager[room].name == playerRoom) {
+            if (gameVars.roomManager[room].player1 == playerName) {
+                enemyName = gameVars.roomManager[room].player2;
             }
-            else if (roomManager[room].player2 == playerName) {
-                enemyName = roomManager[room].player1;
+            else if (gameVars.roomManager[room].player2 == playerName) {
+                enemyName = gameVars.roomManager[room].player1;
             }
         }
     }
@@ -399,25 +331,25 @@ function getEnemyPlayerName(playerName, playerRoom) {
 }
 
 function generateNewCoinPositions(room) {
-    coinPositions[room] = [];
+    gameVars.coinPositions[room] = [];
     var positions = [];
-    for (var i = 0; i < coinNumber; i++) {
-        var x = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
-        var z = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
+    for (var i = 0; i < gameVars.coinNumber; i++) {
+        var x = Math.random() * gameVars.gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
+        var z = Math.random() * gameVars.gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
         positions.push({x: x, z: z});
     }
-    coinPositions[room] = positions;
+    gameVars.coinPositions[room] = positions;
 }
 
 function generateNewTrapPositions(room) {
-    trapPositions[room] = [];
+    gameVars.trapPositions[room] = [];
     var positions = [];
-    for (var i = 0; i < trapNumber; i++) {
+    for (var i = 0; i < gameVars.trapNumber; i++) {
         var x = getRandomPosition();
         var z = getRandomPosition();
         positions.push({x: x, z: z});
     }
-    trapPositions[room] = positions;
+    gameVars.trapPositions[room] = positions;
 }
 
 function isCollision(obj) {
@@ -428,10 +360,10 @@ function isCollision(obj) {
     var movingSpeed = 0.05;
 
     if (otherPlayer !== '') {
-        var colX = Math.abs(newX - cubes[otherPlayer].x);
-        var colZ = Math.abs(newZ - cubes[otherPlayer].z);
-        var originalX = Math.abs(cubes[thisSocket].x - cubes[otherPlayer].x);
-        var originalZ = Math.abs(cubes[thisSocket].z - cubes[otherPlayer].z);
+        var colX = Math.abs(newX - gameVars.cubes[otherPlayer].x);
+        var colZ = Math.abs(newZ - gameVars.cubes[otherPlayer].z);
+        var originalX = Math.abs(gameVars.cubes[thisSocket].x - gameVars.cubes[otherPlayer].x);
+        var originalZ = Math.abs(gameVars.cubes[thisSocket].z - gameVars.cubes[otherPlayer].z);
         return (colX < 1 && colZ < 1) && (originalX > colX && originalZ > colZ);
     }
     return false;
@@ -439,14 +371,14 @@ function isCollision(obj) {
 
 function init(socket) {
     // *** connection section ***
-    ++joinedUsers;
-    if (joinedUsers % 2 != 0) {
-        roomSize = Object.keys(roomManager).length;
+    ++gameVars.joinedUsers;
+    if (gameVars.joinedUsers % 2 != 0) {
+        gameVars.roomSize = Object.keys(gameVars.roomManager).length;
 
         //checking unused roomId-s to avoid id-collision (for example: 0,1,3,4 id's next value: 2, then 5)
         var usedRoomId = false;
-        for (var room in roomManager) {
-            if (roomManager[room].id == roomSize) {
+        for (var room in gameVars.roomManager) {
+            if (gameVars.roomManager[room].id == gameVars.roomSize) {
                 usedRoomId = true;
             }
         }
@@ -454,18 +386,18 @@ function init(socket) {
             //calculate correct id
 
             var goodId = 0;
-            for (var room in roomManager) {
-                if (roomManager[room].id == goodId) {
+            for (var room in gameVars.roomManager) {
+                if (gameVars.roomManager[room].id == goodId) {
                     ++goodId;
                 } else {
                     var newIdIsGood = true;
-                    for (var subroom in roomManager) {
-                        if (roomManager[subroom].id == goodId) {
+                    for (var subroom in gameVars.roomManager) {
+                        if (gameVars.roomManager[subroom].id == goodId) {
                             newIdIsGood = false;
                         }
                     }
                     if (newIdIsGood) {
-                        roomSize = goodId;
+                        gameVars.roomSize = goodId;
                         break; //break the cycle
                     } else {
                         ++goodId;
@@ -474,17 +406,17 @@ function init(socket) {
 
             }
 
-            var roomName = 'room#' + roomSize;
-            roomManager[roomName] = addRoom();
-            roomMessages[roomName] = [];
+            var roomName = 'room#' + gameVars.roomSize;
+            gameVars.roomManager[roomName] = addRoom();
+            gameVars.roomMessages[roomName] = [];
             socket.join(roomName);
             socket.room = roomName;
-            roomSize = Object.keys(roomManager).length - 1; //jump to the last known 'good' value
+            gameVars.roomSize = Object.keys(gameVars.roomManager).length - 1; //jump to the last known 'good' value
 
         } else {
-            var roomName = 'room#' + roomSize;
-            roomManager[roomName] = addRoom();
-            roomMessages[roomName] = [];
+            var roomName = 'room#' + gameVars.roomSize;
+            gameVars.roomManager[roomName] = addRoom();
+            gameVars.roomMessages[roomName] = [];
             socket.join(roomName);
             socket.room = roomName; //if everything went well, we don't need to jump
         }
@@ -497,10 +429,10 @@ function init(socket) {
         generateNewCoinPositions(emptyRoom);
         generateNewTrapPositions(emptyRoom);
 
-        console.log("DEBUG " + coinPositions[socket.room].length);
+        console.log("DEBUG " + gameVars.coinPositions[socket.room].length);
         io.to(socket.room).emit("objectPositions", {
-            coinPositions: coinPositions[socket.room],
-            trapPositions: trapPositions[socket.room]
+            coinPositions: gameVars.coinPositions[socket.room],
+            trapPositions: gameVars.trapPositions[socket.room]
         });
 
     }
@@ -509,67 +441,28 @@ function init(socket) {
         room: socket.room,
         positions: {x: getRandomPosition(), z: getRandomPosition()}
     });
-    io.to(socket.room).emit("old messages", {sid: socket.id, historyMessage: roomMessages[socket.room]});
+    io.to(socket.room).emit("old messages", {sid: socket.id, historyMessage: gameVars.roomMessages[socket.room]});
     //socket.emit("joined");
 
     addPlayerToRoom(socket.room, socket.id);
     console.log("user: " + socket.id + ' connected to: ' + socket.room);
 }
 
-function onJoined(obj) {
-    this.username = obj.userName;
-    cubes[this.id] = obj.cube;
-    console.log(this.id + " joined with this:  [" + cubes[this.id].x + ", " + cubes[this.id].y + ", " + cubes[this.id].z + "]");
-    this.to(this.room).broadcast.emit("joined");
-}
 
-function onLeave() {
-    if (joinedUsers % 2 != 0) {
-        --roomSize;
-    }
-
-    console.log("user: " + this.id + ' disconnect from: ' + this.room);
-
-    //removeEmptyRoom
-    for (var room in roomManager) {
-        if (roomManager[room].player1 == this.id) {
-            roomManager[room].player1 = '';
-        }
-        if (roomManager[room].player2 == this.id) {
-            roomManager[room].player2 = '';
-        }
-        if (roomManager[room].player1 == '' && roomManager[room].player2 == '') {
-            var roomName = roomManager[room].name;
-            delete roomManager[roomName];
-            delete roomMessages[roomName];
-            //roomManager.splice(i, 1);
-            delete coinPositions[roomName];
-            delete trapPositions[roomName];
-
-            console.log("Tarolt szoba uzenetek merete torles utan: " + Object.keys(roomMessages).length)
-        }
-    }
-    --joinedUsers;
-    io.to(this.room).emit('disconnect', this.id);
-    this.leave(this.room);
-
-    console.log("csatlakozott jatekosok szama: " + joinedUsers);
-    console.log("szobak szama: " + Object.keys(roomManager).length);
-}
 
 function getRandomPosition() {
     var pos = 0;
     while (pos <= 1 && pos >= -1) {
-        pos = Math.floor(Math.random() * 2) % 2 == 0 ? Math.random() * ((gameWidth / 2) - cubeHalf - 6) : -1 * Math.random() * ((gameWidth / 2) - cubeHalf - 2);
+        pos = Math.floor(Math.random() * 2) % 2 == 0 ? Math.random() * ((gameVars.gameWidth / 2) - gameVars.cubeHalf - 6) : -1 * Math.random() * ((gameVars.gameWidth / 2) - gameVars.cubeHalf - 2);
     }
     return pos;
 }
 
 function giveNewCoin(obj) {
-    coinPositions[this.room].splice(obj.index, 1);
-    var x = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
-    var z = Math.random() * gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
-    coinPositions[this.room].push({x: x, z: z});
+    gameVars.coinPositions[this.room].splice(obj.index, 1);
+    var x = Math.random() * gameVars.gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
+    var z = Math.random() * gameVars.gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
+    gameVars.coinPositions[this.room].push({x: x, z: z});
     io.to(this.room).emit("giveNewCoin", {
         sid: this.id,
         socketPoints: obj.socketPoints,
@@ -580,43 +473,43 @@ function giveNewCoin(obj) {
 }
 
 function readyAgain(obj) {
-    for (var room in roomManager) {
-        if (roomManager[room].name == obj.room) {
-            if (roomManager[room].player1 == obj.sid) {
-                if (!roomManager[room].ready.p1) {
-                    roomManager[room].ready.p1 = true;
+    for (var room in gameVars.roomManager) {
+        if (gameVars.roomManager[room].name == obj.room) {
+            if (gameVars.roomManager[room].player1 == obj.sid) {
+                if (!gameVars.roomManager[room].ready.p1) {
+                    gameVars.roomManager[room].ready.p1 = true;
                 }
             }
-            if (roomManager[room].player2 == obj.sid) {
-                if (!roomManager[room].ready.p2) {
-                    roomManager[room].ready.p2 = true;
+            if (gameVars.roomManager[room].player2 == obj.sid) {
+                if (!gameVars.roomManager[room].ready.p2) {
+                    gameVars.roomManager[room].ready.p2 = true;
                 }
             }
-            if (roomManager[room].ready.p1 && roomManager[room].ready.p2) {
+            if (gameVars.roomManager[room].ready.p1 && gameVars.roomManager[room].ready.p2) {
                 io.to(obj.room).emit("readyAgain");
-                coinPositions[this.room] = [];
-                trapPositions[this.room] = [];
+                gameVars.coinPositions[this.room] = [];
+                gameVars.trapPositions[this.room] = [];
 
                 generateNewCoinPositions(this.room);
                 generateNewTrapPositions(this.room);
 
                 io.to(this.room).emit("objectPositions", {
-                    coinPositions: coinPositions[this.room],
-                    trapPositions: trapPositions[this.room]
+                    coinPositions: gameVars.coinPositions[this.room],
+                    trapPositions: gameVars.trapPositions[this.room]
                 });
 
-                roomManager[room].ready.p1 = false;
-                roomManager[room].ready.p2 = false;
+                gameVars.roomManager[room].ready.p1 = false;
+                gameVars.roomManager[room].ready.p2 = false;
             }
         }
     }
 }
 
 function chatMessages(obj) {
-    if (roomMessages[obj.room].length == 5) {
-        roomMessages[obj.room].shift();
+    if (gameVars.roomMessages[obj.room].length == 5) {
+        gameVars.roomMessages[obj.room].shift();
     }
-    roomMessages[obj.room].push(obj.msg);
+    gameVars.roomMessages[obj.room].push(obj.msg);
 
     io.to(obj.room).emit('chat message', obj);
 }

@@ -12,8 +12,71 @@
     //scene.add(y_line); //zold
     //scene.add(z_line); //kek
 
-  á = &aacute
-  é = &eacute
-  ó = &oacute
-  õ = &otilde
-  ö = &ouml
+  ï¿½ = &aacute
+  ï¿½ = &eacute
+  ï¿½ = &oacute
+  ï¿½ = &otilde
+  ï¿½ = &ouml
+  
+  //app.post('/registration', function (req, res) {
+//    req.checkBody('username', 'Hibas felhasznalonev').notEmpty().withMessage('Kotelezo megadni!');
+//    req.checkBody('email', ' Hibas email').notEmpty().withMessage('Kotelezo megadni!');
+//    req.checkBody('password', ' Hibas jelszo').notEmpty().withMessage('Kotelezo megadni!');
+//    req.checkBody('passwordagain', 'hibas jelszo').notEmpty().withMessage('Kotelezo megadni!');
+//    var emailIsCorrect = validateEmail(req.checkBody('email').value);
+//    var passwordsAreMatching = req.checkBody('password').value == req.checkBody('passwordagain').value;
+//
+//    var validationErrors = (req.validationErrors(true));// || !emailIsCorrect || !passwordsAreMatching);
+//    console.log(validationErrors);
+//    console.log(req.body);
+//
+//    if (validationErrors) {
+//        console.log("hiba");
+//        req.flash('validationErrors', validationErrors);
+//        req.flash('data', req.body);
+//        res.redirect('/registration');
+//    } else {
+//        if (!emailIsCorrect || !passwordsAreMatching) {
+//            if (!emailIsCorrect) {
+//                req.flash('validationErrors', {
+//                    email: {
+//                        param: 'password',
+//                        msg: 'Az email cim nem megfelelo',
+//                        value: req.checkBody('password').value
+//                    }
+//                });
+//                req.flash('data', {
+//                    username: req.checkBody('username').value,
+//                    email: req.checkBody('email').value,
+//                    password: req.checkBody('password').value,
+//                    passwordagain: req.checkBody('passwordagain').value
+//                });
+//                res.redirect('registration');
+//            }
+//            if (!passwordsAreMatching) {
+//                req.flash('validationErrors', {
+//                    password: {
+//                        param: 'password',
+//                        msg: 'A jelszavak nem egyeznek',
+//                        value: req.checkBody('password').value
+//                    },
+//                    passwordagain: {
+//                        param: 'passwordagain',
+//                        msg: 'A jelszavak nem egyeznek',
+//                        value: req.checkBody('passwordagain').value
+//                    }
+//                });
+//                req.flash('data', {
+//                    username: req.checkBody('username').value,
+//                    email: req.checkBody('email').value,
+//                    password: req.checkBody('password').value,
+//                    passwordagain: req.checkBody('passwordagain').value
+//                });
+//                res.redirect('registration');
+//            }
+//        } else {
+//            console.log("nincs hiba");
+//            res.redirect('/');
+//        }
+//    }
+//});
