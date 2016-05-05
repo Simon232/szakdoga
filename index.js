@@ -82,14 +82,6 @@ passport.use('login', new LocalStrategy({
     }
 ));
 
-
-//*** front-end's stuffs end ***
-
-
-//*** game logic's stuffs start ***
-
-//*** game logic's stuffs end ***
-
 //** endpoints start
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: false}));
@@ -115,34 +107,19 @@ app.use(function (req, res, next) {
     next();
 });
 
-
-
-//app.use(function() {
-//    return function (req, res, next) {
-//        res.locals.loggedIn = req.isAuthenticated();
-//        res.locals.user = req.user;
-//        next();
-//    }
-//});
-
 app.set('views', './views');
 app.set('view engine', 'hbs');
 
 app.get('/', function (req, res) {
-    //res.sendFile(__dirname + '/index.html');
     res.render('index', {
-        //validationErrors: validationErrors,
         validationSuccess: req.flash()
-        //data: data
     });
 });
-app.get('/game', function (req, res) {
-    //res.sendFile(__dirname + '/public/html/game.html');
+app.get('/game', ensureAuthenticated, function (req, res) {
     console.log(res.locals.user);
     res.render('game', {
         highscore: (req.user ? req.user.highscore : undefined)
     });
-
 });
 
 app.get('/rules', function (req, res) {
@@ -156,7 +133,6 @@ app.post('/savescore', function (req, res) {
     }).then(function(){
         
     });
-    // usersHighScore[res.locals.user.username] = req.body.highscore;
 });
 
 
@@ -171,14 +147,8 @@ app.get('/highscore', ensureAuthenticated, function (req, res) {
 });
 
 app.get('/registration', function (req, res) {
-    //res.sendFile(__dirname + '/public/html/registration.html') ;
-    //var validationErrors = (req.flash('validationErrors') || [{}]).pop();
-    //var data = (req.flash('data') || [{}]).pop(); //req.flash() tömböt ad vissza
-    //console.log(req.flash('error'));
     res.render('registration', {
-        //validationErrors: validationErrors,
         validationErrors: req.flash('error')
-        //data: data
     });
 });
 
@@ -189,21 +159,14 @@ app.post('/registration', passport.authenticate('registration', {
     failureFlash: true,
     successFlash: 'Sikeres regisztracio!',
     badRequestMessage: 'Hianyzo adatok'
-    //validationErrors:  'pasztmek'
 }));
 
 app.get('/login', function (req, res) {
-    //res.sendFile(__dirname + '/public/html/login.html') ;
     res.render('login', {
-        //validationErrors: validationErrors,
-        validationErrors: req.flash('error'),
-        //data: data
+        validationErrors: req.flash('error')
     });
 });
-//app.post('/login', function (req, res) {
-//    console.log(req);
-//    res.render('index');
-//});
+
 app.post('/login', passport.authenticate('login', {
     successRedirect: '/',
     failureRedirect: '/login',
@@ -230,9 +193,6 @@ app.get('/logout', function (req, res) {
  * */
 
 io.on('connection', function (socket) {
-
-    //console.log(io)
-    //console.log(socket)
 
     init(socket);
 

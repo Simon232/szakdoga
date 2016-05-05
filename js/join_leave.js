@@ -42,6 +42,6 @@ function onLeave() {
 }
 
 module.exports = {
-    onJoined,
-    onLeave,
+    onJoined: onJoined,
+    onLeave: onLeave
 };

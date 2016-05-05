@@ -10,6 +10,6 @@ module.exports = {
     trapPositions: {},
     coinNumber: 10,
     trapNumber: 20,
-    cubeHalf: 0.49,
+    cubeHalf: 0.49
 };
-
+//*** front-end's stuffs end ***
