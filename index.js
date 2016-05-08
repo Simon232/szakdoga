@@ -24,6 +24,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var joinLeave = require("./js/join_leave");
+var roomFunctions = require("./js/room_functions");
 var gameVars = require("./js/globals");
 
 var usersHighScore = {};
@@ -239,56 +240,7 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/login');
 }
 
-function validateEmail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-}
 
-function addPlayerToRoom(room, player) {
-    if (gameVars.roomManager[room].player1 == '') {
-        gameVars.roomManager[room].player1 = player;
-    }
-    else if (gameVars.roomManager[room].player2 == '') {
-        gameVars.roomManager[room].player2 = player;
-    }
-}
-
-function addRoom() {
-    return {
-        id: gameVars.roomSize,
-        name: 'room#' + gameVars.roomSize,
-        player1: '',
-        player2: '',
-        ready: {p1: false, p2: false}
-    };
-}
-
-function findOnePlayerRoom() {
-    for (var room in gameVars.roomManager) {
-        if (gameVars.roomManager[room].player1 != '' && gameVars.roomManager[room].player2 == '') {
-            return gameVars.roomManager[room].name;
-        }
-        else if (gameVars.roomManager[room].player1 == '' && gameVars.roomManager[room].player2 != '') {
-            return gameVars.roomManager[room].name;
-        }
-    }
-    return "Something went wrong";
-}
-
-function getEnemyPlayerName(playerName, playerRoom) {
-    var enemyName = '';
-    for (var room in gameVars.roomManager) {
-        if (gameVars.roomManager[room].name == playerRoom) {
-            if (gameVars.roomManager[room].player1 == playerName) {
-                enemyName = gameVars.roomManager[room].player2;
-            }
-            else if (gameVars.roomManager[room].player2 == playerName) {
-                enemyName = gameVars.roomManager[room].player1;
-            }
-        }
-    }
-    return enemyName;
-}
 
 function generateNewCoinPositions(room) {
     gameVars.coinPositions[room] = [];
@@ -313,7 +265,7 @@ function generateNewTrapPositions(room) {
 }
 
 function isCollision(obj) {
-    var otherPlayer = getEnemyPlayerName(obj.sid, obj.room);
+    var otherPlayer = roomFunctions.getEnemyPlayerName(obj.sid, obj.room);
     var thisSocket = obj.sid;
     var newX = obj.pos.x;
     var newZ = obj.pos.z;
@@ -367,7 +319,7 @@ function init(socket) {
             }
 
             var roomName = 'room#' + gameVars.roomSize;
-            gameVars.roomManager[roomName] = addRoom();
+            gameVars.roomManager[roomName] = roomFunctions.addRoom();
             gameVars.roomMessages[roomName] = [];
             socket.join(roomName);
             socket.room = roomName;
@@ -375,14 +327,14 @@ function init(socket) {
 
         } else {
             var roomName = 'room#' + gameVars.roomSize;
-            gameVars.roomManager[roomName] = addRoom();
+            gameVars.roomManager[roomName] = roomFunctions.addRoom();
             gameVars.roomMessages[roomName] = [];
             socket.join(roomName);
             socket.room = roomName; //if everything went well, we don't need to jump
         }
 
     } else {
-        var emptyRoom = findOnePlayerRoom(); //enough to find an empty room
+        var emptyRoom = roomFunctions.findOnePlayerRoom(); //enough to find an empty room
         socket.join(emptyRoom);
         socket.room = emptyRoom;
 
@@ -404,7 +356,7 @@ function init(socket) {
     io.to(socket.room).emit("old messages", {sid: socket.id, historyMessage: gameVars.roomMessages[socket.room]});
     //socket.emit("joined");
 
-    addPlayerToRoom(socket.room, socket.id);
+    roomFunctions.addPlayerToRoom(socket.room, socket.id);
     console.log("user: " + socket.id + ' connected to: ' + socket.room);
 }
 
