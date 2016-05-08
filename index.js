@@ -26,10 +26,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var joinLeave = require("./js/join_leave");
 var gameObjects = require("./js/game_objects");
 var roomFunctions = require("./js/room_functions");
+var initializer = require("./js/init.js");
 var gameVars = require("./js/globals");
-
-var usersHighScore = {};
-
 
 //passport
 passport.serializeUser(function (user, done) {
@@ -196,7 +194,7 @@ app.get('/logout', function (req, res) {
 
 io.on('connection', function (socket) {
 
-    init(socket);
+    initializer.init(socket);
 
     socket.on("joined", joinLeave.onJoined.bind(socket));
     socket.on('disconnect', joinLeave.onLeave.bind(socket));
@@ -240,97 +238,6 @@ function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next(); }
     res.redirect('/login');
 }
-
-
-function init(socket) {
-    // *** connection section ***
-    ++gameVars.joinedUsers;
-    if (gameVars.joinedUsers % 2 != 0) {
-        gameVars.roomSize = Object.keys(gameVars.roomManager).length;
-
-        //checking unused roomId-s to avoid id-collision (for example: 0,1,3,4 id's next value: 2, then 5)
-        var usedRoomId = false;
-        for (var room in gameVars.roomManager) {
-            if (gameVars.roomManager[room].id == gameVars.roomSize) {
-                usedRoomId = true;
-            }
-        }
-        if (usedRoomId) {
-            //calculate correct id
-
-            var goodId = 0;
-            for (var room in gameVars.roomManager) {
-                if (gameVars.roomManager[room].id == goodId) {
-                    ++goodId;
-                } else {
-                    var newIdIsGood = true;
-                    for (var subroom in gameVars.roomManager) {
-                        if (gameVars.roomManager[subroom].id == goodId) {
-                            newIdIsGood = false;
-                        }
-                    }
-                    if (newIdIsGood) {
-                        gameVars.roomSize = goodId;
-                        break; //break the cycle
-                    } else {
-                        ++goodId;
-                    }
-                }
-
-            }
-
-            var roomName = 'room#' + gameVars.roomSize;
-            gameVars.roomManager[roomName] = roomFunctions.addRoom();
-            gameVars.roomMessages[roomName] = [];
-            socket.join(roomName);
-            socket.room = roomName;
-            gameVars.roomSize = Object.keys(gameVars.roomManager).length - 1; //jump to the last known 'good' value
-
-        } else {
-            var roomName = 'room#' + gameVars.roomSize;
-            gameVars.roomManager[roomName] = roomFunctions.addRoom();
-            gameVars.roomMessages[roomName] = [];
-            socket.join(roomName);
-            socket.room = roomName; //if everything went well, we don't need to jump
-        }
-
-    } else {
-        var emptyRoom = roomFunctions.findOnePlayerRoom(); //enough to find an empty room
-        socket.join(emptyRoom);
-        socket.room = emptyRoom;
-
-        gameObjects.generateNewCoinPositions(emptyRoom);
-        gameObjects.generateNewTrapPositions(emptyRoom);
-
-        console.log("DEBUG " + gameVars.coinPositions[socket.room].length);
-        io.to(socket.room).emit("objectPositions", {
-            coinPositions: gameVars.coinPositions[socket.room],
-            trapPositions: gameVars.trapPositions[socket.room]
-        });
-
-    }
-    io.to(socket.room).emit('new', {
-        sid: socket.id,
-        room: socket.room,
-        positions: {x: getRandomPosition(), z: getRandomPosition()}
-    });
-    io.to(socket.room).emit("old messages", {sid: socket.id, historyMessage: gameVars.roomMessages[socket.room]});
-    //socket.emit("joined");
-
-    roomFunctions.addPlayerToRoom(socket.room, socket.id);
-    console.log("user: " + socket.id + ' connected to: ' + socket.room);
-}
-
-
-
-function getRandomPosition() {
-    var pos = 0;
-    while (pos <= 1 && pos >= -1) {
-        pos = Math.floor(Math.random() * 2) % 2 == 0 ? Math.random() * ((gameVars.gameWidth / 2) - gameVars.cubeHalf - 6) : -1 * Math.random() * ((gameVars.gameWidth / 2) - gameVars.cubeHalf - 2);
-    }
-    return pos;
-}
-
 
 function readyAgain(obj) {
     for (var room in gameVars.roomManager) {

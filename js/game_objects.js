@@ -44,7 +44,7 @@ function giveNewCoin(obj) {
     var x = Math.random() * gameVars.gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
     var z = Math.random() * gameVars.gameWidth / 2 * (Math.round(Math.random() * 10) % 2 == 0 ? 1 : -1);
     gameVars.coinPositions[this.room].push({x: x, z: z});
-    io.to(this.room).emit("giveNewCoin", {
+    this.server.to(this.room).emit("giveNewCoin", {
         sid: this.id,
         socketPoints: obj.socketPoints,
         index: obj.index,

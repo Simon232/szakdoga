@@ -89,7 +89,7 @@ function init(socket) {
     //socket.emit("joined");
 
     console.log("dooom" + socket.room);
-    roomFunctions.addPlayerToRoom.bind(socket.room, socket.id);
+    roomFunctions.addPlayerToRoom(socket.room, socket.id);
     console.log("user: " + socket.id + ' connected to: ' + socket.room);
 }
 
