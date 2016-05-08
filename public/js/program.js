@@ -14,7 +14,7 @@ var PI = Math.PI;
 var movingSpeed = 0.05;
 var rotationSpeed = PI / 180;
 var cameraDistance = 6;
-var playable_time = 10;
+var playable_time = 90;
 
 var coinMeshes = [];
 var trapMeshes = [];
