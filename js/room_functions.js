@@ -1,4 +1,5 @@
 var gameVars = require("./globals");
+var gameObjects = require("./game_objects");
 
 function addRoom() {
     return {
@@ -47,9 +48,43 @@ function getEnemyPlayerName(playerName, playerRoom) {
     return enemyName;
 }
 
+function readyAgain(obj) {
+    for (var room in gameVars.roomManager) {
+        if (gameVars.roomManager[room].name == obj.room) {
+            if (gameVars.roomManager[room].player1 == obj.sid) {
+                if (!gameVars.roomManager[room].ready.p1) {
+                    gameVars.roomManager[room].ready.p1 = true;
+                }
+            }
+            if (gameVars.roomManager[room].player2 == obj.sid) {
+                if (!gameVars.roomManager[room].ready.p2) {
+                    gameVars.roomManager[room].ready.p2 = true;
+                }
+            }
+            if (gameVars.roomManager[room].ready.p1 && gameVars.roomManager[room].ready.p2) {
+                this.server.to(obj.room).emit("readyAgain");
+                gameVars.coinPositions[obj.room] = [];
+                gameVars.trapPositions[obj.room] = [];
+
+                gameObjects.generateNewCoinPositions(obj.room);
+                gameObjects.generateNewTrapPositions(obj.room);
+
+                this.server.to(obj.room).emit("objectPositions", {
+                    coinPositions: gameVars.coinPositions[obj.room],
+                    trapPositions: gameVars.trapPositions[obj.room]
+                });
+
+                gameVars.roomManager[room].ready.p1 = false;
+                gameVars.roomManager[room].ready.p2 = false;
+            }
+        }
+    }
+}
+
 module.exports = {
     addPlayerToRoom: addPlayerToRoom,
     addRoom: addRoom,
     findOnePlayerRoom: findOnePlayerRoom,
-    getEnemyPlayerName: getEnemyPlayerName
+    getEnemyPlayerName: getEnemyPlayerName,
+    readyAgain: readyAgain
 };

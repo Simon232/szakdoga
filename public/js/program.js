@@ -51,6 +51,7 @@ var obj = {
 
 socket.on("getDamage", function(obj){
     document.querySelector(".e-points").textContent = obj.point;
+    otherPoints = obj.point;
 });
 
 socket.on("giveNewCoin", function (obj) {

@@ -226,7 +226,7 @@ io.on('connection', function (socket) {
         socket.to(obj.room).broadcast.emit("getDamage", obj);
     });
 
-    socket.on("readyAgain", readyAgain.bind(socket));
+    socket.on("readyAgain", roomFunctions.readyAgain.bind(socket));
 
 });
 
@@ -237,39 +237,6 @@ io.on('connection', function (socket) {
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next(); }
     res.redirect('/login');
-}
-
-function readyAgain(obj) {
-    for (var room in gameVars.roomManager) {
-        if (gameVars.roomManager[room].name == obj.room) {
-            if (gameVars.roomManager[room].player1 == obj.sid) {
-                if (!gameVars.roomManager[room].ready.p1) {
-                    gameVars.roomManager[room].ready.p1 = true;
-                }
-            }
-            if (gameVars.roomManager[room].player2 == obj.sid) {
-                if (!gameVars.roomManager[room].ready.p2) {
-                    gameVars.roomManager[room].ready.p2 = true;
-                }
-            }
-            if (gameVars.roomManager[room].ready.p1 && gameVars.roomManager[room].ready.p2) {
-                io.to(obj.room).emit("readyAgain");
-                gameVars.coinPositions[this.room] = [];
-                gameVars.trapPositions[this.room] = [];
-
-                gameObjects.generateNewCoinPositions(this.room);
-                gameObjects.generateNewTrapPositions(this.room);
-
-                io.to(this.room).emit("objectPositions", {
-                    coinPositions: gameVars.coinPositions[this.room],
-                    trapPositions: gameVars.trapPositions[this.room]
-                });
-
-                gameVars.roomManager[room].ready.p1 = false;
-                gameVars.roomManager[room].ready.p2 = false;
-            }
-        }
-    }
 }
 
 function chatMessages(obj) {
@@ -284,10 +251,6 @@ function chatMessages(obj) {
 //*****************************
 //***** server start **********
 //*****************************
-
-//http.listen(port, function () {
-//    console.log('Server is started, listening on port:', port);
-//});
 
 // **** ORM instance ****
 var orm = new Waterline();
