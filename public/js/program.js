@@ -167,7 +167,7 @@ socket.on('new', function (msg) {
          specular: 0x555555,
          shininess: 30
          });*/
-        var socketCubeMaterial = new THREE.MeshPhongMaterial({map: textureBox, transparent: true}); //{map: textureBox, transparent: true, opacity: 0.5, color: "rgb(255,0,0)"}
+        var socketCubeMaterial = new THREE.MeshPhongMaterial({map: textureBox}); //{map: textureBox, transparent: true, opacity: 0.5, color: "rgb(255,0,0)"}
 
         cubes[thisSocket] = new THREE.Mesh(socketCubeGeometry, socketCubeMaterial);
 
