@@ -82,7 +82,6 @@ passport.use('login', new LocalStrategy({
     }
 ));
 
-//** endpoints start
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(expressValidator());
@@ -110,11 +109,14 @@ app.use(function (req, res, next) {
 app.set('views', './views');
 app.set('view engine', 'hbs');
 
+
+// *** Server endpoints collection ***
 app.get('/', function (req, res) {
     res.render('index', {
         validationSuccess: req.flash()
     });
 });
+
 app.get('/game', ensureAuthenticated, function (req, res) {
     console.log(res.locals.user);
     res.render('game', {
@@ -135,7 +137,6 @@ app.post('/savescore', function (req, res) {
     });
 });
 
-
 app.get('/highscore', ensureAuthenticated, function (req, res) {
     req.app.models.user.findOne({username: req.user.username}, function(err, user){
 
@@ -151,7 +152,6 @@ app.get('/registration', function (req, res) {
         validationErrors: req.flash('error')
     });
 });
-
 
 app.post('/registration', passport.authenticate('registration', {
     successRedirect: '/',
@@ -175,22 +175,12 @@ app.post('/login', passport.authenticate('login', {
     badRequestMessage: 'Hianyzo adatok'
 }));
 
-
 app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
 });
 
 //*** end points end ***
-
-
-/* codes for me, to better understanding:
- *
- * socket.on - amit a kliens kuld
- * io.emit - amit a kliensnek kuldunk
- * socket.broadcast.to('room' + gameVars.roomSize).emit("roomIsFull");
- * io.sockets.in('room' + gameVars.roomSize).emit('roomIsFull');
- * */
 
 io.on('connection', function (socket) {
 
@@ -217,8 +207,9 @@ io.on('connection', function (socket) {
         socket.broadcast.to(socket.room).emit('rotation', msg);
     });
 
-    // *** page functions section ***
-    socket.on('chat message', chatMessages);
+    // *** game functions section ***
+
+    socket.on("readyAgain", roomFunctions.readyAgain.bind(socket));
 
     socket.on("giveNewCoin", gameObjects.giveNewCoin.bind(socket));
 
@@ -226,7 +217,8 @@ io.on('connection', function (socket) {
         socket.to(obj.room).broadcast.emit("getDamage", obj);
     });
 
-    socket.on("readyAgain", roomFunctions.readyAgain.bind(socket));
+    // *** page functions section ***
+    socket.on('chat message', roomFunctions.chatMessages);
 
 });
 
@@ -237,15 +229,6 @@ io.on('connection', function (socket) {
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next(); }
     res.redirect('/login');
-}
-
-function chatMessages(obj) {
-    if (gameVars.roomMessages[obj.room].length == 5) {
-        gameVars.roomMessages[obj.room].shift();
-    }
-    gameVars.roomMessages[obj.room].push(obj.msg);
-
-    io.to(obj.room).emit('chat message', obj);
 }
 
 //*****************************

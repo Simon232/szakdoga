@@ -81,10 +81,20 @@ function readyAgain(obj) {
     }
 }
 
+function chatMessages(obj) {
+    if (gameVars.roomMessages[obj.room].length == 5) {
+        gameVars.roomMessages[obj.room].shift();
+    }
+    gameVars.roomMessages[obj.room].push(obj.msg);
+
+    this.server.to(obj.room).emit('chat message', obj);
+}
+
 module.exports = {
     addPlayerToRoom: addPlayerToRoom,
     addRoom: addRoom,
     findOnePlayerRoom: findOnePlayerRoom,
     getEnemyPlayerName: getEnemyPlayerName,
-    readyAgain: readyAgain
+    readyAgain: readyAgain,
+    chatMessages: chatMessages
 };
