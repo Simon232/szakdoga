@@ -12,7 +12,6 @@ function getRandomPlayerPosition() {
 
 function init(socket) {
     // *** connection section ***
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     ++gameVars.joinedUsers;
     if (gameVars.joinedUsers % 2 != 0) {
         gameVars.roomSize = Object.keys(gameVars.roomManager).length;
@@ -71,24 +70,20 @@ function init(socket) {
         gameObjects.generateNewCoinPositions(emptyRoom);
         gameObjects.generateNewTrapPositions(emptyRoom);
 
-        console.log("DEBUG " + gameVars.coinPositions[socket.room].length);
         socket.server.to(socket.room).emit("objectPositions", {
             coinPositions: gameVars.coinPositions[socket.room],
             trapPositions: gameVars.trapPositions[socket.room]
         });
 
     }
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     socket.server.to(socket.room).emit('new', {
         sid: socket.id,
         room: socket.room,
         positions: {x: getRandomPlayerPosition(), z: getRandomPlayerPosition()}
     });
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     socket.server.to(socket.room).emit("old messages", {sid: socket.id, historyMessage: gameVars.roomMessages[socket.room]});
     //socket.emit("joined");
 
-    console.log("dooom" + socket.room);
     roomFunctions.addPlayerToRoom(socket.room, socket.id);
     console.log("user: " + socket.id + ' connected to: ' + socket.room);
 }

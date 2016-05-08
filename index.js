@@ -118,7 +118,6 @@ app.get('/', function (req, res) {
 });
 
 app.get('/game', ensureAuthenticated, function (req, res) {
-    console.log(res.locals.user);
     res.render('game', {
         highscore: (req.user ? req.user.highscore : undefined)
     });
@@ -241,7 +240,7 @@ orm.loadCollection(Waterline.Collection.extend(userCollection));
 
 orm.initialize(waterlineConfig, function (err, models) {
     if (err) {
-        console.log(" such error");
+        console.log("Initialization error");
     }
 
     app.models = models.collections;

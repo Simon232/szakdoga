@@ -104,7 +104,7 @@ socket.on("joined", function () {
 
 socket.on('new', function (msg) {
 
-    if (thisSocket == undefined) { //sajat kocka
+    if (thisSocket == undefined) { // own character (cube)
 
         socket.room = msg.room;
         thisRoom = msg.room;
@@ -198,8 +198,7 @@ socket.on('new', function (msg) {
 
     }
 
-    if (socket.id != undefined) { // elkuldom a kockamat a masiknak
-        //console.log("Ez vagyok en: ", thisSocket);
+    if (socket.id != undefined) { // send my own cube
         try {
 
             socket.emit('update', {
@@ -278,7 +277,6 @@ socket.on('disconnect', function (msg) {
     document.querySelector(".points").textContent = thisPoints;
     document.querySelector(".e-points").textContent = otherPoints;
 
-    //console.log(msg + " user disconnected: ");
     scene.remove(cubes[msg]);
     otherPlayer = '';
 
@@ -297,16 +295,13 @@ socket.on('disconnect', function (msg) {
         }
     }, 5000);
 
-
-    //time = 0;
 });
 
 socket.on('update', function (msg) {
     doFadeIn(".timer-container");
 
-    //console.log("Ezt kaptam: ", msg);
     if (msg.room == thisRoom) {
-        if (cubes[msg.sid] == undefined) {  // masik jatekos csatlakozasa
+        if (cubes[msg.sid] == undefined) {  // other player joinning
 
             otherPlayer = msg.sid;
 

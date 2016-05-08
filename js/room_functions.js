@@ -12,7 +12,6 @@ function addRoom() {
 }
 
 function addPlayerToRoom(room, player) {
-    console.log("dooooooomn " + room + " " + player );
     if (gameVars.roomManager[room].player1 == '') {
         gameVars.roomManager[room].player1 = player;
     }
