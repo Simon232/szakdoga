@@ -130,9 +130,6 @@ app.get('/rules', function (req, res) {
 app.post('/savescore', function (req, res) {
     req.app.models.user.update({username: res.locals.user.username}, {
         highscore: req.body.highscore
-        
-    }).then(function(){
-        
     });
 });
 
