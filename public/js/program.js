@@ -395,7 +395,7 @@ var init = function () {
     var texture = new THREE.TextureLoader().load("pics/sand3.jpg");
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(gameWidth / 12, gameWidth / 12);
+    texture.repeat.set(gameWidth / 10, gameWidth / 10);
 
     var ground_geo = new THREE.BoxGeometry(gameWidth, 0.0001, gameWidth);
     //var cube_material = new THREE.MeshPhongMaterial( { ambient: 0x050505, color: 0x0033ff, specular: 0x555555, shininess: 30 } );
