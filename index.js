@@ -135,12 +135,10 @@ app.post('/savescore', function (req, res) {
 
 app.get('/highscore', ensureAuthenticated, function (req, res) {
     req.app.models.user.findOne({username: req.user.username}, function(err, user){
-
         res.render('highscore', {
             highscore: (req.user ? user.highscore : undefined)
         });
     });
-    
 });
 
 app.get('/registration', function (req, res) {
