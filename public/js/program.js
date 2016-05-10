@@ -142,7 +142,7 @@ socket.on('new', function (msg) {
             boxTexture = "pics/box4.png";
         }
         if (randomNumber == 4) {
-            boxTexture = "pics/box5.png";
+            boxTexture = "pics/box5.jpg";
         }
         //if (randomNumber == 5) {
         //    boxTexture = "pics/transparent.png";
