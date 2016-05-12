@@ -14,7 +14,7 @@ var PI = Math.PI;
 var movingSpeed = 0.05;
 var rotationSpeed = PI / 180;
 var cameraDistance = 6;
-var playable_time = 90;
+var playable_time = 120;
 
 var coinMeshes = [];
 var trapMeshes = [];
@@ -699,12 +699,12 @@ var timer = function () {
             savePoints();
             var winner = '';
             if(thisPoints == otherPoints){
-                winner = " Dontetlen";
+                winner = " Döntetlen";
             }
             else if(thisPoints > otherPoints){
-                winner = " Nyertel!";
+                winner = " Nyertél!";
             }else{
-                winner = " Vesztettel!";
+                winner = " Vesztettél!";
             }
 
             document.querySelector(".time").textContent = "Vege!" + winner;
