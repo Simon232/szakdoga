@@ -5,20 +5,20 @@
     </div>
     <div class="container">
         {{#if loggedIn}}
-            <p class="navbar-text hello">Bel&eacutepve, mint {{user.username}}!</p>
+            <p class="navbar-text hello">Belépve, mint {{user.username}}!</p>
         {{/if}}
         <div class="navbar-brand title">Szakdolgozat</div>
         <ul class="nav navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="/">F&otildeoldal</a></li>
+            <li class="nav-item"><a class="nav-link" href="/">Főoldal</a></li>
             {{#if notLoggedIn}}
-                <li class="nav-item"><a class="nav-link" href="./registration">Regisztr&aacuteci&oacute</a></li>
-                <li class="nav-item"><a class="nav-link" href="./login">Bejelentkez&eacutes</a></li>
+                <li class="nav-item"><a class="nav-link" href="./registration">Regisztráció</a></li>
+                <li class="nav-item"><a class="nav-link" href="./login">Bejelentkezés</a></li>
             {{/if}}
-            <li class="nav-item"><a class="nav-link" href="./game">J&aacutet&eacutek</a></li>
-            <li class="nav-item active"><a class="nav-link" href="/rules">J&aacutet&eacutekszab&aacutelyok</a></li>
+            <li class="nav-item"><a class="nav-link" href="./game">Játék</a></li>
+            <li class="nav-item active"><a class="nav-link" href="/rules">Játékszabályok</a></li>
             {{#if loggedIn}}
-                <li class="nav-item"><a class="nav-link" href="./highscore">Eredm&eacutenyek</a></li>
-                <li class="nav-item"><a class="nav-link" href="./logout">Kijelentkez&eacutes</a></li>
+                <li class="nav-item"><a class="nav-link" href="./highscore">Eredmények</a></li>
+                <li class="nav-item"><a class="nav-link" href="./logout">Kijelentkezés</a></li>
             {{/if}}
         </ul>
     </div>
@@ -28,56 +28,56 @@
     <div class="rule-container">
 
             <p>
-                A J&aacutet&eacutek egy egyszer&ucirc, k&eacutetszem&eacutelyes, pontgy&ucircjt&oumlget&otildes
-                ar&eacutenaharc, mely a <i>THREE.js</i> &aacuteltal ny&uacutejtott
-                grafikai lehet&otildes&eacutegeket hivatott bemutatni.<br>
+                A Játék egy egyszerű, kétszemélyes, pontgyűjtögetős
+                arénaharc, mely a <i>THREE.js</i> által nyújtott
+                grafikai lehetőségeket hivatott bemutatni.<br>
                 <br>
-                <u>A j&aacutet&eacutek menete:</u><br>
-                Minden regisztr&aacutelt felhaszn&aacutel&oacutenak lehet&otildes&eacutege van &uacutej
-                j&aacutet&eacutekot kezdeni a "J&aacutet&eacutek" men&uumlgombra kattintva, amivel a j&aacutet&eacutekos
-                m&aacuteris a j&aacutet&eacutekt&eacuter k&oumlzep&eacutebe cs&oumlppenhet.<br>
-                Ilyenkor ez a l&aacutetv&aacuteny fogadja:<br>
+                <u>A játék menete:</u><br>
+                Minden regisztrált felhasználónak lehetősége van új
+                játékot kezdeni a "Játék" menügombra kattintva, amivel a játékos
+                máris a játéktér közepébe csöppenhet.<br>
+                Ilyenkor ez a látvány fogadja:<br>
 
             <div class="rule-pics"><img src="/pics/front/arena_empty.jpg"></div>
             <br>
-            A t&eacutenyleges j&aacutet&eacutek azonban csak a m&aacutesodik j&aacutet&eacutekos csatlakoz&aacutesakor
-            kezd&otildedik, amikor is megjelennek a j&aacutet&eacutekhoz sz&uumlks&eacuteges kell&eacutekek: Az <b>id&otildez&iacutet&otilde</b>,
-            a gy&ucircjt&oumlgethet&otilde <b>pont-&eacuterm&eacutek</b> &eacutes a <b>csapd&aacutek</b>.<br>
+            A tényleges játék azonban csak a második játékos csatlakozásakor
+            kezdődik, amikor is megjelennek a játékhoz szükséges kellékek: Az <b>időzítő</b>,
+            a gyűjtögethető <b>pont-érmék</b> és a <b>csapdák</b>.<br>
 
             <div class="rule-pics"><img src="/pics/front/arena_full.jpg"></div>
             <br>
 
-            Az <b><u>id&otildez&iacutet&otilde</u></b> a k&oumlr v&eacuteg&eacuteig h&aacutetral&eacutev&otilde
-            id&otilde jelz&eacutes&eacutere szolg&aacutel:<br>
+            Az <b><u>időzítő</u></b> a kör végéig hátralévő
+            idő jelzésére szolgál:<br>
 
             <div class="rule-pics"><img src="/pics/front/timer.jpg"></div>
             <br>
-            Az <b><u>&eacuterm&eacutek</u></b> fejenk&eacutent +10 pontot &eacuternek, a j&aacutet&eacutekos az
-            &eacuterm&eacuteken val&oacute &aacutethalad&aacutessal gy&ucircjtheti &oumlssze azokat.<br>
+            Az <b><u>érmék</u></b> fejenként +10 pontot érnek, a játékos az
+            érméken való áthaladással gyűjtheti össze azokat.<br>
 
             <div class=" rule-pics"><img src="/pics/front/coin.jpg"></div>
             <br>
-            A <b><u>csapda</u></b> a j&aacutet&eacutekos mozg&aacutes&aacutet nehez&iacuteti. A csapd&aacuten val&oacute
-            &aacutethalad&aacutes -50 pontot &eacuter.<br>
+            A <b><u>csapda</u></b> a játékos mozgását nehezíti. A csapdán való
+            áthaladás -50 pontot ér.<br>
 
             <div class=" rule-pics"><img src="/pics/front/trap.jpg"></div>
             <br>
-            <u>A c&eacutel:</u><br>
-            Az id&otilde lej&aacuterta el&otildett &oumlsszegy&ucircjteni a legt&oumlbb pontot.<br>
+            <u>A cél:</u><br>
+            Az idő lejárta előtt összegyűjteni a legtöbb pontot.<br>
             <br>
-            Az &eacuterm&eacutek &eacutes csapd&aacutek helyzete v&eacuteletlenszer&ucirc, a p&aacutely&aacuten
-            egyszerre mindig csak 10 &eacuterme &eacutes 20 csapda van.
+            Az érmék és csapdák helyzete véletlenszerű, a pályán
+            egyszerre mindig csak 10 érme és 20 csapda van.
             <br>
             <br>
-            Ha a j&aacutet&eacutek v&eacuteget &eacutert, a program gy&otildeztest h&iacuterdet, majd
-            el&otildet&ucircnik egy &uacutejrakezd&eacutest felk&iacuten&aacutel&oacute "&Uacutejra" gomb, melyre
-            r&aacutekattintva a j&aacutet&eacutekos &uacutejabb k&oumlrt kezdem&eacutenyezhet.<br>
+            Ha a játék véget ért, a program győztest hírdet, majd
+            előtűnik egy újrakezdést felkínáló "újra" gomb, melyre
+            rákattintva a játékos újabb kört kezdeményezhet.<br>
         
         
             <div class=" rule-pics"><img src="/pics/front/again.jpg"></div>
             <br>
-            Ha mindk&eacutet j&aacutet&eacutekos r&aacutekattintott az "&Uacutejra" gombra, akkor &uacutej k&oumlr
-            kezd&otildedik.<br>
+            Ha mindkét játékos rákattintott az "újra" gombra, akkor új kör
+            kezdődik.<br>
             </p>
 
     </div>

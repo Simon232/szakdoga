@@ -5,20 +5,20 @@
     </div>
     <div class="container">
         {{#if loggedIn}}
-            <p class="navbar-text hello">Bel&eacutepve, mint {{user.username}}!</p>
+            <p class="navbar-text hello">Belépve, mint {{user.username}}!</p>
         {{/if}}
         <div class="navbar-brand title">Szakdolgozat</div>
         <ul class="nav navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="/">F&otildeoldal</a></li>
+            <li class="nav-item"><a class="nav-link" href="/">Főoldal</a></li>
             {{#if notLoggedIn}}
-                <li class="nav-item"><a class="nav-link" href="./registration">Regisztr&aacuteci&oacute</a></li>
-                <li class="nav-item"><a class="nav-link" href="./login">Bejelentkez&eacutes</a></li>
+                <li class="nav-item"><a class="nav-link" href="./registration">Regisztráció</a></li>
+                <li class="nav-item"><a class="nav-link" href="./login">Bejelentkezés</a></li>
             {{/if}}
-            <li class="nav-item"><a class="nav-link" href="./game">J&aacutet&eacutek</a></li>
-            <li class="nav-item"><a class="nav-link" href="/rules">J&aacutet&eacutekszab&aacutelyok</a></li>
+            <li class="nav-item"><a class="nav-link" href="./game">Játék</a></li>
+            <li class="nav-item"><a class="nav-link" href="/rules">Játékszabályok</a></li>
             {{#if loggedIn}}
-                <li class="nav-item active"><a class="nav-link" href="./highscore">Eredm&eacutenyek</a></li>
-                <li class="nav-item"><a class="nav-link" href="./logout">Kijelentkez&eacutes</a></li>
+                <li class="nav-item active"><a class="nav-link" href="./highscore">Eredmények</a></li>
+                <li class="nav-item"><a class="nav-link" href="./logout">Kijelentkezés</a></li>
             {{/if}}
         </ul>
     </div>
@@ -27,13 +27,13 @@
 <div class="main-text">
     {{#if loggedIn}}
         <div class="reg-title">
-            <h1>Legjobb eredm&eacutenyek</h1>
+            <h1>Legjobb eredmények</h1>
         </div>
         <div class="best-point-show">
-            Legjobb eredm&eacutenyed: {{highscore}}
+            Legjobb eredményed: {{highscore}}
         </div>
     {{else}}
-        Bejelentkez&eacutes sz&uumlks&eacuteges!
+        Bejelentkezés szükséges!
     {{/if}}
 
 </div>

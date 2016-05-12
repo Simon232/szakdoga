@@ -5,20 +5,20 @@
     </div>
     <div class="container">
         {{#if loggedIn}}
-            <p class="navbar-text hello">Bel&eacutepve, mint {{user.username}}!</p>
+            <p class="navbar-text hello">Belépve, mint {{user.username}}!</p>
         {{/if}}
         <div class="navbar-brand title">Szakdolgozat</div>
         <ul class="nav navbar-nav">
-            <li class="nav-item active"><a class="nav-link" href="/">F&otildeoldal</a></li>
+            <li class="nav-item active"><a class="nav-link" href="/">Főoldal</a></li>
             {{#if notLoggedIn}}
-                <li class="nav-item"><a class="nav-link" href="./registration">Regisztr&aacuteci&oacute</a></li>
-                <li class="nav-item"><a class="nav-link" href="./login">Bejelentkez&eacutes</a></li>
+                <li class="nav-item"><a class="nav-link" href="./registration">Regisztráció</a></li>
+                <li class="nav-item"><a class="nav-link" href="./login">Bejelentkezés</a></li>
             {{/if}}
-            <li class="nav-item"><a class="nav-link" href="./game">J&aacutet&eacutek</a></li>
-            <li class="nav-item"><a class="nav-link" href="/rules">J&aacutet&eacutekszab&aacutelyok</a></li>
+            <li class="nav-item"><a class="nav-link" href="./game">Játék</a></li>
+            <li class="nav-item"><a class="nav-link" href="/rules">Játékszabályok</a></li>
             {{#if loggedIn}}
-                <li class="nav-item"><a class="nav-link" href="./highscore">Eredm&eacutenyek</a></li>
-                <li class="nav-item"><a class="nav-link" href="./logout">Kijelentkez&eacutes</a></li>
+                <li class="nav-item"><a class="nav-link" href="./highscore">Eredmények</a></li>
+                <li class="nav-item"><a class="nav-link" href="./logout">Kijelentkezés</a></li>
             {{/if}}
         </ul>
     </div>
@@ -32,19 +32,18 @@
         </div>
     {{/each}}
     <div class="welcome">
-        &Uumldv&oumlz&oumlllek az oldalon!<br>
+        Üdvözöllek az oldalon!<br>
         <br>
-        Ez az alkalmaz&aacutes a szakdolgozatom, mely egy b&oumlng&eacutesz&otildeb&otildel futtathat&oacute, h&aacuteromdimenzi&oacutes t&oumlbbj&aacutet&eacutekos j&aacutet&eacutek. <br>
-        Az applik&aacuteci&oacuteval a 3D-s grafika &eacutes a webes-technol&oacutegi&aacutek &oumltv&oumlz&eacutes&eacutet k&iacutev&aacutenom bemutatni.<br>
-
-
+        Ez az alkalmazás a szakdolgozatom, mely egy böngészőből futtatható, háromdimenziós többjátékos játék. <br>
+        Az applikációval a 3D-s grafika és a webes-technológiák ötvözését kívánom bemutatni.<br>
+        
         <br>
-        <i>A j&aacutet&eacutekhoz el&oumlzetes regisztr&aacuteci&oacute sz&uumlks&eacuteges!</i><br>
+        <i>A játékhoz előzetes regisztráció szükséges!</i><br>
         <br>
-        Kellemes id&otildet&oumllt&eacutest k&iacutev&aacutenok!<br>
+        Kellemes időtöltést kívánok!<br>
         <br>
 
     </div>
-    <div class="author"><b><i>Bal&aacutezs Andr&aacutes</i></b></div>
+    <div class="author"><b><i>Balázs András</i></b></div>
 </div>
 <script src='js/main.js'></script>

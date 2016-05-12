@@ -5,20 +5,20 @@
     </div>
     <div class="container">
         {{#if loggedIn}}
-            <p class="navbar-text hello">Bel&eacutepve, mint {{user.username}}!</p>
+            <p class="navbar-text hello">Belépve, mint {{user.username}}!</p>
         {{/if}}
         <div class="navbar-brand title">Szakdolgozat</div>
         <ul class="nav navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="/">F&otildeoldal</a></li>
+            <li class="nav-item"><a class="nav-link" href="/">Főoldal</a></li>
             {{#if notLoggedIn}}
-                <li class="nav-item  active"><a class="nav-link" href="./registration">Regisztr&aacuteci&oacute</a></li>
-                <li class="nav-item"><a class="nav-link" href="./login">Bejelentkez&eacutes</a></li>
+                <li class="nav-item  active"><a class="nav-link" href="./registration">Regisztráció</a></li>
+                <li class="nav-item"><a class="nav-link" href="./login">Bejelentkezés</a></li>
             {{/if}}
-            <li class="nav-item"><a class="nav-link" href="./game">J&aacutet&eacutek</a></li>
-            <li class="nav-item"><a class="nav-link" href="/rules">J&aacutet&eacutekszab&aacutelyok</a></li>
+            <li class="nav-item"><a class="nav-link" href="./game">Játék</a></li>
+            <li class="nav-item"><a class="nav-link" href="/rules">Játékszabályok</a></li>
             {{#if loggedIn}}
-                <li class="nav-item"><a class="nav-link" href="./highscore">Eredm&eacutenyek</a></li>
-                <li class="nav-item"><a class="nav-link" href="./logout">Kijelentkez&eacutes</a></li>
+                <li class="nav-item"><a class="nav-link" href="./highscore">Eredmények</a></li>
+                <li class="nav-item"><a class="nav-link" href="./logout">Kijelentkezés</a></li>
             {{/if}}
         </ul>
     </div>
@@ -34,12 +34,12 @@
 
     {{/each}}
     <div class="reg-title">
-        <h1>Regisztr&aacuteci&oacute</h1>
+        <h1>Regisztráció</h1>
     </div>
     <form class="form-horizontal" method="post">
         <fieldset>
             <div class="form-group ">
-                <label class="username">Felhaszn&aacutel&oacuten&eacutev: </label>
+                <label class="username">Felhasználónév: </label>
                 <input required class="form-control input-fields" id="username" name="username"
                        placeholder="username, pl.: user" type="text" value="{{data.username}}">
                 <!--{{#if validationErrors}}-->
@@ -57,7 +57,7 @@
                 <!--{{/if}}-->
             </div>
             <div class="form-group ">
-                <label class="pwd">Jelsz&oacute: </label>
+                <label class="pwd">Jelszó: </label>
                 <input required class="form-control input-fields" id="password" name="password"
                        placeholder="password, pl.: 1234" type="password" value="{{data.password}}">
                 <!--{{#if validationErrors}}-->
@@ -65,7 +65,7 @@
                 <!--{{/if}}-->
             </div>
             <!--<div class="form-group">-->
-                <!--<label class="pwda">Jelsz&oacute ism&eacutet: </label>-->
+                <!--<label class="pwda">Jelszó ismét: </label>-->
                 <!--<input required class="form-control input-fields" id="passwordagain" name="passwordagain"-->
                        <!--placeholder="password, pl.: 1234" type="password" value="{{data.passwordagain}}">-->
                 <!--&lt;!&ndash;value="ertek"&ndash;&gt;-->
@@ -74,8 +74,8 @@
                 <!--&lt;!&ndash;&lt;!&ndash;{{/if}}&ndash;&gt;&ndash;&gt;-->
             <!--</div>-->
             <div class="button-container">
-                <button type="reset" class="btn btn-default">Mez&otildek t&oumlrl&eacutese</button>
-                <button type="submit" class="btn btn-primary">Regisztr&aacutelok</button>
+                <button type="reset" class="btn btn-default">Mezők törlése</button>
+                <button type="submit" class="btn btn-primary">Regisztrálok</button>
             </div>
         </fieldset>
     </form>
